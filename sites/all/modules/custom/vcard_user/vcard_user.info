@@ -1,0 +1,4 @@
+name = VCard User
+description = Provides permissions for paid services for VCard users.
+core = 7.x
+package = Custom
