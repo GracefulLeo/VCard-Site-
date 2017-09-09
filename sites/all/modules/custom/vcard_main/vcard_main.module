@@ -1,0 +1,97 @@
+<?php
+/**
+ * @file
+ * Module's main file.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function vcard_main_menu() {
+  $items = [];
+  $items['home'] = [
+    'type' => MENU_CALLBACK,
+    'page callback' => 'vcard_main_home_page',
+    'access callback' => TRUE,
+  ];
+  $items['my_vcard'] = [
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_my_vcard_form'],
+    'access arguments' => ['access content'],
+  ];
+
+  return $items;
+}
+
+/**
+ * Home page callback.
+ */
+function vcard_main_home_page() {
+  $page = [];
+
+  // @todo Set content for authenticated users in this place.
+
+  return $page;
+}
+
+/**
+ * "My VCard" page callback.
+ */
+function vcard_main_my_vcard_form($form, &$form_state) {
+  $entity = entity_create('vcard', ['type' => 'vcard']);
+  field_attach_form('vcard', $entity, $form, $form_state);
+
+  $form['entity'] = [
+    '#type' => 'value',
+    '#value' => $entity,
+  ];
+
+  $form['submit'] = [
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 100,
+  ];
+
+  return $form;
+}
+
+/**
+ * "My VCard" page form submit.
+ */
+function vcard_main_my_vcard_form_submit($form, &$form_state) {
+  // @todo Write form submit correctly.
+
+  $entity = $form_state['values']['entity'];
+  field_attach_submit('vcard', $entity, $form, $form_state);
+
+  drupal_set_message('Saved!');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vcard_main_form_user_login_block_alter(&$form, &$form_state) {
+  $form['name']['#title_display'] = 'invisible';
+  $form['name']['#attributes'] = ['placeholder' => t('E-mail')];
+  $form['pass']['#title_display'] = 'invisible';
+  $form['pass']['#attributes'] = ['placeholder' => t('Password')];
+}
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function vcard_main_block_view_alter(&$data, $block) {
+  switch ($block->delta) {
+    case 'login':
+      // Remove unnecessary title.
+      unset($data['subject']);
+      // Set link after "Log in" button.
+      $data['content']['links']['#weight'] = 101;
+      // Hide unnecessary links.
+      $data['content']['links']['#access'] = FALSE;
+      // Set google button on the top of block.
+      $data['content']['submit_google']['#weight'] = -1;
+      break;
+  }
+}
