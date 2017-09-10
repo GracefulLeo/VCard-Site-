@@ -15,7 +15,9 @@ function vcard_main_menu() {
     'access callback' => TRUE,
   ];
   $items['my_vcard'] = [
-    'type' => MENU_NORMAL_ITEM,
+    'title' => 'My VCard',
+    'type' => MENU_CALLBACK,
+    'menu_name' => 'main-menu',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
     'access arguments' => ['access content'],
@@ -28,9 +30,31 @@ function vcard_main_menu() {
  * Home page callback.
  */
 function vcard_main_home_page() {
+  global $user;
+
   $page = [];
 
-  // @todo Set content for authenticated users in this place.
+  // Show elements for authorized users only.
+  if ($user->uid) {
+    $user_entity = entity_load_single('user', $user->uid);
+
+    if (empty($user_entity->field_vcard)) {
+      $page['help_text'] = [
+        '#markup' => t(
+          'Hint: To start using this service you need to fill some fields in your profile. Go to <a href="@my_vcard">My VCard</a>.',
+          ['@my_vcard' => url('my_vcard')]
+        ),
+      ];
+    }
+    else {
+      // Render user's vcard on homepage.
+      $vcard_id = $user_entity->field_vcard[LANGUAGE_NONE][0]['target_id'];
+      $vcard_entity = entity_view('vcard', [entity_load_single('vcard', $vcard_id)]);
+      $page['vcard'] = [
+        '#markup' => drupal_render($vcard_entity),
+      ];
+    }
+  }
 
   return $page;
 }
@@ -39,12 +63,28 @@ function vcard_main_home_page() {
  * "My VCard" page callback.
  */
 function vcard_main_my_vcard_form($form, &$form_state) {
-  $entity = entity_create('vcard', ['type' => 'vcard']);
-  field_attach_form('vcard', $entity, $form, $form_state);
+  global $user;
+  $user_entity = entity_load_single('user', $user->uid);
+
+  if (empty($user_entity->field_vcard)) {
+    // Use new entity for new user.
+    $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
+  }
+  else {
+    // Load related vcard entity for user.
+    $wrapper = entity_metadata_wrapper('user', $user_entity);
+    $vcard_entity = $wrapper->field_vcard->value();
+  }
+
+  field_attach_form('vcard', $vcard_entity, $form, $form_state);
 
   $form['entity'] = [
     '#type' => 'value',
-    '#value' => $entity,
+    '#value' => $vcard_entity,
+  ];
+  $form['user_entity'] = [
+    '#type' => 'value',
+    '#value' => $user_entity,
   ];
 
   $form['submit'] = [
@@ -57,15 +97,33 @@ function vcard_main_my_vcard_form($form, &$form_state) {
 }
 
 /**
+ * "My VCard" page form validation.
+ */
+function vcard_main_my_vcard_form_validation($form, &$form_state) {
+  field_attach_form_validate('vcard', $form_state['values']['entity'], $form, $form_state);
+}
+
+/**
  * "My VCard" page form submit.
  */
 function vcard_main_my_vcard_form_submit($form, &$form_state) {
-  // @todo Write form submit correctly.
-
   $entity = $form_state['values']['entity'];
   field_attach_submit('vcard', $entity, $form, $form_state);
+  entity_save('vcard', $entity);
 
-  drupal_set_message('Saved!');
+  // @todo For better performance this step can execute once.
+  $user = $form_state['values']['user_entity'];
+  $wrapper = entity_metadata_wrapper('user', $user);
+  if (isset($wrapper->field_vcard)) {
+    $wrapper->field_vcard->set($entity->id);
+  }
+  else {
+    watchdog('error', t('Field \'vcard\' does not exists for user.'));
+  }
+  $wrapper->save();
+
+  // @todo Write good message.
+  drupal_set_message(t('Your visit card successfully saved!'));
 }
 
 /**
