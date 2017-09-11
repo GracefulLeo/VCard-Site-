@@ -751,13 +751,11 @@ function socialfield_field_widget_form(&$form, &$form_state, $field, $instance, 
   $element['#element_validate'] = array('socialfield_service_validate');
 
   // Getting services for the select list.
-  $options = array_keys($all_services);
-  $options = array_combine($options, $options);
-  if (isset($instance['settings']['used_services'])) {
-    $options = array_intersect($options, $instance['settings']['used_services']);
+  $options = array();
+  foreach ($all_services as $service_machine_name => $service_name) {
+    $options[$service_machine_name] = $service_name['name'];
   }
-  $options = array_diff($options, $form_state['services']);
-  $options = array_map('ucfirst', $options);
+  $options = array_diff_key($options, array_flip($form_state['services']));
 
   // Select for adding new element (service and url) to form. Done with Ajax Forms.
   $element['social_buttons']['add_one_social'] = array(
