@@ -10,16 +10,23 @@
 function vcard_main_menu() {
   $items = [];
   $items['home'] = [
-    'type' => MENU_CALLBACK,
     'page callback' => 'vcard_main_home_page',
     'access callback' => TRUE,
   ];
   $items['my_vcard'] = [
     'title' => 'My VCard',
-    'type' => MENU_CALLBACK,
     'menu_name' => 'main-menu',
+    'weight' => 1,
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
+    'access arguments' => ['access content'],
+  ];
+  $items['contacts'] = [
+    'title' => 'Contacts',
+    'menu_name' => 'main-menu',
+    'weight' => 2,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_contacts_form'],
     'access arguments' => ['access content'],
   ];
 
@@ -124,6 +131,13 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
 
   // @todo Write good message.
   drupal_set_message(t('Your visit card successfully saved!'));
+}
+
+/**
+ * "Contacts" page callback.
+ */
+function vcard_main_contacts_form($form, &$form_state) {
+  return $form;
 }
 
 /**
