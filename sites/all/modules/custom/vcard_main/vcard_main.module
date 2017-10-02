@@ -9,24 +9,65 @@
  */
 function vcard_main_menu() {
   $items = [];
-  $items['home'] = [
-    'page callback' => 'vcard_main_home_page',
-    'access callback' => TRUE,
-  ];
+  $weight = 1;
+
+  //  $items['home'] = [
+  //    'page callback' => 'vcard_main_home_page',
+  //    'access callback' => TRUE,
+  //  ];
   $items['my_vcard'] = [
     'title' => 'My VCard',
     'menu_name' => 'main-menu',
-    'weight' => 1,
+    'weight' => $weight++,
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
-    'access arguments' => ['access content'],
+    'access callback' => TRUE,
   ];
   $items['contacts'] = [
     'title' => 'Contacts',
     'menu_name' => 'main-menu',
-    'weight' => 2,
+    'weight' => $weight++,
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_contacts_form'],
+    'access arguments' => ['access content'],
+  ];
+  $items['groups'] = [
+    'title' => 'Groups',
+    'menu_name' => 'main-menu',
+    'weight' => $weight++,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_groups_form'],
+    'access arguments' => ['access content'],
+  ];
+  $items['organizer'] = [
+    'title' => 'Organizer',
+    'menu_name' => 'main-menu',
+    'weight' => $weight++,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_organizer_form'],
+    'access arguments' => ['access content'],
+  ];
+  $items['history'] = [
+    'title' => 'History',
+    'menu_name' => 'main-menu',
+    'weight' => $weight++,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_history_form'],
+    'access arguments' => ['access content'],
+  ];
+  $items['settings'] = [
+    'title' => 'Settings',
+    'menu_name' => 'main-menu',
+    'weight' => $weight++,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_settings_form'],
+    'access arguments' => ['access content'],
+  ];
+  $items['logout'] = [
+    'title' => 'Log Out',
+    'menu_name' => 'main-menu',
+    'weight' => $weight++,
+    'page callback' => 'vcard_main_logout',
     'access arguments' => ['access content'],
   ];
 
@@ -36,69 +77,73 @@ function vcard_main_menu() {
 /**
  * Home page callback.
  */
-function vcard_main_home_page() {
-  global $user;
-
-  $page = [];
-
-  // Show elements for authorized users only.
-  if ($user->uid) {
-    $user_entity = entity_load_single('user', $user->uid);
-
-    if (empty($user_entity->field_vcard)) {
-      $page['help_text'] = [
-        '#markup' => t(
-          'Hint: To start using this service you need to fill some fields in your profile. Go to <a href="@my_vcard">My VCard</a>.',
-          ['@my_vcard' => url('my_vcard')]
-        ),
-      ];
-    }
-    else {
-      // Render user's vcard on homepage.
-      $vcard_id = $user_entity->field_vcard[LANGUAGE_NONE][0]['target_id'];
-      $vcard_entity = entity_view('vcard', [entity_load_single('vcard', $vcard_id)]);
-      $page['vcard'] = [
-        '#markup' => drupal_render($vcard_entity),
-      ];
-    }
-  }
-
-  return $page;
-}
+//function vcard_main_home_page() {
+//  global $user;
+//
+//  $page = [];
+//
+//  // Show elements for authorized users only.
+//  if ($user->uid) {
+//    $user_entity = entity_load_single('user', $user->uid);
+//
+//    if (empty($user_entity->field_vcard)) {
+//      $page['help_text'] = [
+//        '#markup' => t(
+//          'Hint: To start using this service you need to fill some fields in your profile. Go to <a href="@my_vcard">My VCard</a>.',
+//          ['@my_vcard' => url('my_vcard')]
+//        ),
+//      ];
+//    }
+//    else {
+//      // Render user's vcard on homepage.
+//      $vcard_id = $user_entity->field_vcard[LANGUAGE_NONE][0]['target_id'];
+//      $vcard_entity = entity_view('vcard', [entity_load_single('vcard', $vcard_id)]);
+//      $page['vcard'] = [
+//        '#markup' => drupal_render($vcard_entity),
+//      ];
+//    }
+//  }
+//
+//  return $page;
+//}
 
 /**
  * "My VCard" page callback.
  */
 function vcard_main_my_vcard_form($form, &$form_state) {
   global $user;
-  $user_entity = entity_load_single('user', $user->uid);
 
-  if (empty($user_entity->field_vcard)) {
-    // Use new entity for new user.
-    $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
+  // Show elements for authorized users only.
+  if ($user->uid) {
+    $user_entity = entity_load_single('user', $user->uid);
+
+    if (empty($user_entity->field_vcard)) {
+      // Use new entity for new user.
+      $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
+    }
+    else {
+      // Load related vcard entity for user.
+      $wrapper = entity_metadata_wrapper('user', $user_entity);
+      $vcard_entity = $wrapper->field_vcard->value();
+    }
+
+    field_attach_form('vcard', $vcard_entity, $form, $form_state);
+
+    $form['entity'] = [
+      '#type' => 'value',
+      '#value' => $vcard_entity,
+    ];
+    $form['user_entity'] = [
+      '#type' => 'value',
+      '#value' => $user_entity,
+    ];
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#weight' => 100,
+    ];
   }
-  else {
-    // Load related vcard entity for user.
-    $wrapper = entity_metadata_wrapper('user', $user_entity);
-    $vcard_entity = $wrapper->field_vcard->value();
-  }
-
-  field_attach_form('vcard', $vcard_entity, $form, $form_state);
-
-  $form['entity'] = [
-    '#type' => 'value',
-    '#value' => $vcard_entity,
-  ];
-  $form['user_entity'] = [
-    '#type' => 'value',
-    '#value' => $user_entity,
-  ];
-
-  $form['submit'] = [
-    '#type' => 'submit',
-    '#value' => t('Save'),
-    '#weight' => 100,
-  ];
 
   return $form;
 }
@@ -138,6 +183,42 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
  */
 function vcard_main_contacts_form($form, &$form_state) {
   return $form;
+}
+
+/**
+ * "Groups" page callback.
+ */
+function vcard_main_groups_form($form, &$form_state) {
+  return $form;
+}
+
+/**
+ * "Organizer" page callback.
+ */
+function vcard_main_organizer_form($form, &$form_state) {
+  return $form;
+}
+
+/**
+ * "History" page callback.
+ */
+function vcard_main_history_form($form, &$form_state) {
+  return $form;
+}
+
+/**
+ * "Settings" page callback.
+ */
+function vcard_main_settings_form($form, &$form_state) {
+  return $form;
+}
+
+/**
+ * "Log Out" page callback.
+ */
+function vcard_main_logout() {
+  module_load_include('inc', 'user', 'user.pages');
+  user_logout();
 }
 
 /**
