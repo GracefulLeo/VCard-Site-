@@ -1,3 +1,11 @@
+.view-user-vcards-block .views-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.vcard-rendered {
+  border: 1px solid #000;
+}
 .field-name-field-json {
   display: none;
 }
