@@ -1,0 +1,4 @@
+name = VCard Constructor
+description = Provides block with constructor for visit cards and templates for vcards.
+core = 7.x
+package = Custom

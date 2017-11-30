@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * Provides block with constructor for visit cards and templates for vcards.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function vcard_constructor_block_info() {
+  return [
+    'constructor' => [
+      'info' => t('VCard Constructor'),
+      'cache' => DRUPAL_NO_CACHE,
+      'weight' => -100,
+    ],
+  ];
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function vcard_constructor_block_view($delta) {
+  $block = [];
+
+  switch ($delta) {
+    case 'constructor':
+      $this_module = drupal_get_path('module', 'vcard_constructor');
+      $block['content'] = [
+        '#markup' => '<canvas id="vcard-constructor" width="600" height="334"></canvas>',
+        '#attached' => [
+          'css' => [
+            "{$this_module}/css/constructor.css",
+          ],
+          'js' => [
+            "{$this_module}/js/fabric.min.js",
+            "{$this_module}/js/constructor.js",
+          ],
+        ],
+        '#access' => user_is_logged_in(),
+      ];
+      break;
+  }
+
+  return $block;
+}
