@@ -176,7 +176,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
       $ids[] = $item->id;
     }
     // Save if new VCard created.
-    if (!array_search($entity->id, $ids)) {
+    if (!in_array($entity->id, $ids)) {
       $wrapper->field_vcard[] = intval($entity->id);
     }
   }
