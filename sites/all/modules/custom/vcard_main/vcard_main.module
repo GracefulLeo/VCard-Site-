@@ -123,10 +123,12 @@ function vcard_main_my_vcard_form_validation($form, &$form_state) {
  * "My VCard" page form submit.
  */
 function vcard_main_my_vcard_form_submit($form, &$form_state) {
+  // Save VCard entity.
   $entity = $form_state['values']['entity'];
   field_attach_submit('vcard', $entity, $form, $form_state);
   entity_save('vcard', $entity);
 
+  // Save relations to user.
   $user = $form_state['values']['user_entity'];
   $wrapper = entity_metadata_wrapper('user', $user);
   if (isset($wrapper->field_vcard)) {
@@ -135,6 +137,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
     foreach ($vcard_field as $item) {
       $ids[] = $item->id;
     }
+    // Save if new VCard created.
     if (!array_search($entity->id, $ids)) {
       $wrapper->field_vcard[] = intval($entity->id);
     }
@@ -153,13 +156,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
  * My VCard edit and clone form.
  */
 function vcard_main_my_vcard_form_edit($form, &$form_state, $id, $op) {
-  switch ($op) {
-    case 'edit':
-      _attach_vcard_entity_fields($form, $form_state, $id);
-      break;
-    case 'clone':
-      break;
-  }
+  _attach_vcard_entity_fields($form, $form_state, $id, $op);
 
   return $form;
 }
@@ -171,8 +168,11 @@ function vcard_main_my_vcard_form_edit($form, &$form_state, $id, $op) {
  * @param $form_state
  * @param integer|null $id
  *  VCard existing entity id.
+ * @param string $op
+ *  'edit'
+ *  'clone'
  */
-function _attach_vcard_entity_fields(&$form, &$form_state, $id = NULL) {
+function _attach_vcard_entity_fields(&$form, &$form_state, $id = NULL, $op = 'edit') {
   global $user;
 
   // Show elements for authorized users only.
@@ -181,6 +181,10 @@ function _attach_vcard_entity_fields(&$form, &$form_state, $id = NULL) {
 
     if (is_numeric($id)) {
       $vcard_entity = entity_load_single('vcard', $id);
+      if ($op == 'clone') {
+        module_load_include('inc', 'entity', 'includes/entity.ui');
+        $vcard_entity = entity_ui_clone_entity('vcard', $vcard_entity);
+      }
     }
     else {
       $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
