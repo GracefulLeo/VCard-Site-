@@ -3,7 +3,7 @@ jQuery(document).ready(function ($) {
   var canvas = new fabric.Canvas('vcard-constructor');
   canvas.backgroundColor = '#fbfff8';
 
-  var $form = $('#vcard-main-my-vcard-form-add, #vcard-main-my-vcard-form-edit');
+  var $form = $('#vcard-main-my-vcard-form');
   var fieldsText = $form.find('.field-type-text, .field-type-email');
 
   // Add image on canvas if loaded before.

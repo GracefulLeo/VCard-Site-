@@ -21,14 +21,14 @@ function vcard_main_menu() {
   $items['my-vcard/add'] = [
     'title' => 'Add VCard',
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['vcard_main_my_vcard_form_add'],
+    'page arguments' => ['vcard_main_my_vcard_form'],
     'access arguments' => ['access content'],
   ];
   $items['my-vcard/%/%'] = [
     'title callback' => 'vcard_main_my_vcard_form_edit_title',
     'title arguments' => [2],
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['vcard_main_my_vcard_form_edit', 1, 2],
+    'page arguments' => ['vcard_main_my_vcard_form', 1, 2],
     'access arguments' => ['access content'],
   ];
   $items['my-vcard/%/remove'] = [
@@ -104,10 +104,59 @@ function vcard_main_home_page() {
 }
 
 /**
- * "My VCard" page callback.
+ * Page callback for add, edit and clone VCards.
+ *
+ * @param $form
+ * @param $form_state
+ * @param integer|null $id
+ *  VCard existing entity id.
+ * @param string|null $op
+ *  'edit'
+ *  'clone'
+ *
+ * @return mixed
  */
-function vcard_main_my_vcard_form_add($form, &$form_state) {
-  _attach_vcard_entity_fields($form, $form_state);
+function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
+  global $user;
+
+  // Show elements for authorized users only.
+  if ($user->uid) {
+    $user_entity = entity_load_single('user', $user->uid);
+
+    if (is_numeric($id)) {
+      $vcard_entity = entity_load_single('vcard', $id);
+      if ($op == 'clone') {
+        module_load_include('inc', 'entity', 'includes/entity.ui');
+        $vcard_entity = entity_ui_clone_entity('vcard', $vcard_entity);
+      }
+    }
+    else {
+      $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
+    }
+
+    field_attach_form('vcard', $vcard_entity, $form, $form_state);
+
+    $form['entity'] = [
+      '#type' => 'value',
+      '#value' => $vcard_entity,
+    ];
+    $form['user_entity'] = [
+      '#type' => 'value',
+      '#value' => $user_entity,
+    ];
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#weight' => 100,
+      '#attributes' => [
+        'id' => 'my-vcard-form-submit',
+      ],
+    ];
+
+    $form['#validate'][] = 'vcard_main_my_vcard_form_validation';
+    $form['#submit'][] = 'vcard_main_my_vcard_form_submit';
+  }
 
   return $form;
 }
@@ -153,72 +202,17 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
 }
 
 /**
- * My VCard edit and clone form.
- */
-function vcard_main_my_vcard_form_edit($form, &$form_state, $id, $op) {
-  _attach_vcard_entity_fields($form, $form_state, $id, $op);
-
-  return $form;
-}
-
-/**
- * Helper function provides to form fields from "vcard" entity.
- *
- * @param $form
- * @param $form_state
- * @param integer|null $id
- *  VCard existing entity id.
- * @param string $op
- *  'edit'
- *  'clone'
- */
-function _attach_vcard_entity_fields(&$form, &$form_state, $id = NULL, $op = 'edit') {
-  global $user;
-
-  // Show elements for authorized users only.
-  if ($user->uid) {
-    $user_entity = entity_load_single('user', $user->uid);
-
-    if (is_numeric($id)) {
-      $vcard_entity = entity_load_single('vcard', $id);
-      if ($op == 'clone') {
-        module_load_include('inc', 'entity', 'includes/entity.ui');
-        $vcard_entity = entity_ui_clone_entity('vcard', $vcard_entity);
-      }
-    }
-    else {
-      $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
-    }
-
-    field_attach_form('vcard', $vcard_entity, $form, $form_state);
-
-    $form['entity'] = [
-      '#type' => 'value',
-      '#value' => $vcard_entity,
-    ];
-    $form['user_entity'] = [
-      '#type' => 'value',
-      '#value' => $user_entity,
-    ];
-
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => t('Save'),
-      '#weight' => 100,
-      '#attributes' => [
-        'id' => 'my-vcard-form-submit',
-      ],
-    ];
-
-    $form['#validate'][] = 'vcard_main_my_vcard_form_validation';
-    $form['#submit'][] = 'vcard_main_my_vcard_form_submit';
-  }
-}
-
-/**
  * Page callback for deleting VCards.
  */
 function vcard_main_my_vcard_form_remove($form, &$form_state, $id) {
+  $wrapper = entity_metadata_wrapper('vcard', $id);
+  $src = $wrapper->field_json->value();
+
+  $form['image'] = [
+    '#type' => 'item',
+    '#markup' => '<img src="' . $src . '" class="vcard-rendered" />',
+  ];
+
   $form['id'] = [
     '#type' => 'value',
     '#value' => $id,
