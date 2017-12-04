@@ -169,15 +169,15 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   // Save relations to user.
   $user = $form_state['values']['user_entity'];
   $wrapper = entity_metadata_wrapper('user', $user);
-  if (isset($wrapper->field_vcard)) {
-    $vcard_field = $wrapper->field_vcard->value();
+  if (isset($wrapper->field_my_vcards)) {
+    $vcard_field = $wrapper->field_my_vcards->value();
     $ids = [];
     foreach ($vcard_field as $item) {
       $ids[] = $item->id;
     }
     // Save if new VCard created.
     if (!in_array($entity->id, $ids)) {
-      $wrapper->field_vcard[] = intval($entity->id);
+      $wrapper->field_my_vcards[] = intval($entity->id);
     }
   }
   else {
@@ -226,9 +226,9 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
 
     // Remove relations from "user" first.
     $wrapper = entity_metadata_wrapper('user', $user);
-    foreach ($wrapper->field_vcard->value() as $key => $item) {
+    foreach ($wrapper->field_my_vcards->value() as $key => $item) {
       if ($item->id == $id) {
-        $wrapper->field_vcard[$key]->set(NULL);
+        $wrapper->field_my_vcards[$key]->set(NULL);
         break;
       }
     }
@@ -320,7 +320,7 @@ function vcard_main_page_alter(&$page) {
   if ($user->uid) {
     $user_entity = entity_load_single('user', $user->uid);
     // If new user hasn't any VCard show hint.
-    if (arg(1) != 'add' && empty($user_entity->field_vcard)) {
+    if (arg(1) != 'add' && empty($user_entity->field_my_vcards)) {
       $message = t(
         'Hint: To start using this service you need to fill some fields in your profile. Add <a href="@my_vcard">My first VCard</a>.',
         ['@my_vcard' => url('my-vcard/add')]
