@@ -1,0 +1,8 @@
+name = VCard: Field: My VCards
+core = 7.x
+package = Features: Field
+dependencies[] = entityreference
+dependencies[] = features
+features[features_api][] = api:2
+features[field_base][] = field_my_vcards
+features[field_instance][] = user-user-field_my_vcards
