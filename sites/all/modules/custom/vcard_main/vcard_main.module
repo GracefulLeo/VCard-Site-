@@ -11,38 +11,23 @@ function vcard_main_menu() {
   $items = [];
   $weight = 1;
 
-  $items['my-vcard'] = [
-    'title' => 'My VCards',
-    'menu_name' => 'main-menu',
-    'weight' => $weight++,
-    'page callback' => 'vcard_main_home_page',
-    'access callback' => TRUE,
-  ];
-  $items['my-vcard/add'] = [
+  $items['my-vcards/add'] = [
     'title' => 'Add VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
     'access arguments' => ['access content'],
   ];
-  $items['my-vcard/%/%'] = [
+  $items['my-vcards/%/%'] = [
     'title callback' => 'vcard_main_my_vcard_form_edit_title',
     'title arguments' => [2],
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form', 1, 2],
     'access arguments' => ['access content'],
   ];
-  $items['my-vcard/%/remove'] = [
+  $items['my-vcards/%/remove'] = [
     'title' => 'Remove VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form_remove', 1],
-    'access arguments' => ['access content'],
-  ];
-  $items['contacts'] = [
-    'title' => 'Contacts',
-    'menu_name' => 'main-menu',
-    'weight' => $weight++,
-    'page callback' => 'drupal_get_form',
-    'page arguments' => ['vcard_main_contacts_form'],
     'access arguments' => ['access content'],
   ];
   $items['groups'] = [
@@ -70,26 +55,6 @@ function vcard_main_menu() {
   ];
 
   return $items;
-}
-
-/**
- * Home page callback.
- */
-function vcard_main_home_page() {
-  global $user;
-
-  $page = [];
-
-  // Show elements for authorized users only.
-  if ($user->uid) {
-    $page['vcard-add'] = [
-      '#type' => 'link',
-      '#href' => 'my-vcard/add',
-      '#title' => t('Add new VCard'),
-    ];
-  }
-
-  return $page;
 }
 
 /**
@@ -323,7 +288,7 @@ function vcard_main_page_alter(&$page) {
     if (arg(1) != 'add' && empty($user_entity->field_my_vcards)) {
       $message = t(
         'Hint: To start using this service you need to fill some fields in your profile. Add <a href="@my_vcard">My first VCard</a>.',
-        ['@my_vcard' => url('my-vcard/add')]
+        ['@my_vcard' => url('my-vcards/add')]
       );
 
       $page['content']['hint'] = [
@@ -347,5 +312,18 @@ function vcard_main_page_alter(&$page) {
         ],
       ];
     }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function vcard_main_views_pre_render(&$view) {
+  switch ($view->name) {
+    case 'user_vcards_page':
+      if (!user_is_logged_in()) {
+        $view->header = [];
+      }
+      break;
   }
 }
