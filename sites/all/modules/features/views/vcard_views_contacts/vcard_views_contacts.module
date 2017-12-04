@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VCard: Views: Contacts feature.
+ */
+
+include_once 'vcard_views_contacts.features.inc';
