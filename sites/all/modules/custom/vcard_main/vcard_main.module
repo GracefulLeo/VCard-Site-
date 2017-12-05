@@ -207,13 +207,6 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
 }
 
 /**
- * "Contacts" page callback.
- */
-function vcard_main_contacts_form($form, &$form_state) {
-  return $form;
-}
-
-/**
  * "Groups" page callback.
  */
 function vcard_main_groups_form($form, &$form_state) {
