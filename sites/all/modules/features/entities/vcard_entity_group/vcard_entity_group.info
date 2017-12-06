@@ -1,0 +1,15 @@
+name = VCard: Entity: Group
+core = 7.x
+package = Features: Entity
+dependencies[] = eck
+dependencies[] = entityreference
+dependencies[] = features
+dependencies[] = options
+dependencies[] = text
+dependencies[] = vcard_field_my_contacts
+features[eck_bundle][] = group_group
+features[eck_entity_type][] = group
+features[features_api][] = api:2
+features[field_base][] = field_group_name
+features[field_instance][] = group-group-field_group_name
+features[field_instance][] = group-group-field_my_contacts

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VCard: Entity: Group feature.
+ */
+
+include_once 'vcard_entity_group.features.inc';
