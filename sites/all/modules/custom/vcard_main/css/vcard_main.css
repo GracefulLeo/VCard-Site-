@@ -4,7 +4,8 @@
   align-items: center;
 }
 .vcard-rendered {
-  border: 1px solid #000;
+  width: 600px;
+  outline: 1px solid #000;
 }
 .field-name-field-json {
   display: none;
