@@ -39,7 +39,7 @@ function vcard_field_my_contacts_field_default_field_bases() {
           'vcard' => 'vcard',
         ),
       ),
-      'target_type' => 'vcard',
+      'target_type' => 'node',
     ),
     'translatable' => 0,
     'type' => 'entityreference',

@@ -78,21 +78,28 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
     $user_entity = entity_load_single('user', $user->uid);
 
     if (is_numeric($id)) {
-      $vcard_entity = entity_load_single('vcard', $id);
+      $vcard_node = node_load($id);
       if ($op == 'clone') {
         module_load_include('inc', 'entity', 'includes/entity.ui');
-        $vcard_entity = entity_ui_clone_entity('vcard', $vcard_entity);
+        $vcard_node = entity_ui_clone_entity('node', $vcard_node);
       }
     }
     else {
-      $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
+      $values = [
+        'type' => 'vcard',
+        'uid' => $user->uid,
+        'status' => 1,
+        'comment' => 0,
+        'promote' => 0,
+      ];
+      $vcard_node = entity_create('node', $values);
     }
 
-    field_attach_form('vcard', $vcard_entity, $form, $form_state);
+    field_attach_form('node', $vcard_node, $form, $form_state);
 
-    $form['entity'] = [
+    $form['node'] = [
       '#type' => 'value',
-      '#value' => $vcard_entity,
+      '#value' => $vcard_node,
     ];
     $form['user_entity'] = [
       '#type' => 'value',
@@ -119,7 +126,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
  * "My VCard" page form validation.
  */
 function vcard_main_my_vcard_form_validation($form, &$form_state) {
-  field_attach_form_validate('vcard', $form_state['values']['entity'], $form, $form_state);
+  node_validate($form_state['values']['node'], $form, $form_state);
 }
 
 /**
@@ -127,9 +134,20 @@ function vcard_main_my_vcard_form_validation($form, &$form_state) {
  */
 function vcard_main_my_vcard_form_submit($form, &$form_state) {
   // Save VCard entity.
-  $entity = $form_state['values']['entity'];
-  field_attach_submit('vcard', $entity, $form, $form_state);
-  entity_save('vcard', $entity);
+  $vcard_node = $form_state['values']['node'];
+  field_attach_submit('node', $vcard_node, $form, $form_state);
+  $vcard_node = node_submit($vcard_node);
+  node_save($vcard_node);
+
+  // Set surname, name and middle name as node title.
+  $vcard_wrapper = entity_metadata_wrapper('node', $vcard_node);
+  $title = $vcard_wrapper->field_surname->value() . ' ' . $vcard_wrapper->field_name->value();
+  if (!empty($vcard_wrapper->field_middle_name)) {
+    $title .= ' ' . $vcard_wrapper->field_middle_name->value();
+  }
+  $vcard_wrapper->title->set($title);
+  $vcard_wrapper->save();
+
 
   // Save relations to user.
   $user = $form_state['values']['user_entity'];
@@ -138,11 +156,11 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
     $vcard_field = $wrapper->field_my_vcards->value();
     $ids = [];
     foreach ($vcard_field as $item) {
-      $ids[] = $item->id;
+      $ids[] = $item->nid;
     }
     // Save if new VCard created.
-    if (!in_array($entity->id, $ids)) {
-      $wrapper->field_my_vcards[] = intval($entity->id);
+    if (!in_array($vcard_node->nid, $ids)) {
+      $wrapper->field_my_vcards[] = intval($vcard_node->nid);
     }
   }
   else {
@@ -159,7 +177,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
  * Page callback for deleting VCards.
  */
 function vcard_main_my_vcard_form_remove($form, &$form_state, $id) {
-  $wrapper = entity_metadata_wrapper('vcard', $id);
+  $wrapper = entity_metadata_wrapper('node', $id);
   $src = $wrapper->field_json->value();
 
   $form['image'] = [
@@ -192,7 +210,7 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
     // Remove relations from "user" first.
     $wrapper = entity_metadata_wrapper('user', $user);
     foreach ($wrapper->field_my_vcards->value() as $key => $item) {
-      if ($item->id == $id) {
+      if ($item->nid == $id) {
         $wrapper->field_my_vcards[$key]->set(NULL);
         break;
       }
@@ -200,7 +218,7 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
     $wrapper->save();
 
     // Remove vcard entity.
-    entity_delete('vcard', $id);
+    node_delete($id);
   }
 
   $form_state['redirect'] = '<front>';
