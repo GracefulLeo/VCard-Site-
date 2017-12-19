@@ -80,8 +80,10 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
     if (is_numeric($id)) {
       $vcard_node = node_load($id);
       if ($op == 'clone') {
-        module_load_include('inc', 'entity', 'includes/entity.ui');
-        $vcard_node = entity_ui_clone_entity('node', $vcard_node);
+        $vcard_node = clone $vcard_node;
+        $vcard_node->is_new = TRUE;
+        unset($vcard_node->nid);
+        unset($vcard_node->vid);
       }
     }
     else {
