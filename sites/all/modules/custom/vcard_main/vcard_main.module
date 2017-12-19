@@ -15,20 +15,21 @@ function vcard_main_menu() {
     'title' => 'Add VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
-    'access arguments' => ['access content'],
+    'access arguments' => ['create vcard content'],
   ];
   $items['my-vcards/%/%'] = [
     'title callback' => 'vcard_main_my_vcard_form_edit_title',
     'title arguments' => [2],
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form', 1, 2],
-    'access arguments' => ['access content'],
+    'access callback' => 'user_access',
+    'access arguments' => ['edit own vcard content'],
   ];
   $items['my-vcards/%/remove'] = [
     'title' => 'Remove VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form_remove', 1],
-    'access arguments' => ['access content'],
+    'access arguments' => ['delete own vcard content'],
   ];
   $items['groups'] = [
     'title' => 'Groups',
@@ -79,6 +80,10 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
 
     if (is_numeric($id)) {
       $vcard_node = node_load($id);
+      if ($user->name !== $vcard_node->name) {
+        drupal_not_found();
+        drupal_exit();
+      }
       if ($op == 'clone') {
         $vcard_node = clone $vcard_node;
         $vcard_node->is_new = TRUE;
@@ -179,7 +184,15 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
  * Page callback for deleting VCards.
  */
 function vcard_main_my_vcard_form_remove($form, &$form_state, $id) {
+  global $user;
+
   $wrapper = entity_metadata_wrapper('node', $id);
+
+  if ($user->name !== $wrapper->value()->name) {
+    drupal_not_found();
+    drupal_exit();
+  }
+
   $src = $wrapper->field_json->value();
 
   $form['image'] = [
