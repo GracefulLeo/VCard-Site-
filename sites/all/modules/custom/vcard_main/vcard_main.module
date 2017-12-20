@@ -162,7 +162,11 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   if (isset($wrapper->field_my_vcards)) {
     $vcard_field = $wrapper->field_my_vcards->value();
     $ids = [];
-    foreach ($vcard_field as $item) {
+    foreach ($vcard_field as $key => $item) {
+      // Remove ids of referenced nodes that has been deleted.
+      if (!$item) {
+        unset($wrapper->field_my_vcards[$key]);
+      }
       $ids[] = $item->nid;
     }
     // Save if new VCard created.
