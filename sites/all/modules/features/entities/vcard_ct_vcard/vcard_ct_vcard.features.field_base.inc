@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * vcard_entity_vcard.features.field_base.inc
+ * vcard_ct_vcard.features.field_base.inc
  */
 
 /**
  * Implements hook_field_default_field_bases().
  */
-function vcard_entity_vcard_field_default_field_bases() {
+function vcard_ct_vcard_field_default_field_bases() {
   $field_bases = array();
 
   // Exported field_base: 'field_address'.

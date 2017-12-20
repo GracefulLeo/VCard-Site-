@@ -11,11 +11,11 @@ function vcard_views_my_vcards_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'user_vcards_page';
+  $view->name = 'my_vcards';
   $view->description = '';
   $view->tag = 'default';
-  $view->base_table = 'eck_vcard';
-  $view->human_name = 'User VCards page';
+  $view->base_table = 'node';
+  $view->human_name = 'My VCards';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -37,17 +37,19 @@ function vcard_views_my_vcards_views_default_views() {
   $handler->display->display_options['header']['area_text_custom']['field'] = 'area_text_custom';
   $handler->display->display_options['header']['area_text_custom']['empty'] = TRUE;
   $handler->display->display_options['header']['area_text_custom']['content'] = '<a href="my-vcards/add">Add new VCard</a>';
-  /* Relationship: Entity Reference: Referencing entity */
-  $handler->display->display_options['relationships']['reverse_field_my_vcards_user']['id'] = 'reverse_field_my_vcards_user';
-  $handler->display->display_options['relationships']['reverse_field_my_vcards_user']['table'] = 'eck_vcard';
-  $handler->display->display_options['relationships']['reverse_field_my_vcards_user']['field'] = 'reverse_field_my_vcards_user';
-  $handler->display->display_options['relationships']['reverse_field_my_vcards_user']['required'] = TRUE;
-  /* Field: VCard: Id */
-  $handler->display->display_options['fields']['id']['id'] = 'id';
-  $handler->display->display_options['fields']['id']['table'] = 'eck_vcard';
-  $handler->display->display_options['fields']['id']['field'] = 'id';
-  $handler->display->display_options['fields']['id']['exclude'] = TRUE;
-  /* Field: VCard: json */
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = TRUE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: json */
   $handler->display->display_options['fields']['field_json']['id'] = 'field_json';
   $handler->display->display_options['fields']['field_json']['table'] = 'field_data_field_json';
   $handler->display->display_options['fields']['field_json']['field'] = 'field_json';
@@ -60,30 +62,37 @@ function vcard_views_my_vcards_views_default_views() {
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = '';
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="my-vcards/[id]/edit">Edit</a>';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="my-vcards/[nid]/edit">Edit</a>';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing_1']['id'] = 'nothing_1';
   $handler->display->display_options['fields']['nothing_1']['table'] = 'views';
   $handler->display->display_options['fields']['nothing_1']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing_1']['label'] = '';
-  $handler->display->display_options['fields']['nothing_1']['alter']['text'] = '<a href="my-vcards/[id]/clone">Clone</a>';
+  $handler->display->display_options['fields']['nothing_1']['alter']['text'] = '<a href="my-vcards/[nid]/clone">Clone</a>';
   $handler->display->display_options['fields']['nothing_1']['element_label_colon'] = FALSE;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing_2']['id'] = 'nothing_2';
   $handler->display->display_options['fields']['nothing_2']['table'] = 'views';
   $handler->display->display_options['fields']['nothing_2']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing_2']['label'] = '';
-  $handler->display->display_options['fields']['nothing_2']['alter']['text'] = '<a href="my-vcards/[id]/remove">Delete</a>';
+  $handler->display->display_options['fields']['nothing_2']['alter']['text'] = '<a href="my-vcards/[nid]/remove">Delete</a>';
   $handler->display->display_options['fields']['nothing_2']['element_label_colon'] = FALSE;
-  /* Sort criterion: VCard: Id */
-  $handler->display->display_options['sorts']['id']['id'] = 'id';
-  $handler->display->display_options['sorts']['id']['table'] = 'eck_vcard';
-  $handler->display->display_options['sorts']['id']['field'] = 'id';
-  $handler->display->display_options['sorts']['id']['order'] = 'DESC';
-  /* Filter criterion: VCard: vcard type */
+  /* Sort criterion: Content: Updated date */
+  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['table'] = 'node';
+  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'eck_vcard';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'vcard' => 'vcard',
@@ -92,7 +101,7 @@ function vcard_views_my_vcards_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'reverse_field_my_vcards_user';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
 
   /* Display: Page */
@@ -101,7 +110,7 @@ function vcard_views_my_vcards_views_default_views() {
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'My VCards';
   $handler->display->display_options['menu']['name'] = 'main-menu';
-  $export['user_vcards_page'] = $view;
+  $export['my_vcards'] = $view;
 
   return $export;
 }

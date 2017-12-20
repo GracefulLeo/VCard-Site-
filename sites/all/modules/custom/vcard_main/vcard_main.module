@@ -346,7 +346,7 @@ function vcard_main_page_alter(&$page) {
  */
 function vcard_main_views_pre_render(&$view) {
   switch ($view->name) {
-    case 'user_vcards_page':
+    case 'my_vcards':
       if (!user_is_logged_in()) {
         $view->header = [];
       }

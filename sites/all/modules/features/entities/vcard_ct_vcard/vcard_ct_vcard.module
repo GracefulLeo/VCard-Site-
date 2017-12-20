@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VCard: Content type: VCard feature.
+ */
+
+include_once 'vcard_ct_vcard.features.inc';
