@@ -54,8 +54,87 @@ function vcard_main_menu() {
     'page callback' => 'vcard_main_logout',
     'access arguments' => ['access content'],
   ];
+  $items['home'] = [
+    'title' => 'Test',
+    'menu_name' => 'main-menu',
+    'weight' => $weight++,
+    'page callback' => 'vcard_main_home',
+    'access arguments' => ['access content'],
+  ];
 
   return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function vcard_main_theme($existing, $type, $theme, $path) {
+  return [
+    'vcard_nano_teaser' => [
+      'variables' => [
+        'id' => NULL,
+        'logo_uri' => NULL,
+        'title' => NULL,
+      ],
+      'path' => drupal_get_path('theme', 'vcard') . '/templates',
+      'template' => 'vcard-nano-teaser',
+    ],
+  ];
+}
+
+// @todo Description.
+function vcard_main_home() {
+  global $user;
+  $page = [];
+
+  $user_wrapper = entity_metadata_wrapper('user', $user);
+  $my_vcards = $user_wrapper->field_my_vcards->value();
+
+  $page['vcards_list_wrapper'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'id' => 'list-wrapper',
+      'class' => ['large-4', 'columns'],
+    ],
+  ];
+  $page['vcards_list_wrapper']['nano'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => ['nano'],
+    ],
+  ];
+  $page['vcards_list_wrapper']['nano']['vcards_list'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => ['nano-content'],
+    ],
+  ];
+
+  if (!empty($my_vcards)) {
+    // Sort by "changed", newest first.
+    $sorted = [];
+    foreach ($my_vcards as $key => $vcard) {
+      $sorted[$vcard->changed] = $key;
+    }
+    krsort($sorted);
+
+    foreach ($sorted as $key) {
+      $logo_uri = '';
+      if (!empty($my_vcards[$key]->field_logotype)) {
+        $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
+      }
+
+      $page['vcards_list_wrapper']['nano']['vcards_list'][] = [
+        '#markup' => theme('vcard_nano_teaser', [
+          'nid' => $my_vcards[$key]->nid,
+          'logo_uri' => $logo_uri,
+          'title' => $my_vcards[$key]->title,
+        ]),
+      ];
+    }
+  }
+
+  return $page;
 }
 
 /**
