@@ -16,7 +16,7 @@ body {
 .dropdown-header, #page-name {
   padding-left: 30px;
 }
-.dropdown-header:hover {
+.dropdown-header:hover, .dropdown-header.active {
   background-color: #0e7f9a;
   color: #fff;
   cursor: pointer;
@@ -46,7 +46,30 @@ body {
   display: inline-block;
 }
 .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: none;
+  min-width: 160px;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .15);
+  background-clip: padding-box;
+  padding-top: 15px;
+}
+.dropdown-menu li {
+  font-size: 12px;
+  line-height: 21px;
+  padding: 11px 19px 10px 21px;
+  color: #42749b;
+  float: none;
+}
+.dropdown-menu li:hover {
+  background-color: #99dee6;
 }
 #toolbar {
   height: 72px;
