@@ -38,3 +38,9 @@ function vcard_preprocess_vcard_nano_teaser(&$variables) {
     watchdog('theme', 'vcard_nano_teaser error: @e', ['@e' => $e]);
   }
 }
+
+/**
+ * Implements template_preprocess_theme.
+ */
+function vcard_preprocess_vcard_details_view(&$variables) {
+}

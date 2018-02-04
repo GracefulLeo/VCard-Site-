@@ -90,7 +90,7 @@ body {
 /* Left column. */
 #list-wrapper {
   height: calc(100vh - 170px);
-  padding: 0;
+  padding: 10px 0;
   border-right: 1px solid rgba(0, 0, 0, .25);
 }
 .list-item {
@@ -106,6 +106,9 @@ body {
   background-color: #99dee6;
   cursor: pointer;
 }
+.list-item.vcard-processed {
+  background-color: #00acc1;
+}
 .logo-micro {
   width: 64px;
   margin-right: 40px;
@@ -118,4 +121,9 @@ body {
 .nano > .nano-pane > .nano-slider {
   margin: 0;
   background-color: #a9a9a9;
+}
+/* Right column. */
+#vcard-view-wrapper {
+  height: calc(100vh - 170px);
+  padding: 10px 30px;
 }

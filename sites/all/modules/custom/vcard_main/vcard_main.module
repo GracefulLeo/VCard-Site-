@@ -25,6 +25,14 @@ function vcard_main_menu() {
     'access callback' => 'user_access',
     'access arguments' => ['edit own vcard content'],
   ];
+  $items['my-vcards-deliver/%/%'] = [
+    'page callback' => 'vcard_main_my_vcard_ajax',
+    'page arguments' => [1, 2],
+    'type' => MENU_CALLBACK,
+    'access callback' => 'user_access',
+    'access arguments' => ['edit own vcard content'],
+    'delivery callback' => 'vcard_main_my_vcard_ajax_callback',
+  ];
   $items['my-vcards/%/remove'] = [
     'title' => 'Remove VCard',
     'page callback' => 'drupal_get_form',
@@ -79,6 +87,13 @@ function vcard_main_theme($existing, $type, $theme, $path) {
       'path' => drupal_get_path('theme', 'vcard') . '/templates',
       'template' => 'vcard-nano-teaser',
     ],
+    'vcard_details_view' => [
+      'variables' => [
+        'node' => NULL,
+      ],
+      'path' => drupal_get_path('theme', 'vcard') . '/templates',
+      'template' => 'vcard-details-view',
+    ],
   ];
 }
 
@@ -90,6 +105,7 @@ function vcard_main_home() {
   $user_wrapper = entity_metadata_wrapper('user', $user);
   $my_vcards = $user_wrapper->field_my_vcards->value();
 
+  // Left column.
   $page['vcards_list_wrapper'] = [
     '#type' => 'container',
     '#attributes' => [
@@ -133,6 +149,33 @@ function vcard_main_home() {
       ];
     }
   }
+
+  //  Right column.
+  $page['vcard_view_wrapper'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'id' => 'vcard-view-wrapper',
+      'class' => ['large-8', 'columns'],
+    ],
+  ];
+  $page['vcard_view_wrapper']['nano'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => ['nano'],
+    ],
+  ];
+  $page['vcard_view_wrapper']['nano']['vcards_list'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => ['nano-content'],
+    ],
+  ];
+
+  $page['#attached'] = [
+    'js' => [
+      drupal_get_path('module', 'vcard_main') . '/js/vcard_load.js',
+    ],
+  ];
 
   return $page;
 }
@@ -320,6 +363,28 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
   }
 
   $form_state['redirect'] = '<front>';
+}
+
+/**
+ * Delivery ajax for My VCards.
+ *
+ * @param null $id
+ * @param null $op
+ *
+ * @return array|mixed
+ */
+function vcard_main_my_vcard_ajax($id = NULL, $op = NULL) {
+  return drupal_get_form('vcard_main_my_vcard_form', $id, $op);
+}
+
+/**
+ * Html deliver for My VCards.
+ *
+ * @param $page_callback_result
+ */
+function vcard_main_my_vcard_ajax_callback($page_callback_result) {
+  print drupal_render($page_callback_result);
+  drupal_page_footer();
 }
 
 /**
