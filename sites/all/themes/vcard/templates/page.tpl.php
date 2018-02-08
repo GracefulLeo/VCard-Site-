@@ -35,7 +35,7 @@
         <!-- Title, slogan and menu -->
       <?php if ($alt_header): ?>
           <section class="row <?php print $alt_header_classes; ?>">
-              <div class="large-4 columns">
+              <div class="large-4 medium-4 columns">
                   <div class="dropdown-header">
                       <div class="icon-hamburger-wrap">
                           <span class="icon-bar"></span>
@@ -57,7 +57,7 @@
                     <?php endif; ?>
                   </div>
               </div>
-              <div class="large-8 columns">
+              <div class="large-8 medium-8 columns">
                 <?php if ($title): ?>
                     <div id="page-name">
                         <strong>

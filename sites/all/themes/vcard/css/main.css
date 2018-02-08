@@ -64,9 +64,11 @@ body {
 .dropdown-menu li {
   font-size: 12px;
   line-height: 21px;
-  padding: 11px 19px 10px 21px;
   color: #42749b;
   float: none;
+}
+.dropdown-menu li a {
+  padding: 11px 19px 10px 21px;
 }
 .dropdown-menu li:hover {
   background-color: #99dee6;
@@ -126,4 +128,59 @@ body {
 #vcard-view-wrapper {
   height: calc(100vh - 170px);
   padding: 10px 30px;
+}
+.vcard-with-actions {
+  display: flex;
+}
+.vcard-with-actions .actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: 15px;
+}
+.vcard-with-actions .actions a {
+  width: 24px;
+  height: 24px;
+  display: table;
+}
+.vcard-with-actions .actions .edit {
+  background: url("../images/ic_border_color_black_24px.svg");
+}
+.vcard-with-actions .actions .clone {
+  background: url("../images/ic_content_copy_black_24px.svg");
+}
+.vcard-with-actions .actions .remove {
+  background: url("../images/ic_delete_black_24px.svg");
+}
+#vcard-view-wrapper .vcard-image {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#vcard-view-wrapper .row {
+  margin: 0;
+}
+.vcard-description .columns {
+  display: flex;
+  align-items: start;
+  padding: 25px 20px;
+}
+.vcard-description .row .large-6:first-of-type {
+  border-right: 1px solid rgba(0, 0, 0, .15);
+}
+.vcard-description .icon {
+  width: 24px;
+  height: 24px;
+  display: table;
+  margin-right: 30px;
+}
+.vcard-description .full-name .icon {
+  background: url("../images/ic_account_circle_black_24px.svg") no-repeat;
+}
+.vcard-description .company .icon {
+  background: url("../images/ic_domain_black_24px.svg") no-repeat;
+}
+.vcard-description .communication .icon {
+  background: url("../images/ic_work_black_24px.svg") no-repeat;
+}
+.vcard-description .address .icon {
+  background: url("../images/ic_location_on_black_24px.svg") no-repeat;
 }

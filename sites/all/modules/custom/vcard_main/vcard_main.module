@@ -11,6 +11,20 @@ function vcard_main_menu() {
   $items = [];
   $weight = 1;
 
+  $items['home'] = [
+    'title' => 'Test',
+    'menu_name' => 'main-menu',
+    'weight' => $weight++,
+    'page callback' => 'vcard_main_home',
+    'access arguments' => ['access content'],
+  ];
+  $items['ajax/vcard/%/view'] = [
+    'page callback' => 'vcard_main_vcard_view_ajax',
+    'page arguments' => [2],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['access content'],
+    'delivery callback' => 'vcard_main_vcard_ajax_callback',
+  ];
   $items['my-vcards/add'] = [
     'title' => 'Add VCard',
     'page callback' => 'drupal_get_form',
@@ -24,14 +38,6 @@ function vcard_main_menu() {
     'page arguments' => ['vcard_main_my_vcard_form', 1, 2],
     'access callback' => 'user_access',
     'access arguments' => ['edit own vcard content'],
-  ];
-  $items['my-vcards-deliver/%/%'] = [
-    'page callback' => 'vcard_main_my_vcard_ajax',
-    'page arguments' => [1, 2],
-    'type' => MENU_CALLBACK,
-    'access callback' => 'user_access',
-    'access arguments' => ['edit own vcard content'],
-    'delivery callback' => 'vcard_main_my_vcard_ajax_callback',
   ];
   $items['my-vcards/%/remove'] = [
     'title' => 'Remove VCard',
@@ -62,13 +68,6 @@ function vcard_main_menu() {
     'page callback' => 'vcard_main_logout',
     'access arguments' => ['access content'],
   ];
-  $items['home'] = [
-    'title' => 'Test',
-    'menu_name' => 'main-menu',
-    'weight' => $weight++,
-    'page callback' => 'vcard_main_home',
-    'access arguments' => ['access content'],
-  ];
 
   return $items;
 }
@@ -90,6 +89,7 @@ function vcard_main_theme($existing, $type, $theme, $path) {
     'vcard_details_view' => [
       'variables' => [
         'node' => NULL,
+        'editable' => FALSE,
       ],
       'path' => drupal_get_path('theme', 'vcard') . '/templates',
       'template' => 'vcard-details-view',
@@ -110,7 +110,7 @@ function vcard_main_home() {
     '#type' => 'container',
     '#attributes' => [
       'id' => 'list-wrapper',
-      'class' => ['large-4', 'columns'],
+      'class' => ['large-4', 'medium-4', 'columns'],
     ],
   ];
   $page['vcards_list_wrapper']['nano'] = [
@@ -155,7 +155,7 @@ function vcard_main_home() {
     '#type' => 'container',
     '#attributes' => [
       'id' => 'vcard-view-wrapper',
-      'class' => ['large-8', 'columns'],
+      'class' => ['large-8', 'medium-8', 'columns'],
     ],
   ];
   $page['vcard_view_wrapper']['nano'] = [
@@ -164,7 +164,7 @@ function vcard_main_home() {
       'class' => ['nano'],
     ],
   ];
-  $page['vcard_view_wrapper']['nano']['vcards_list'] = [
+  $page['vcard_view_wrapper']['nano']['content'] = [
     '#type' => 'container',
     '#attributes' => [
       'class' => ['nano-content'],
@@ -178,6 +178,46 @@ function vcard_main_home() {
   ];
 
   return $page;
+}
+
+/**
+ * Delivery ajax for view VCards.
+ *
+ * @param null $id
+ *
+ * @return array|mixed
+ * @throws \Exception
+ */
+function vcard_main_vcard_view_ajax($id = NULL) {
+  global $user;
+
+  if (is_numeric($id)) {
+    $vcard_node = node_load($id);
+    if ($user->uid && $vcard_node) {
+      // Check is user author of vcard.
+      $editable = FALSE;
+      if ($user->uid === $vcard_node->uid) {
+        $editable = TRUE;
+      }
+
+      return theme('vcard_details_view', [
+        'node' => $vcard_node,
+        'editable' => $editable,
+      ]);
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * Html deliver for view VCards.
+ *
+ * @param $page_callback_result
+ */
+function vcard_main_vcard_ajax_callback($page_callback_result) {
+  print $page_callback_result;
+  drupal_page_footer();
 }
 
 /**
@@ -301,8 +341,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   }
   $wrapper->save();
 
-  // @todo Write good message.
-  drupal_set_message(t('Your visit card successfully saved!'));
+  // @todo Go to My VCards.
   drupal_goto('<front>');
 }
 
@@ -363,28 +402,6 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
   }
 
   $form_state['redirect'] = '<front>';
-}
-
-/**
- * Delivery ajax for My VCards.
- *
- * @param null $id
- * @param null $op
- *
- * @return array|mixed
- */
-function vcard_main_my_vcard_ajax($id = NULL, $op = NULL) {
-  return drupal_get_form('vcard_main_my_vcard_form', $id, $op);
-}
-
-/**
- * Html deliver for My VCards.
- *
- * @param $page_callback_result
- */
-function vcard_main_my_vcard_ajax_callback($page_callback_result) {
-  print drupal_render($page_callback_result);
-  drupal_page_footer();
 }
 
 /**
