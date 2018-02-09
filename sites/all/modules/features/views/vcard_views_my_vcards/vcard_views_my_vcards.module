@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the VCard: Views: My VCards feature.
- */
-
-include_once 'vcard_views_my_vcards.features.inc';
