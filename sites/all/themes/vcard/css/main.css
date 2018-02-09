@@ -126,6 +126,19 @@ body {
   background-color: #a9a9a9;
 }
 /* Right column. */
+/* "Add VCard" link. */
+#add-vcard-wrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+#add-vcard-wrapper a {
+  font-size: 100px;
+  border: 1px solid;
+  border-radius: 100%;
+}
+/* VCard view. */
 #vcard-view-wrapper {
   height: calc(100vh - 170px);
   padding: 10px 30px;

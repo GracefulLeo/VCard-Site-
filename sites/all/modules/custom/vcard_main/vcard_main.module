@@ -11,12 +11,13 @@ function vcard_main_menu() {
   $items = [];
   $weight = 1;
 
-  $items['home'] = [
-    'title' => 'Test',
+  $items['my-vcards'] = [
+    'title' => 'My VCards',
+    'title callback' => 'vcard_main_my_vcards_title',
     'menu_name' => 'main-menu',
     'weight' => $weight++,
-    'page callback' => 'vcard_main_home',
-    'access arguments' => ['access content'],
+    'page callback' => 'vcard_main_my_vcards',
+    'access callback' => TRUE,
   ];
   $items['ajax/vcard/%/view'] = [
     'page callback' => 'vcard_main_vcard_view_ajax',
@@ -30,6 +31,7 @@ function vcard_main_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
     'access arguments' => ['create vcard content'],
+    'type' => MENU_CALLBACK,
   ];
   $items['my-vcards/%/%'] = [
     'title callback' => 'vcard_main_my_vcard_form_edit_title',
@@ -38,12 +40,14 @@ function vcard_main_menu() {
     'page arguments' => ['vcard_main_my_vcard_form', 1, 2],
     'access callback' => 'user_access',
     'access arguments' => ['edit own vcard content'],
+    'type' => MENU_CALLBACK,
   ];
   $items['my-vcards/%/remove'] = [
     'title' => 'Remove VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form_remove', 1],
     'access arguments' => ['delete own vcard content'],
+    'type' => MENU_CALLBACK,
   ];
   $items['groups'] = [
     'title' => 'Groups',
@@ -97,10 +101,18 @@ function vcard_main_theme($existing, $type, $theme, $path) {
   ];
 }
 
-// @todo Description.
-function vcard_main_home() {
+/**
+ * My VCards page callback.
+ */
+function vcard_main_my_vcards() {
   global $user;
   $page = [];
+
+  // Return void for anonymous user.
+  // This page will display an authorization form.
+  if (!$user->uid) {
+    return $page;
+  }
 
   $user_wrapper = entity_metadata_wrapper('user', $user);
   $my_vcards = $user_wrapper->field_my_vcards->value();
@@ -169,6 +181,20 @@ function vcard_main_home() {
     '#attributes' => [
       'class' => ['nano-content'],
     ],
+  ];
+  // "Add new VCard" link.
+  $page['vcard_view_wrapper']['nano']['content']['add'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'id' => 'add-vcard-wrapper',
+    ],
+  ];
+  $page['vcard_view_wrapper']['nano']['content']['add']['link'] = [
+    '#type' => 'link',
+    '#href' => 'my-vcards/add',
+    '#title' => 'add',
+    '#prefix' => '<i class="material-icons">',
+    '#suffix' => '</i>',
   ];
 
   $page['#attached'] = [
@@ -341,8 +367,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   }
   $wrapper->save();
 
-  // @todo Go to My VCards.
-  drupal_goto('<front>');
+  drupal_goto('my-vcards');
 }
 
 /**
@@ -372,7 +397,7 @@ function vcard_main_my_vcard_form_remove($form, &$form_state, $id) {
   return confirm_form(
     $form,
     t('Are you sure to delete the VCard?'),
-    '<front>',
+    'my-vcards',
     t('This action cannot be undone.'),
     t('Delete'),
     t('Cancel'));
@@ -401,7 +426,7 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
     node_delete($id);
   }
 
-  $form_state['redirect'] = '<front>';
+  $form_state['redirect'] = 'my-vcards';
 }
 
 /**
@@ -517,4 +542,13 @@ function vcard_main_views_pre_render(&$view) {
       }
       break;
   }
+}
+
+/**
+ * Home page title callback.
+ */
+function vcard_main_my_vcards_title() {
+  global $user;
+
+  return $user->uid ? t('My VCards') : t('Authorization');
 }
