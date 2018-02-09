@@ -1,12 +1,13 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 body {
   background-color: #e7ebf0;
+  font-family: "Roboto";
 }
 .l-header .row {
   line-height: 60px;
   background-color: #008a9a;
   color: #f9f3f3;
-  font-family: "Roboto";
 }
 .l-header .columns {
   padding: 0;
@@ -143,15 +144,6 @@ body {
   height: 24px;
   display: table;
 }
-.vcard-with-actions .actions .edit {
-  background: url("../images/ic_border_color_black_24px.svg");
-}
-.vcard-with-actions .actions .clone {
-  background: url("../images/ic_content_copy_black_24px.svg");
-}
-.vcard-with-actions .actions .remove {
-  background: url("../images/ic_delete_black_24px.svg");
-}
 #vcard-view-wrapper .vcard-image {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -170,17 +162,5 @@ body {
   width: 24px;
   height: 24px;
   display: table;
-  margin-right: 30px;
-}
-.vcard-description .full-name .icon {
-  background: url("../images/ic_account_circle_black_24px.svg") no-repeat;
-}
-.vcard-description .company .icon {
-  background: url("../images/ic_domain_black_24px.svg") no-repeat;
-}
-.vcard-description .communication .icon {
-  background: url("../images/ic_work_black_24px.svg") no-repeat;
-}
-.vcard-description .address .icon {
-  background: url("../images/ic_location_on_black_24px.svg") no-repeat;
+  margin-right: 20px;
 }
