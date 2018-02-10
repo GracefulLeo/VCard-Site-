@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file
+ * Module's main file.
+ */
+
+/**
+ * Defines site main theme name.
+ */
+define('VCARD_THEME_NAME', 'vcard');

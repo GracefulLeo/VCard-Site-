@@ -1,0 +1,64 @@
+<?php
+/**
+ * Install and updates for VCard site.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function vcard_core_install() {
+  _uninstall_core_modules();
+  _vcard_theme_enable();
+  _update_global_variables();
+}
+
+/**
+ * Helper function disabled useless core modules.
+ */
+function _uninstall_core_modules() {
+  $modules = [
+    'color',
+    'comment',
+    'help',
+    'overlay',
+    'rdf',
+    'search',
+    'shortcut',
+    'toolbar',
+  ];
+  module_disable($modules);
+  drupal_uninstall_modules($modules);
+}
+
+/**
+ * Helper function for custom theme enabling.
+ */
+function _vcard_theme_enable() {
+  theme_enable([VCARD_THEME_NAME]);
+  variable_set('theme_default', VCARD_THEME_NAME);
+  // Disable unnecessary theme.
+  theme_disable(['bartik']);
+}
+
+/**
+ * Helper function for config global variables.
+ */
+function _update_global_variables() {
+  // Set frontpage path.
+  variable_set('site_frontpage', 'my-vcards');
+  // File system path.
+  variable_set('file_public_path', 'sites/default/files/public');
+  variable_set('file_private_path', 'sites/default/files/private');
+  variable_set('file_temporary_path', 'sites/default/files/tmp');
+  // Private local files served by Drupal.
+  variable_set('file_default_scheme', 'private');
+}
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function vcard_constructor_block_info_alter(&$blocks, $theme, $code_blocks) {
+  // Configure default blocks.
+  $blocks['system']['navigation']['status'] = FALSE;
+  $blocks['user']['login']['region'] = 'content';
+}

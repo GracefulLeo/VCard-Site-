@@ -1,0 +1,31 @@
+name = VCard Core
+description = Enable and disable all modules and themes for site installation.
+core = 7.x
+package = ACore
+
+; Contrib modules.
+dependencies[] = email_registration
+dependencies[] = font_icons
+dependencies[] = jquery_update
+dependencies[] = rest_server
+dependencies[] = socialfield
+; Constrib modules need to disable on production.
+dependencies[] = admin_menu
+dependencies[] = adminimal_admin_menu
+dependencies[] = devel
+dependencies[] = module_filter
+dependencies[] = views_ui
+
+; Custom modules.
+dependencies[] = vcard_constructor
+dependencies[] = vcard_main
+
+; Features.
+dependencies[] = vcard_ct_vcard
+dependencies[] = vcard_entity_group
+dependencies[] = vcard_field_groups
+dependencies[] = vcard_field_my_contacts
+dependencies[] = vcard_field_my_vcards
+dependencies[] = vcard_image_style_micro_logo
+dependencies[] = vcard_menu_main_menu
+dependencies[] = vcard_views_contacts
