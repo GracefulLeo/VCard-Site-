@@ -8,11 +8,23 @@
  * Implements hook_block_info().
  */
 function vcard_constructor_block_info() {
+  // Show block on these pages.
+  $pages = [
+    'my-vcards/add',
+    'my-vcards/*/edit',
+    'my-vcards/*/clone',
+  ];
+  $pages = implode("\n", $pages);
+
   return [
     'constructor' => [
       'info' => t('VCard Constructor'),
       'cache' => DRUPAL_NO_CACHE,
       'weight' => -100,
+      'status' => TRUE,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => $pages,
     ],
   ];
 }
