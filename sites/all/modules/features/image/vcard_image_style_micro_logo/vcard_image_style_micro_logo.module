@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VCard: Image style: Micro logo feature.
+ */
+
+include_once 'vcard_image_style_micro_logo.features.inc';

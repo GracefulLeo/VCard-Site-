@@ -1,0 +1,6 @@
+name = VCard: Image style: Micro logo
+core = 7.x
+package = Features: Image style
+dependencies[] = image
+features[features_api][] = api:2
+features[image][] = micro_logo
