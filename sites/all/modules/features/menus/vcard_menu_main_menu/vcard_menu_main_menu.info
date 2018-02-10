@@ -1,0 +1,13 @@
+name = VCard: Menu: Main menu
+core = 7.x
+package = Features: Menu
+dependencies[] = features
+dependencies[] = menu
+features[features_api][] = api:2
+features[menu_custom][] = main-menu
+features[menu_links][] = main-menu_contacts:contacts
+features[menu_links][] = main-menu_groups:groups
+features[menu_links][] = main-menu_history:history
+features[menu_links][] = main-menu_log-out:logout
+features[menu_links][] = main-menu_my-vcards:my-vcards
+features[menu_links][] = main-menu_settings:settings

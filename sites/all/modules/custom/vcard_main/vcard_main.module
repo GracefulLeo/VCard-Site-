@@ -9,13 +9,11 @@
  */
 function vcard_main_menu() {
   $items = [];
-  $weight = 1;
 
   $items['my-vcards'] = [
     'title' => 'My VCards',
     'title callback' => 'vcard_main_my_vcards_title',
     'menu_name' => 'main-menu',
-    'weight' => $weight++,
     'page callback' => 'vcard_main_my_vcards',
     'access callback' => TRUE,
   ];
@@ -52,7 +50,6 @@ function vcard_main_menu() {
   $items['groups'] = [
     'title' => 'Groups',
     'menu_name' => 'main-menu',
-    'weight' => $weight++,
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_groups_form'],
     'access arguments' => ['access content'],
@@ -60,15 +57,20 @@ function vcard_main_menu() {
   $items['history'] = [
     'title' => 'History',
     'menu_name' => 'main-menu',
-    'weight' => $weight++,
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_history_form'],
+    'access arguments' => ['access content'],
+  ];
+  $items['settings'] = [
+    'title' => 'Settings',
+    'menu_name' => 'main-menu',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_settings_form'],
     'access arguments' => ['access content'],
   ];
   $items['logout'] = [
     'title' => 'Log Out',
     'menu_name' => 'main-menu',
-    'weight' => $weight++,
     'page callback' => 'vcard_main_logout',
     'access arguments' => ['access content'],
   ];
@@ -444,6 +446,13 @@ function vcard_main_history_form($form, &$form_state) {
 }
 
 /**
+ * "Settings" page callback.
+ */
+function vcard_main_settings_form($form, &$form_state) {
+  return $form;
+}
+
+/**
  * "Log Out" page callback.
  */
 function vcard_main_logout() {
@@ -491,45 +500,46 @@ function vcard_main_my_vcard_form_edit_title($op) {
   return t('@op VCard', ['@op' => $op == 'edit' ? 'Edit' : 'Add']);
 }
 
+// @todo Useless functionality in accordance with the new design.
 /**
  * Implements hook_page_alter().
  */
-function vcard_main_page_alter(&$page) {
-  global $user;
-
-  // Show elements for authorized users only.
-  if ($user->uid) {
-    $user_entity = entity_load_single('user', $user->uid);
-    // If new user hasn't any VCard show hint.
-    if (arg(1) != 'add' && empty($user_entity->field_my_vcards)) {
-      $message = t(
-        'Hint: To start using this service you need to fill some fields in your profile. Add <a href="@my_vcard">My first VCard</a>.',
-        ['@my_vcard' => url('my-vcards/add')]
-      );
-
-      $page['content']['hint'] = [
-        '#markup' => '
-            <div class="hint-outer">
-                <div class="hint-inner">
-                    <p>' . $message . '</p>
-                    <div class="hint-bottom-triangle"></div>
-                </div>
-            </div>
-        ',
-      ];
-
-      $this_module = drupal_get_path('module', 'vcard_main');
-      $page['content']['hint']['#attached'] = [
-        'css' => [
-          "$this_module/css/hint.css",
-        ],
-        'js' => [
-          "$this_module/js/hint.js",
-        ],
-      ];
-    }
-  }
-}
+//function vcard_main_page_alter(&$page) {
+//  global $user;
+//
+//  // Show elements for authorized users only.
+//  if ($user->uid) {
+//    $user_entity = entity_load_single('user', $user->uid);
+//    // If new user hasn't any VCard show hint.
+//    if (arg(1) != 'add' && empty($user_entity->field_my_vcards)) {
+//      $message = t(
+//        'Hint: To start using this service you need to fill some fields in your profile. Add <a href="@my_vcard">My first VCard</a>.',
+//        ['@my_vcard' => url('my-vcards/add')]
+//      );
+//
+//      $page['content']['hint'] = [
+//        '#markup' => '
+//            <div class="hint-outer">
+//                <div class="hint-inner">
+//                    <p>' . $message . '</p>
+//                    <div class="hint-bottom-triangle"></div>
+//                </div>
+//            </div>
+//        ',
+//      ];
+//
+//      $this_module = drupal_get_path('module', 'vcard_main');
+//      $page['content']['hint']['#attached'] = [
+//        'css' => [
+//          "{$this_module}/css/hint.css",
+//        ],
+//        'js' => [
+//          "{$this_module}/js/hint.js",
+//        ],
+//      ];
+//    }
+//  }
+//}
 
 /**
  * Implements hook_views_pre_render().
