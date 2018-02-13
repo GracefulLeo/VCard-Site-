@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VCard: Services: Endpoint v1 feature.
+ */
+
+include_once 'vcard_services_endpoint_v1.features.inc';
