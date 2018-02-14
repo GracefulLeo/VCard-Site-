@@ -4,6 +4,7 @@ core = 7.x
 package = ACore
 
 ; Contrib modules.
+dependencies[] = blob
 dependencies[] = email_registration
 dependencies[] = font_icons
 dependencies[] = jquery_update
