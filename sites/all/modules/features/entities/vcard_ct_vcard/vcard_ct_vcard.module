@@ -5,3 +5,23 @@
  */
 
 include_once 'vcard_ct_vcard.features.inc';
+
+/**
+ * Implements hook_field_widget_info_alter().
+ */
+function vcard_ct_vcard_field_widget_info_alter(&$info) {
+  if (module_exists('blob')) {
+    $info['text_textarea']['field types'][] = 'blob';
+    $info['text_textarea']['field types'][] = 'blob_long';
+  }
+}
+
+/**
+ * Implements hook_field_info_alter().
+ */
+function vcard_ct_vcard_field_info_alter(&$info) {
+  if (module_exists('blob')) {
+    $info['blob']['instance_settings']['text_processing'] = FALSE;
+    $info['blob_long']['instance_settings']['text_processing'] = FALSE;
+  }
+}
