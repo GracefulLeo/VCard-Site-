@@ -385,12 +385,7 @@ function vcard_main_my_vcard_form_remove($form, &$form_state, $id) {
     drupal_exit();
   }
 
-  $src = $wrapper->field_json->value();
-
-  $form['image'] = [
-    '#type' => 'item',
-    '#markup' => '<img src="' . $src . '" class="vcard-rendered" />',
-  ];
+  $form['image'] = node_view(node_load($id), 'image');
 
   $form['id'] = [
     '#type' => 'value',
@@ -561,4 +556,50 @@ function vcard_main_my_vcards_title() {
   global $user;
 
   return $user->uid ? t('My VCards') : t('Authorization');
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function vcard_main_field_formatter_info() {
+  return [
+    'base64_image' => [
+      'label' => t('Base64 image'),
+      'description' => t('Render external path to image or base64 text as image.'),
+      'field types' => [
+        'text_long',
+        'blob',
+        'blob_long',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function vcard_main_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = [];
+
+  switch ($display['type']) {
+    case 'base64_image':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = [
+          '#markup' => '<img src="' . $item['value'] . '" />',
+        ];
+      }
+      break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function vcard_main_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['image'] = [
+    'label' => t('Image'),
+    'custom settings' => TRUE,
+  ];
 }

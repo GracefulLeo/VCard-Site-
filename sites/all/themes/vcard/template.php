@@ -46,7 +46,7 @@ function vcard_preprocess_vcard_details_view(&$variables) {
   $variables['icon_path'] = drupal_get_path('theme', 'vcard') . '/images';
   $node_wrapper = entity_metadata_wrapper('node', $variables['node']);
   $variables['id'] = $node_wrapper->nid->value();
-  $variables['img'] = $node_wrapper->field_json->value();
+  $variables['img'] = node_view($variables['node'], 'image');
   $variables['full_name'] =
     $node_wrapper->field_surname->value() . ' ' .
     $node_wrapper->field_name->value() . ' ' .

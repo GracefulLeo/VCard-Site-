@@ -133,7 +133,7 @@
        * Save canvas to field.
        */
       $('#my-vcard-form-submit').on('click', function () {
-        $('#edit-field-json-und-0-value').val(canvas.toDataURL('png'));
+        $('#edit-field-base64-vcard-und-0-value').val(canvas.toDataURL('png'));
       })
 
     }

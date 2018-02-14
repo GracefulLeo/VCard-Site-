@@ -24,11 +24,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 6,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'node',
@@ -50,6 +56,53 @@ function vcard_ct_vcard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-vcard-field_base64_vcard'.
+  $field_instances['node-vcard-field_base64_vcard'] = array(
+    'bundle' => 'vcard',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'vcard_main',
+        'settings' => array(),
+        'type' => 'base64_image',
+        'weight' => 12,
+      ),
+      'image' => array(
+        'label' => 'hidden',
+        'module' => 'vcard_main',
+        'settings' => array(),
+        'type' => 'base64_image',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_base64_vcard',
+    'label' => 'base64 vcard',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 1,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 13,
+    ),
+  );
+
   // Exported field_instance: 'node-vcard-field_company_name'.
   $field_instances['node-vcard-field_company_name'] = array(
     'bundle' => 'vcard',
@@ -64,11 +117,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 5,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -90,47 +149,6 @@ function vcard_ct_vcard_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-vcard-field_json'.
-  $field_instances['node-vcard-field_json'] = array(
-    'bundle' => 'vcard',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_json',
-    'label' => 'json',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 11,
-    ),
-  );
-
   // Exported field_instance: 'node-vcard-field_logotype'.
   $field_instances['node-vcard-field_logotype'] = array(
     'bundle' => 'vcard',
@@ -147,11 +165,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'image',
         'weight' => 1,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',
@@ -195,11 +219,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'email_default',
         'weight' => 9,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -234,11 +264,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 4,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'node',
@@ -274,11 +310,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 3,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -314,11 +356,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 8,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'node',
@@ -354,11 +402,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 7,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'node',
@@ -394,11 +448,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 2,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
     ),
     'entity_type' => 'node',
@@ -434,11 +494,17 @@ function vcard_ct_vcard_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 10,
       ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'node',
@@ -472,7 +538,7 @@ function vcard_ct_vcard_field_default_field_instances() {
   t('Position');
   t('Surname');
   t('Web site');
-  t('json');
+  t('base64 vcard');
 
   return $field_instances;
 }

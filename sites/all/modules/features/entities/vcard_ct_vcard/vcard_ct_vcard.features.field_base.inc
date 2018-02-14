@@ -31,6 +31,21 @@ function vcard_ct_vcard_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_base64_vcard'.
+  $field_bases['field_base64_vcard'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_base64_vcard',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'blob',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'blob_long',
+  );
+
   // Exported field_base: 'field_company_name'.
   $field_bases['field_company_name'] = array(
     'active' => 1,
@@ -50,25 +65,6 @@ function vcard_ct_vcard_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text',
-  );
-
-  // Exported field_base: 'field_json'.
-  $field_bases['field_json'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_json',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_long',
   );
 
   // Exported field_base: 'field_logotype'.

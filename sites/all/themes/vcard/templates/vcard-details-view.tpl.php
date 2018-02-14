@@ -1,7 +1,7 @@
 <div class="vcard-view-wrapper">
     <div class="vcard-with-actions">
         <div class="vcard-image">
-            <img src="<?php print $img; ?>">
+            <?php print drupal_render($img); ?>
         </div>
       <?php if ($editable): ?>
           <div class="actions">
