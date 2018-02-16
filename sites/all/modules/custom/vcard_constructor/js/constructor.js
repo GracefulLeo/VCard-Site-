@@ -134,7 +134,11 @@
        */
       $('#my-vcard-form-submit').on('click', function () {
         $('#edit-field-base64-vcard-und-0-value').val(canvas.toDataURL('png'));
-      })
+      });
+
+      // Hide field_base64_vcard if its view textfield, but not image.
+      $('.field-name-field-base64-vcard').find('textarea')
+          .closest('.field-name-field-base64-vcard').css({display: 'none'});
 
     }
   }
