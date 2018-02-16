@@ -178,7 +178,7 @@ body {
   margin-right: 20px;
 }
 /* Base64 image field. */
-form .field-name-field-base64-vcard {
+#vcard-main-my-vcard-form .field-name-field-base64-vcard {
   display: none;
 }
 .field-name-field-base64-vcard img {
