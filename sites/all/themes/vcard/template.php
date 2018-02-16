@@ -66,3 +66,9 @@ function vcard_preprocess_vcard_details_view(&$variables) {
   $variables['site'] = $node_wrapper->field_web_site->value();
   $variables['address'] = $node_wrapper->field_address->value();
 }
+
+function vcard_preprocess_views_view(&$variables) {
+  if ($variables['view']->name === 'contacts') {
+    drupal_add_js(drupal_get_path('module', 'vcard_main') . '/js/vcard_load.js');
+  }
+}

@@ -23,6 +23,7 @@ function vcard_views_contacts_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Contacts';
+  $handler->display->display_options['css_class'] = 'list-wrapper large-4 medium-4 columns';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
@@ -31,12 +32,19 @@ function vcard_views_contacts_views_default_views() {
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
+  $handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['autosubmit'] = TRUE;
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'list-item';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
   /* Relationship: Entity Reference: Referencing entity */
   $handler->display->display_options['relationships']['reverse_field_my_contacts_user']['id'] = 'reverse_field_my_contacts_user';
   $handler->display->display_options['relationships']['reverse_field_my_contacts_user']['table'] = 'node';
@@ -47,14 +55,58 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
-  /* Field: Content: json */
-  $handler->display->display_options['fields']['field_json']['id'] = 'field_json';
-  $handler->display->display_options['fields']['field_json']['table'] = 'field_data_field_json';
-  $handler->display->display_options['fields']['field_json']['field'] = 'field_json';
-  $handler->display->display_options['fields']['field_json']['label'] = '';
-  $handler->display->display_options['fields']['field_json']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_json']['alter']['text'] = '<img src="[field_json-value]" class="vcard-rendered"/>';
-  $handler->display->display_options['fields']['field_json']['element_label_colon'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Logotype */
+  $handler->display->display_options['fields']['field_logotype']['id'] = 'field_logotype';
+  $handler->display->display_options['fields']['field_logotype']['table'] = 'field_data_field_logotype';
+  $handler->display->display_options['fields']['field_logotype']['field'] = 'field_logotype';
+  $handler->display->display_options['fields']['field_logotype']['label'] = '';
+  $handler->display->display_options['fields']['field_logotype']['element_type'] = 'div';
+  $handler->display->display_options['fields']['field_logotype']['element_class'] = 'logo-micro';
+  $handler->display->display_options['fields']['field_logotype']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logotype']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_logotype']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logotype']['settings'] = array(
+    'image_style' => 'micro_logo',
+    'image_link' => '',
+  );
+  /* Field: Content: Surname */
+  $handler->display->display_options['fields']['field_surname']['id'] = 'field_surname';
+  $handler->display->display_options['fields']['field_surname']['table'] = 'field_data_field_surname';
+  $handler->display->display_options['fields']['field_surname']['field'] = 'field_surname';
+  $handler->display->display_options['fields']['field_surname']['label'] = '';
+  $handler->display->display_options['fields']['field_surname']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_surname']['element_label_colon'] = FALSE;
+  /* Field: Content: Name */
+  $handler->display->display_options['fields']['field_name']['id'] = 'field_name';
+  $handler->display->display_options['fields']['field_name']['table'] = 'field_data_field_name';
+  $handler->display->display_options['fields']['field_name']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name']['label'] = '';
+  $handler->display->display_options['fields']['field_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_name']['element_label_colon'] = FALSE;
+  /* Field: Content: Middle name */
+  $handler->display->display_options['fields']['field_middle_name']['id'] = 'field_middle_name';
+  $handler->display->display_options['fields']['field_middle_name']['table'] = 'field_data_field_middle_name';
+  $handler->display->display_options['fields']['field_middle_name']['field'] = 'field_middle_name';
+  $handler->display->display_options['fields']['field_middle_name']['label'] = '';
+  $handler->display->display_options['fields']['field_middle_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_middle_name']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '[field_surname] [field_name]';
+  $handler->display->display_options['fields']['nothing']['element_type'] = 'div';
+  $handler->display->display_options['fields']['nothing']['element_class'] = 'vcard-title';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nothing']['element_default_classes'] = FALSE;
   /* Field: Content: Address */
   $handler->display->display_options['fields']['field_address']['id'] = 'field_address';
   $handler->display->display_options['fields']['field_address']['table'] = 'field_data_field_address';
@@ -78,20 +130,6 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['fields']['field_mail']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_mail']['type'] = 'email_plain';
   $handler->display->display_options['fields']['field_mail']['delta_offset'] = '0';
-  /* Field: Content: Middle name */
-  $handler->display->display_options['fields']['field_middle_name']['id'] = 'field_middle_name';
-  $handler->display->display_options['fields']['field_middle_name']['table'] = 'field_data_field_middle_name';
-  $handler->display->display_options['fields']['field_middle_name']['field'] = 'field_middle_name';
-  $handler->display->display_options['fields']['field_middle_name']['label'] = '';
-  $handler->display->display_options['fields']['field_middle_name']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_middle_name']['element_label_colon'] = FALSE;
-  /* Field: Content: Name */
-  $handler->display->display_options['fields']['field_name']['id'] = 'field_name';
-  $handler->display->display_options['fields']['field_name']['table'] = 'field_data_field_name';
-  $handler->display->display_options['fields']['field_name']['field'] = 'field_name';
-  $handler->display->display_options['fields']['field_name']['label'] = '';
-  $handler->display->display_options['fields']['field_name']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_name']['element_label_colon'] = FALSE;
   /* Field: Content: Phone */
   $handler->display->display_options['fields']['field_phone']['id'] = 'field_phone';
   $handler->display->display_options['fields']['field_phone']['table'] = 'field_data_field_phone';
@@ -107,13 +145,6 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['fields']['field_position']['label'] = '';
   $handler->display->display_options['fields']['field_position']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_position']['element_label_colon'] = FALSE;
-  /* Field: Content: Surname */
-  $handler->display->display_options['fields']['field_surname']['id'] = 'field_surname';
-  $handler->display->display_options['fields']['field_surname']['table'] = 'field_data_field_surname';
-  $handler->display->display_options['fields']['field_surname']['field'] = 'field_surname';
-  $handler->display->display_options['fields']['field_surname']['label'] = '';
-  $handler->display->display_options['fields']['field_surname']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_surname']['element_label_colon'] = FALSE;
   /* Field: Content: Web site */
   $handler->display->display_options['fields']['field_web_site']['id'] = 'field_web_site';
   $handler->display->display_options['fields']['field_web_site']['table'] = 'field_data_field_web_site';
@@ -121,6 +152,11 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['fields']['field_web_site']['label'] = '';
   $handler->display->display_options['fields']['field_web_site']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_web_site']['element_label_colon'] = FALSE;
+  /* Sort criterion: Content: Updated date */
+  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['table'] = 'node';
+  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
@@ -166,7 +202,6 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['filters']['combine']['operator'] = 'word';
   $handler->display->display_options['filters']['combine']['exposed'] = TRUE;
   $handler->display->display_options['filters']['combine']['expose']['operator_id'] = 'combine_op';
-  $handler->display->display_options['filters']['combine']['expose']['label'] = 'Search';
   $handler->display->display_options['filters']['combine']['expose']['operator'] = 'combine_op';
   $handler->display->display_options['filters']['combine']['expose']['identifier'] = 'combine';
   $handler->display->display_options['filters']['combine']['expose']['remember_roles'] = array(
@@ -175,14 +210,14 @@ function vcard_views_contacts_views_default_views() {
     3 => 0,
   );
   $handler->display->display_options['filters']['combine']['fields'] = array(
+    'field_surname' => 'field_surname',
+    'field_name' => 'field_name',
+    'field_middle_name' => 'field_middle_name',
     'field_address' => 'field_address',
     'field_company_name' => 'field_company_name',
     'field_mail' => 'field_mail',
-    'field_middle_name' => 'field_middle_name',
-    'field_name' => 'field_name',
     'field_phone' => 'field_phone',
     'field_position' => 'field_position',
-    'field_surname' => 'field_surname',
     'field_web_site' => 'field_web_site',
   );
   /* Filter criterion: Content: Published */

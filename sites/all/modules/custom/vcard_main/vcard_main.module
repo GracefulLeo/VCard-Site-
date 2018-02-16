@@ -123,8 +123,7 @@ function vcard_main_my_vcards() {
   $page['vcards_list_wrapper'] = [
     '#type' => 'container',
     '#attributes' => [
-      'id' => 'list-wrapper',
-      'class' => ['large-4', 'medium-4', 'columns'],
+      'class' => ['list-wrapper', 'large-4', 'medium-4', 'columns'],
     ],
   ];
   $page['vcards_list_wrapper']['nano'] = [
@@ -168,8 +167,7 @@ function vcard_main_my_vcards() {
   $page['vcard_view_wrapper'] = [
     '#type' => 'container',
     '#attributes' => [
-      'id' => 'vcard-view-wrapper',
-      'class' => ['large-8', 'medium-8', 'columns'],
+      'class' => ['vcard-view-wrapper', 'large-8', 'medium-8', 'columns'],
     ],
   ];
   $page['vcard_view_wrapper']['nano'] = [
