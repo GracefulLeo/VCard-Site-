@@ -98,8 +98,15 @@ body {
   display: flex;
   align-items: center;
 }
+#toolbar .block-views-exp-contacts-page .form-item label {
+  position: relative;
+  top: 4px;
+  left: 30px;
+  color: #ddd;
+}
 #toolbar .block-views-exp-contacts-page .form-item input {
-  margin: 0;
+  padding-left: 35px;
+  margin: 0 20px 0 0;
 }
 /* Page content. */
 .l-main {

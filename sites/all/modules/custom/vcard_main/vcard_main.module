@@ -601,3 +601,11 @@ function vcard_main_entity_info_alter(&$entity_info) {
     'custom settings' => TRUE,
   ];
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vcard_main_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
+  $form['combine']['#attributes'] = ['placeholder' => t('Search')];
+  $form['combine']['#title'] = '<i class="material-icons">search</i>';
+}
