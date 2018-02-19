@@ -82,6 +82,7 @@ function vcard_main_menu() {
  * Implements hook_theme().
  */
 function vcard_main_theme($existing, $type, $theme, $path) {
+  $templates = drupal_get_path('theme', 'vcard') . '/templates';
   return [
     'vcard_nano_teaser' => [
       'variables' => [
@@ -89,7 +90,7 @@ function vcard_main_theme($existing, $type, $theme, $path) {
         'logo_uri' => NULL,
         'title' => NULL,
       ],
-      'path' => drupal_get_path('theme', 'vcard') . '/templates',
+      'path' => $templates,
       'template' => 'vcard-nano-teaser',
     ],
     'vcard_details_view' => [
@@ -97,8 +98,13 @@ function vcard_main_theme($existing, $type, $theme, $path) {
         'node' => NULL,
         'editable' => FALSE,
       ],
-      'path' => drupal_get_path('theme', 'vcard') . '/templates',
+      'path' => $templates,
       'template' => 'vcard-details-view',
+    ],
+    'my_vcard_form' => [
+      'render element' => 'form',
+      'template' => 'my-vcard-form',
+      'path' => $templates,
     ],
   ];
 }
@@ -310,8 +316,25 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
       ],
     ];
 
+    // Alter fields.
+    foreach ($form as $name => &$item) {
+      if (strstr($name, 'field_')) {
+        if (isset($item['#attributes']['class']) && in_array('field-type-text', $item['#attributes']['class'])) {
+          // Hide titles and set placeholders.
+          $item[LANGUAGE_NONE][0]['value']['#title_display'] = 'invisible';
+          $item[LANGUAGE_NONE][0]['value']['#attributes']['placeholder'] = $item[LANGUAGE_NONE]['#title'];
+        }
+      }
+    }
+
+    $form['#attached'] = [
+      'js' => [
+        drupal_get_path('module', 'vcard_main') . '/js/my_vcard_form.js',
+      ],
+    ];
     $form['#validate'][] = 'vcard_main_my_vcard_form_validation';
     $form['#submit'][] = 'vcard_main_my_vcard_form_submit';
+    $form['#theme'] = ['my_vcard_form'];
   }
 
   return $form;

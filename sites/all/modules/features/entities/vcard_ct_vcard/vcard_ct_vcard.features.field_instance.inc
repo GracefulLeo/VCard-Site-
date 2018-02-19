@@ -99,7 +99,7 @@ function vcard_ct_vcard_field_default_field_instances() {
         'rows' => 1,
       ),
       'type' => 'text_textarea',
-      'weight' => 13,
+      'weight' => 11,
     ),
   );
 
@@ -246,7 +246,7 @@ function vcard_ct_vcard_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'email_textfield',
-      'weight' => 9,
+      'weight' => 10,
     ),
   );
 
@@ -384,7 +384,7 @@ function vcard_ct_vcard_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 8,
+      'weight' => 9,
     ),
   );
 
@@ -522,7 +522,7 @@ function vcard_ct_vcard_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 10,
+      'weight' => 8,
     ),
   );
 

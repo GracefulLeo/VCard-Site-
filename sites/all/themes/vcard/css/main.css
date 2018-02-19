@@ -220,3 +220,67 @@ body {
 .ajax-progress-throbber {
   display: none;
 }
+/* vcard_main_my_vcard_form */
+.block-vcard-constructor-constructor {
+  float: left;
+  width: min-content;
+  padding: 0.9375rem 0 20px 0.9375rem;
+}
+#vcard-main-my-vcard-form {
+  width: calc(100% - 600px - 0.9375rem);
+  float: right;
+  position: relative;
+  padding: 0.9375rem;
+}
+#vcard-main-my-vcard-form .nano {
+  height: calc(100vh - 200px);
+}
+#vcard-main-my-vcard-form .nano-content {
+  padding-right: 5px;
+}
+#vcard-main-my-vcard-form .form-item {
+  margin: 0;
+}
+#vcard-main-my-vcard-form .form-item input {
+  border: none;
+  border-bottom: 1px solid #ddd;
+  box-shadow: none;
+  margin-bottom: 8px;
+}
+#vcard-main-my-vcard-form .form-item input::placeholder {
+  opacity: .5;
+}
+#vcard-main-my-vcard-form .form-item input:focus {
+  background: #fff;
+  border-bottom: 2px solid #1a1a1a;
+}
+#vcard-main-my-vcard-form .form-item .tabledrag-toggle-weight-wrapper {
+  display: none;
+}
+/* Field logotype. */
+#vcard-main-my-vcard-form .field-name-field-logotype {
+  margin-bottom: 8px;
+}
+#vcard-main-my-vcard-form .field-type-image .description {
+  display: none;
+}
+#vcard-main-my-vcard-form .field-type-image .image-widget-data {
+  display: flex;
+  height: 37px;
+  width: 100%;
+}
+#vcard-main-my-vcard-form .field-type-image .image-widget-data button {
+  line-height: 0;
+}
+#vcard-main-my-vcard-form .field-name-field-logotype label,
+#vcard-main-my-vcard-form .field-name-field-logotype .form-file,
+#vcard-main-my-vcard-form .field-type-image .image-preview,
+#vcard-main-my-vcard-form .field-type-image .file-size {
+  display: none;
+}
+#vcard-main-my-vcard-form .field-type-image .logo-text {
+  line-height: 37px;
+  vertical-align: middle;
+  padding: 0 20px 0 8px;
+  font-weight: bold;
+}
