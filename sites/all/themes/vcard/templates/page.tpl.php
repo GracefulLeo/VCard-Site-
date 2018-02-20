@@ -91,16 +91,6 @@
       <!--/.l-featured -->
   <?php endif; ?>
 
-  <?php if ($messages && !$zurb_foundation_messages_modal): ?>
-      <!--.l-messages -->
-      <section class="l-messages row">
-          <div class="columns">
-            <?php if ($messages): print $messages; endif; ?>
-          </div>
-      </section>
-      <!--/.l-messages -->
-  <?php endif; ?>
-
   <?php if (!empty($page['help'])): ?>
       <!--.l-help -->
       <section class="l-help row">
@@ -119,6 +109,16 @@
               <div class="highlight panel callout">
                 <?php print render($page['highlighted']); ?>
               </div>
+          <?php endif; ?>
+
+          <?php if ($messages && !$zurb_foundation_messages_modal): ?>
+              <!--.l-messages -->
+              <section class="l-messages row">
+                  <div class="columns">
+                    <?php if ($messages): print $messages; endif; ?>
+                  </div>
+              </section>
+              <!--/.l-messages -->
           <?php endif; ?>
 
             <a id="main-content"></a>
