@@ -319,7 +319,29 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
     // Alter fields.
     foreach ($form as $name => &$item) {
       if (strstr($name, 'field_')) {
-        if (isset($item['#attributes']['class']) && in_array('field-type-text', $item['#attributes']['class'])) {
+        if (in_array($item[LANGUAGE_NONE]['#field_name'], [
+          'field_phone',
+          'field_mail',
+        ])) {
+          foreach ($item[LANGUAGE_NONE] as $key => &$value) {
+            if (!is_numeric($key)) {
+              continue;
+            }
+
+            // Set placeholders.
+            $value_key = $item[LANGUAGE_NONE]['#field_name'] === 'field_mail' ? 'email' : 'value';
+            $value[$value_key]['#attributes']['placeholder'] = $item[LANGUAGE_NONE]['#title'];
+
+            // Remove useless weights.
+            unset($value['_weight']);
+          }
+          // Change "add_more" text.
+          $item[LANGUAGE_NONE]['add_more']['#value'] = 'add';
+          $item[LANGUAGE_NONE]['add_more']['#prefix'] = '<i class="material-icons">';
+          $item[LANGUAGE_NONE]['add_more']['#suffix'] = '</i>';
+          $item[LANGUAGE_NONE]['add_more']['#weight'] = DRUPAL_WEIGHT_SELECT_MAX;
+        }
+        elseif (isset($item['#attributes']['class']) && in_array('field-type-text', $item['#attributes']['class'])) {
           // Hide titles and set placeholders.
           $item[LANGUAGE_NONE][0]['value']['#title_display'] = 'invisible';
           $item[LANGUAGE_NONE][0]['value']['#attributes']['placeholder'] = $item[LANGUAGE_NONE]['#title'];

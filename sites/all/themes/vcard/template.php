@@ -67,8 +67,33 @@ function vcard_preprocess_vcard_details_view(&$variables) {
   $variables['address'] = $node_wrapper->field_address->value();
 }
 
+/**
+ * Implements template_preprocess_views_view.
+ */
 function vcard_preprocess_views_view(&$variables) {
   if ($variables['view']->name === 'contacts') {
     drupal_add_js(drupal_get_path('module', 'vcard_main') . '/js/vcard_load.js');
   }
+}
+
+/**
+ * Returns HTML for an individual form element.
+ *
+ * Combine multiple values into a table with drag-n-drop reordering.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - element: A render element representing the form element.
+ *
+ * @return string
+ */
+function vcard_field_multiple_value_form($variables) {
+  $element = $variables['element'];
+  $output = '';
+
+  foreach (element_children($element) as $key) {
+    $output .= drupal_render($element[$key]);
+  }
+
+  return $output;
 }

@@ -289,3 +289,20 @@ body {
   padding: 0 20px 0 8px;
   font-weight: bold;
 }
+/* Multiple field button. */
+.field-name-field-phone > div, .field-name-field-mail > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.field-name-field-phone i.material-icons, .field-name-field-mail i.material-icons {
+  position: relative;
+  bottom: 50px;
+  margin-bottom: -37px;
+}
+.material-icons button {
+  font-family: 'Material Icons';
+  border-radius: 100%;
+  padding: 5px;
+  font-weight: bold;
+}
