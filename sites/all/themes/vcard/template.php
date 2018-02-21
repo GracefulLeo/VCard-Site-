@@ -72,7 +72,8 @@ function vcard_preprocess_vcard_details_view(&$variables) {
  */
 function vcard_preprocess_views_view(&$variables) {
   if ($variables['view']->name === 'contacts') {
-    drupal_add_js(drupal_get_path('module', 'vcard_main') . '/js/vcard_load.js');
+    drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/entity_view_ajax_load.js');
+    drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/exposed_auto_submit_fix.js');
   }
 }
 

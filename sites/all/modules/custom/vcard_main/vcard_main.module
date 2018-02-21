@@ -207,7 +207,7 @@ function vcard_main_my_vcards() {
 
   $page['#attached'] = [
     'js' => [
-      drupal_get_path('module', 'vcard_main') . '/js/vcard_load.js',
+      drupal_get_path('theme', 'vcard') . '/js/entity_view_ajax_load.js',
     ],
   ];
 
