@@ -21,7 +21,7 @@ function vcard_preprocess_node(&$variables) {
 /**
  * Implements template_preprocess_theme.
  */
-function vcard_preprocess_vcard_nano_teaser(&$variables) {
+function vcard_preprocess_entity_nano_teaser(&$variables) {
   try {
     if ($variables['logo_uri']) {
       $variables['image'] = theme('image_style', [

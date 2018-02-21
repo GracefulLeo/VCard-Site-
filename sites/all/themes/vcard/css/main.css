@@ -144,7 +144,7 @@ body {
   background-color: #99dee6;
   cursor: pointer;
 }
-.list-item.vcard-processed {
+.list-item.list-item-processed {
   background-color: #00acc1;
 }
 .logo-micro {
@@ -179,7 +179,7 @@ body {
   border-radius: 100%;
 }
 /* VCard view. */
-.vcard-view-wrapper {
+.entity-view-wrapper {
   height: calc(100vh - 170px);
   padding: 10px 30px;
 }

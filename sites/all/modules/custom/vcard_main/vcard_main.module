@@ -84,14 +84,15 @@ function vcard_main_menu() {
 function vcard_main_theme($existing, $type, $theme, $path) {
   $templates = drupal_get_path('theme', 'vcard') . '/templates';
   return [
-    'vcard_nano_teaser' => [
+    'entity_nano_teaser' => [
       'variables' => [
+        'entity_type' => NULL,
         'id' => NULL,
         'logo_uri' => NULL,
         'title' => NULL,
       ],
       'path' => $templates,
-      'template' => 'vcard-nano-teaser',
+      'template' => 'entity-nano-teaser',
     ],
     'vcard_details_view' => [
       'variables' => [
@@ -126,19 +127,19 @@ function vcard_main_my_vcards() {
   $my_vcards = $user_wrapper->field_my_vcards->value();
 
   // Left column.
-  $page['vcards_list_wrapper'] = [
+  $page['entity_list_wrapper'] = [
     '#type' => 'container',
     '#attributes' => [
       'class' => ['list-wrapper', 'large-4', 'medium-4', 'columns'],
     ],
   ];
-  $page['vcards_list_wrapper']['nano'] = [
+  $page['entity_list_wrapper']['nano'] = [
     '#type' => 'container',
     '#attributes' => [
       'class' => ['nano'],
     ],
   ];
-  $page['vcards_list_wrapper']['nano']['vcards_list'] = [
+  $page['entity_list_wrapper']['nano']['entity_list'] = [
     '#type' => 'container',
     '#attributes' => [
       'class' => ['nano-content'],
@@ -159,8 +160,9 @@ function vcard_main_my_vcards() {
         $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
       }
 
-      $page['vcards_list_wrapper']['nano']['vcards_list'][] = [
-        '#markup' => theme('vcard_nano_teaser', [
+      $page['entity_list_wrapper']['nano']['entity_list'][] = [
+        '#markup' => theme('entity_nano_teaser', [
+          'entity_type' => 'vcard',
           'nid' => $my_vcards[$key]->nid,
           'logo_uri' => $logo_uri,
           'title' => $my_vcards[$key]->title,
@@ -170,32 +172,32 @@ function vcard_main_my_vcards() {
   }
 
   //  Right column.
-  $page['vcard_view_wrapper'] = [
+  $page['entity_view_wrapper'] = [
     '#type' => 'container',
     '#attributes' => [
-      'class' => ['vcard-view-wrapper', 'large-8', 'medium-8', 'columns'],
+      'class' => ['entity-view-wrapper', 'large-8', 'medium-8', 'columns'],
     ],
   ];
-  $page['vcard_view_wrapper']['nano'] = [
+  $page['entity_view_wrapper']['nano'] = [
     '#type' => 'container',
     '#attributes' => [
       'class' => ['nano'],
     ],
   ];
-  $page['vcard_view_wrapper']['nano']['content'] = [
+  $page['entity_view_wrapper']['nano']['content'] = [
     '#type' => 'container',
     '#attributes' => [
       'class' => ['nano-content'],
     ],
   ];
   // "Add new VCard" link.
-  $page['vcard_view_wrapper']['nano']['content']['add'] = [
+  $page['entity_view_wrapper']['nano']['content']['add'] = [
     '#type' => 'container',
     '#attributes' => [
       'id' => 'add-vcard-wrapper',
     ],
   ];
-  $page['vcard_view_wrapper']['nano']['content']['add']['link'] = [
+  $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
     '#type' => 'link',
     '#href' => 'my-vcards/add',
     '#title' => 'add',

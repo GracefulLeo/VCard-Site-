@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <div class="vcard-view-wrapper large-8 medium-8 columns">
+    <div class="entity-view-wrapper large-8 medium-8 columns">
         <div class="nano">
             <div class="nano-content">
 

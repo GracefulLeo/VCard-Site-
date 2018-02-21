@@ -1,13 +1,15 @@
 (function ($) {
   Drupal.behaviors.vcardMain = {
     'attach': function (context) {
-      $('.list-item:not(.vcard-processed)', context)
+      var itemType = 'vcard';
+
+      $('.list-item-' + itemType + ':not(.list-item-processed)', context)
           .bind('click', function () {
-            $(this).siblings().removeClass('vcard-processed');
-            $(this).addClass('vcard-processed');
-            $('.vcard-view-wrapper')
+            $(this).siblings().removeClass('list-item-processed');
+            $(this).addClass('list-item-processed');
+            $('.entity-view-wrapper')
                 .find('.nano-content')
-                .load(Drupal.settings.basePath + 'ajax/vcard/' + parseInt($(this).data('id'), 10) + '/view');
+                .load(Drupal.settings.basePath + 'ajax/' + itemType + '/' + parseInt($(this).data('id'), 10) + '/view');
             return false;
           });
 
