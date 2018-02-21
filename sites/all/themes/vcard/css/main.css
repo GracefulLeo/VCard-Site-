@@ -166,17 +166,18 @@ body {
   background-color: #a9a9a9;
 }
 /* Right column. */
-/* "Add VCard" link. */
-#add-vcard-wrapper {
+/* "Add entity" link. */
+#add-entity-wrapper {
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: center;
 }
-#add-vcard-wrapper a {
+#add-entity-wrapper a {
   font-size: 100px;
   border: 1px solid;
   border-radius: 100%;
+  padding: 10px;
 }
 /* VCard view. */
 .entity-view-wrapper {

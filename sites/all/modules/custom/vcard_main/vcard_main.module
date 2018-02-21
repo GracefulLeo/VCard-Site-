@@ -14,7 +14,8 @@ function vcard_main_menu() {
     'title' => 'My VCards',
     'title callback' => 'vcard_main_my_vcards_title',
     'menu_name' => 'main-menu',
-    'page callback' => 'vcard_main_my_vcards',
+    'page callback' => '_entity_page',
+    'page arguments' => ['vcard'],
     'access callback' => TRUE,
   ];
   $items['ajax/vcard/%/view'] = [
@@ -22,7 +23,7 @@ function vcard_main_menu() {
     'page arguments' => [2],
     'type' => MENU_CALLBACK,
     'access arguments' => ['access content'],
-    'delivery callback' => 'vcard_main_vcard_ajax_callback',
+    'delivery callback' => 'vcard_main_entity_ajax_callback',
   ];
   $items['my-vcards/add'] = [
     'title' => 'Add VCard',
@@ -50,9 +51,22 @@ function vcard_main_menu() {
   $items['groups'] = [
     'title' => 'Groups',
     'menu_name' => 'main-menu',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => ['vcard_main_groups_form'],
+    'page callback' => '_entity_page',
+    'page arguments' => ['group'],
     'access arguments' => ['access content'],
+  ];
+  $items['group/add'] = [
+    'title' => 'Add group',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['vcard_main_group_form'],
+    'access arguments' => ['create vcard content'],
+    'type' => MENU_CALLBACK,
+  ];
+  $items['ajax/group/add'] = [
+    'page callback' => 'vcard_main_group_add_ajax',
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['access content'],
+    'delivery callback' => 'vcard_main_entity_ajax_callback',
   ];
   $items['history'] = [
     'title' => 'History',
@@ -111,9 +125,13 @@ function vcard_main_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * My VCards page callback.
+ * Helper function provides two columns on page.
  */
-function vcard_main_my_vcards() {
+function _entity_page($entity_type = NULL) {
+  if (!$entity_type) {
+    return FALSE;
+  }
+
   global $user;
   $page = [];
 
@@ -122,9 +140,6 @@ function vcard_main_my_vcards() {
   if (!$user->uid) {
     return $page;
   }
-
-  $user_wrapper = entity_metadata_wrapper('user', $user);
-  $my_vcards = $user_wrapper->field_my_vcards->value();
 
   // Left column.
   $page['entity_list_wrapper'] = [
@@ -146,31 +161,6 @@ function vcard_main_my_vcards() {
     ],
   ];
 
-  if (!empty($my_vcards)) {
-    // Sort by "changed", newest first.
-    $sorted = [];
-    foreach ($my_vcards as $key => $vcard) {
-      $sorted[$vcard->changed] = $key;
-    }
-    krsort($sorted);
-
-    foreach ($sorted as $key) {
-      $logo_uri = '';
-      if (!empty($my_vcards[$key]->field_logotype)) {
-        $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
-      }
-
-      $page['entity_list_wrapper']['nano']['entity_list'][] = [
-        '#markup' => theme('entity_nano_teaser', [
-          'entity_type' => 'vcard',
-          'nid' => $my_vcards[$key]->nid,
-          'logo_uri' => $logo_uri,
-          'title' => $my_vcards[$key]->title,
-        ]),
-      ];
-    }
-  }
-
   //  Right column.
   $page['entity_view_wrapper'] = [
     '#type' => 'container',
@@ -190,20 +180,75 @@ function vcard_main_my_vcards() {
       'class' => ['nano-content'],
     ],
   ];
-  // "Add new VCard" link.
-  $page['entity_view_wrapper']['nano']['content']['add'] = [
-    '#type' => 'container',
-    '#attributes' => [
-      'id' => 'add-vcard-wrapper',
-    ],
-  ];
-  $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
-    '#type' => 'link',
-    '#href' => 'my-vcards/add',
-    '#title' => 'add',
-    '#prefix' => '<i class="material-icons">',
-    '#suffix' => '</i>',
-  ];
+
+  $user_wrapper = entity_metadata_wrapper('user', $user);
+
+  switch ($entity_type) {
+    case 'vcard' :
+      $my_vcards = $user_wrapper->field_my_vcards->value();
+      if (!empty($my_vcards)) {
+        // Sort by "changed", newest first.
+        $sorted = [];
+        foreach ($my_vcards as $key => $vcard) {
+          $sorted[$vcard->changed] = $key;
+        }
+        krsort($sorted);
+
+        foreach ($sorted as $key) {
+          $logo_uri = '';
+          if (!empty($my_vcards[$key]->field_logotype)) {
+            $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
+          }
+
+          $page['entity_list_wrapper']['nano']['entity_list'][] = [
+            '#markup' => theme('entity_nano_teaser', [
+              'entity_type' => 'vcard',
+              'nid' => $my_vcards[$key]->nid,
+              'logo_uri' => $logo_uri,
+              'title' => $my_vcards[$key]->title,
+            ]),
+          ];
+        }
+      }
+      // "Add new VCard" link.
+      $page['entity_view_wrapper']['nano']['content']['add'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'id' => 'add-entity-wrapper',
+        ],
+      ];
+      $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
+        '#type' => 'link',
+        '#href' => 'my-vcards/add',
+        '#title' => 'add',
+        '#prefix' => '<i class="material-icons">',
+        '#suffix' => '</i>',
+      ];
+      break;
+
+    case 'group':
+      $my_groups = $user_wrapper->field_groups->value();
+      if (!empty($my_groups)) {
+      }
+      // "Add new group" link.
+      $page['entity_view_wrapper']['nano']['content']['add'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'id' => 'add-entity-wrapper',
+        ],
+      ];
+      $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
+        '#type' => 'link',
+        '#href' => 'group/add',
+        '#title' => 'group_add',
+        '#prefix' => '<i class="material-icons">',
+        '#suffix' => '</i>',
+        '#attributes' => [
+          'id' => 'add-new-group',
+        ],
+      ];
+      break;
+  }
 
   $page['#attached'] = [
     'js' => [
@@ -245,11 +290,11 @@ function vcard_main_vcard_view_ajax($id = NULL) {
 }
 
 /**
- * Html deliver for view VCards.
+ * Html deliver for view Entities.
  *
  * @param $page_callback_result
  */
-function vcard_main_vcard_ajax_callback($page_callback_result) {
+function vcard_main_entity_ajax_callback($page_callback_result) {
   print $page_callback_result;
   drupal_page_footer();
 }
@@ -472,10 +517,45 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
 }
 
 /**
- * "Groups" page callback.
+ * "Groups" form callback for "add", "edit" pages.
  */
-function vcard_main_groups_form($form, &$form_state) {
+function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
+  global $user;
+
+  if ($user->uid) {
+    if (is_numeric($id)) {
+      $group_entity = entity_load_single('group', $id);
+    }
+    else {
+      $group_entity = entity_create('group', ['type' => 'group']);
+    }
+
+    field_attach_form('group', $group_entity, $form, $form_state);
+
+    $form['group'] = [
+      '#type' => 'value',
+      '#value' => $group_entity,
+    ];
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#weight' => 100,
+    ];
+  }
+
   return $form;
+}
+
+/**
+ * Delivery ajax for "Add new group".
+ *
+ * @return string
+ */
+function vcard_main_group_add_ajax() {
+  $form = drupal_get_form('vcard_main_group_form');
+
+  return render($form);
 }
 
 /**
