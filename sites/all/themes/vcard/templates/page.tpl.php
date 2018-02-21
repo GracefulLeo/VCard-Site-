@@ -50,7 +50,7 @@
                             </strong>
                         </div>
                     <?php endif; ?>
-                    <?php if ($alt_main_menu): ?>
+                    <?php if (user_is_logged_in() && $alt_main_menu): ?>
                         <nav class="dropdown-menu">
                           <?php print ($alt_main_menu); ?>
                         </nav> <!-- /#main-menu -->
