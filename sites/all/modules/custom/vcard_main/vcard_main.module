@@ -25,19 +25,19 @@ function vcard_main_menu() {
     'page arguments' => ['vcard'],
     'access callback' => TRUE,
   ];
-  $items['ajax/vcard/%/view'] = [
-    'page callback' => 'vcard_main_vcard_view_ajax',
-    'page arguments' => [2],
-    'type' => MENU_CALLBACK,
-    'access arguments' => ['access content'],
-    'delivery callback' => 'vcard_main_entity_ajax_callback',
-  ];
   $items['my-vcards/add'] = [
     'title' => 'Add VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
     'access arguments' => ['create vcard content'],
     'type' => MENU_CALLBACK,
+  ];
+  $items['ajax/vcard/%/view'] = [
+    'page callback' => 'vcard_main_vcard_view_ajax',
+    'page arguments' => [2],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['access content'],
+    'delivery callback' => 'vcard_main_entity_ajax_callback',
   ];
   $items['my-vcards/%/%'] = [
     'title callback' => 'vcard_main_my_vcard_form_edit_title',
