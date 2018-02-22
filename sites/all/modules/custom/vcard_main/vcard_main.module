@@ -69,11 +69,12 @@ function vcard_main_menu() {
     'access arguments' => ['create vcard content'],
     'type' => MENU_CALLBACK,
   ];
-  $items['ajax/group/add'] = [
+  $items['group/add/%'] = [
     'page callback' => 'vcard_main_group_add_ajax',
+    'page arguments' => [2],
     'type' => MENU_CALLBACK,
     'access arguments' => ['access content'],
-    'delivery callback' => 'vcard_main_entity_ajax_callback',
+    'delivery callback' => 'ajax_deliver',
   ];
   $items['history'] = [
     'title' => 'History',

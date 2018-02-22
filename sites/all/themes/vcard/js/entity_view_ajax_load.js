@@ -14,17 +14,4 @@
           });
     }
   };
-
-  Drupal.behaviors.addNewEntity = {
-    attach: function (context) {
-      var itemType = 'group';
-
-      $('#add-new-' + itemType, context).bind('click', function () {
-        $('.entity-view-wrapper')
-            .find('.nano-content')
-            .load(Drupal.settings.basePath + 'ajax/' + itemType + '/add');
-        return false;
-      })
-    }
-  };
 })(jQuery);

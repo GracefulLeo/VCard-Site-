@@ -213,6 +213,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
  * "My VCard" page form validation.
  */
 function vcard_main_my_vcard_form_validation($form, &$form_state) {
+  field_attach_form_validate('node', $form_state['values']['node'], $form, $form_state);
   node_validate($form_state['values']['node'], $form, $form_state);
 }
 
