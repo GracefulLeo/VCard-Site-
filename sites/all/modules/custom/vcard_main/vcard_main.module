@@ -185,68 +185,11 @@ function _entity_page($entity_type = NULL) {
 
   switch ($entity_type) {
     case 'vcard' :
-      $my_vcards = $user_wrapper->field_my_vcards->value();
-      if (!empty($my_vcards)) {
-        // Sort by "changed", newest first.
-        $sorted = [];
-        foreach ($my_vcards as $key => $vcard) {
-          $sorted[$vcard->changed] = $key;
-        }
-        krsort($sorted);
-
-        foreach ($sorted as $key) {
-          $logo_uri = '';
-          if (!empty($my_vcards[$key]->field_logotype)) {
-            $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
-          }
-
-          $page['entity_list_wrapper']['nano']['entity_list'][] = [
-            '#markup' => theme('entity_nano_teaser', [
-              'entity_type' => 'vcard',
-              'nid' => $my_vcards[$key]->nid,
-              'logo_uri' => $logo_uri,
-              'title' => $my_vcards[$key]->title,
-            ]),
-          ];
-        }
-      }
-      // "Add new VCard" link.
-      $page['entity_view_wrapper']['nano']['content']['add'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'id' => 'add-entity-wrapper',
-        ],
-      ];
-      $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
-        '#type' => 'link',
-        '#href' => 'my-vcards/add',
-        '#title' => 'add',
-        '#prefix' => '<i class="material-icons">',
-        '#suffix' => '</i>',
-      ];
+      _vcard_attach_page_content($page, $user_wrapper);
       break;
 
     case 'group':
-      $my_groups = $user_wrapper->field_groups->value();
-      if (!empty($my_groups)) {
-      }
-      // "Add new group" link.
-      $page['entity_view_wrapper']['nano']['content']['add'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'id' => 'add-entity-wrapper',
-        ],
-      ];
-      $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
-        '#type' => 'link',
-        '#href' => 'group/add',
-        '#title' => 'group_add',
-        '#prefix' => '<i class="material-icons">',
-        '#suffix' => '</i>',
-        '#attributes' => [
-          'id' => 'add-new-group',
-        ],
-      ];
+      _groups_attach_page_content($page, $user_wrapper);
       break;
   }
 
@@ -257,6 +200,61 @@ function _entity_page($entity_type = NULL) {
   ];
 
   return $page;
+}
+
+/**
+ * Attach to _entity_page list of VCards and Add button.
+ *
+ * @param $page
+ *
+ * @param $user_wrapper
+ *
+ * @see _entity_page
+ */
+function _vcard_attach_page_content(&$page, $user_wrapper) {
+  $my_vcards = $user_wrapper->field_my_vcards->value();
+  if (!empty($my_vcards)) {
+    // Sort by "changed", newest first.
+    $sorted = [];
+    foreach ($my_vcards as $key => $vcard) {
+      $sorted[$vcard->changed] = $key;
+    }
+    krsort($sorted);
+
+    foreach ($sorted as $key) {
+      $logo_uri = '';
+      if (!empty($my_vcards[$key]->field_logotype)) {
+        $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
+      }
+
+      try {
+        $page['entity_list_wrapper']['nano']['entity_list'][] = [
+          '#markup' => theme('entity_nano_teaser', [
+            'entity_type' => 'vcard',
+            'nid' => $my_vcards[$key]->nid,
+            'logo_uri' => $logo_uri,
+            'title' => $my_vcards[$key]->title,
+          ]),
+        ];
+      } catch (Exception $e) {
+        watchdog('theme', 'entity_nano_teaser error: @e', ['@e' => $e]);
+      }
+    }
+  }
+  // "Add new VCard" link.
+  $page['entity_view_wrapper']['nano']['content']['add'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'id' => 'add-entity-wrapper',
+    ],
+  ];
+  $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
+    '#type' => 'link',
+    '#href' => 'my-vcards/add',
+    '#title' => 'add',
+    '#prefix' => '<i class="material-icons">',
+    '#suffix' => '</i>',
+  ];
 }
 
 /**
@@ -556,6 +554,38 @@ function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
   }
 
   return $form;
+}
+
+/**
+ * Attach to _entity_page list of Groups and Add button.
+ *
+ * @param $page
+ *
+ * @param $user_wrapper
+ *
+ * @see _entity_page
+ */
+function _groups_attach_page_content(&$page, $user_wrapper) {
+  $my_groups = $user_wrapper->field_groups->value();
+  if (!empty($my_groups)) {
+  }
+  // "Add new group" link.
+  $page['entity_view_wrapper']['nano']['content']['add'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'id' => 'add-entity-wrapper',
+    ],
+  ];
+  $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
+    '#type' => 'link',
+    '#href' => 'group/add',
+    '#title' => 'group_add',
+    '#prefix' => '<i class="material-icons">',
+    '#suffix' => '</i>',
+    '#attributes' => [
+      'id' => 'add-new-group',
+    ],
+  ];
 }
 
 /**
