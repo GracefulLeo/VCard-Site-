@@ -279,6 +279,10 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['sorts']['field_surname_value']['id'] = 'field_surname_value';
   $handler->display->display_options['sorts']['field_surname_value']['table'] = 'field_data_field_surname';
   $handler->display->display_options['sorts']['field_surname_value']['field'] = 'field_surname_value';
+  /* Sort criterion: Content: Name (field_name) */
+  $handler->display->display_options['sorts']['field_name_value']['id'] = 'field_name_value';
+  $handler->display->display_options['sorts']['field_name_value']['table'] = 'field_data_field_name';
+  $handler->display->display_options['sorts']['field_name_value']['field'] = 'field_name_value';
   $export['contacts'] = $view;
 
   return $export;
