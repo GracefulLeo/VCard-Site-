@@ -219,47 +219,6 @@ function vcard_main_entity_ajax_callback($page_callback_result) {
   drupal_page_footer();
 }
 
-// @todo Useless functionality in accordance with the new design.
-/**
- * Implements hook_page_alter().
- */
-//function vcard_main_page_alter(&$page) {
-//  global $user;
-//
-//  // Show elements for authorized users only.
-//  if ($user->uid) {
-//    $user_entity = entity_load_single('user', $user->uid);
-//    // If new user hasn't any VCard show hint.
-//    if (arg(1) != 'add' && empty($user_entity->field_my_vcards)) {
-//      $message = t(
-//        'Hint: To start using this service you need to fill some fields in your profile. Add <a href="@my_vcard">My first VCard</a>.',
-//        ['@my_vcard' => url('my-vcards/add')]
-//      );
-//
-//      $page['content']['hint'] = [
-//        '#markup' => '
-//            <div class="hint-outer">
-//                <div class="hint-inner">
-//                    <p>' . $message . '</p>
-//                    <div class="hint-bottom-triangle"></div>
-//                </div>
-//            </div>
-//        ',
-//      ];
-//
-//      $this_module = drupal_get_path('module', 'vcard_main');
-//      $page['content']['hint']['#attached'] = [
-//        'css' => [
-//          "{$this_module}/css/hint.css",
-//        ],
-//        'js' => [
-//          "{$this_module}/js/hint.js",
-//        ],
-//      ];
-//    }
-//  }
-//}
-
 /**
  * Home page title callback.
  */
