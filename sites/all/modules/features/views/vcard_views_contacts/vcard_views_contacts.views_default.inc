@@ -61,7 +61,7 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Logotype */
+  /* Field: Field: Logotype */
   $handler->display->display_options['fields']['field_logotype']['id'] = 'field_logotype';
   $handler->display->display_options['fields']['field_logotype']['table'] = 'field_data_field_logotype';
   $handler->display->display_options['fields']['field_logotype']['field'] = 'field_logotype';
@@ -234,6 +234,51 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Contacts';
   $handler->display->display_options['menu']['name'] = 'main-menu';
+
+  /* Display: Entity Reference */
+  $handler = $view->new_display('entityreference', 'Entity Reference', 'entityreference_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['defaults']['cache'] = FALSE;
+  $handler->display->display_options['cache']['type'] = 'time';
+  $handler->display->display_options['cache']['results_lifespan'] = '60';
+  $handler->display->display_options['cache']['results_lifespan_custom'] = '0';
+  $handler->display->display_options['cache']['output_lifespan'] = '60';
+  $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
+  $handler->display->display_options['defaults']['exposed_form'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['expose_sort_order'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'entityreference_style';
+  $handler->display->display_options['style_options']['search_fields'] = array(
+    'field_surname' => 'field_surname',
+    'field_name' => 'field_name',
+    'field_middle_name' => 'field_middle_name',
+    'field_address' => 'field_address',
+    'field_company_name' => 'field_company_name',
+    'field_mail' => 'field_mail',
+    'field_phone' => 'field_phone',
+    'field_position' => 'field_position',
+    'field_web_site' => 'field_web_site',
+    'nid' => 0,
+    'field_logotype' => 0,
+    'nothing' => 0,
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'entityreference_fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'field_logotype' => 'field_logotype',
+    'nothing' => 'nothing',
+  );
+  $handler->display->display_options['row_options']['separator'] = '';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Surname (field_surname) */
+  $handler->display->display_options['sorts']['field_surname_value']['id'] = 'field_surname_value';
+  $handler->display->display_options['sorts']['field_surname_value']['table'] = 'field_data_field_surname';
+  $handler->display->display_options['sorts']['field_surname_value']['field'] = 'field_surname_value';
   $export['contacts'] = $view;
 
   return $export;
