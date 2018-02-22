@@ -31,7 +31,7 @@ function vcard_preprocess_entity_nano_teaser(&$variables) {
     }
     else {
       $variables['image'] = theme('image', [
-        'path' => drupal_get_path('theme', 'vcard') . '/images/business-card-svgrepo-com.svg',
+        'path' => VCARD_DEFAULT_LOGO_MICRO_IMAGE,
       ]);
     }
   } catch (Exception $e) {

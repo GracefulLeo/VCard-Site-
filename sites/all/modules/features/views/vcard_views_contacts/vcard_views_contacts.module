@@ -4,4 +4,9 @@
  * Code for the VCard: Views: Contacts feature.
  */
 
+/**
+ * Defines path to VCard logotype default image.
+ */
+define('VCARD_DEFAULT_LOGO_MICRO_IMAGE', 'sites/all/themes/vcard/images/business-card-svgrepo-com.svg');
+
 include_once 'vcard_views_contacts.features.inc';

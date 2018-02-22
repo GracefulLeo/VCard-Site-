@@ -66,10 +66,12 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['fields']['field_logotype']['table'] = 'field_data_field_logotype';
   $handler->display->display_options['fields']['field_logotype']['field'] = 'field_logotype';
   $handler->display->display_options['fields']['field_logotype']['label'] = '';
-  $handler->display->display_options['fields']['field_logotype']['element_type'] = 'div';
+  $handler->display->display_options['fields']['field_logotype']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_logotype']['element_class'] = 'logo-micro';
   $handler->display->display_options['fields']['field_logotype']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_logotype']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_logotype']['empty'] = '<img src="' . VCARD_DEFAULT_LOGO_MICRO_IMAGE . '">';
+  $handler->display->display_options['fields']['field_logotype']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_logotype']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_logotype']['settings'] = array(
     'image_style' => 'micro_logo',
@@ -268,11 +270,8 @@ function vcard_views_contacts_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'entityreference_fields';
-  $handler->display->display_options['row_options']['inline'] = array(
-    'field_logotype' => 'field_logotype',
-    'nothing' => 'nothing',
-  );
   $handler->display->display_options['row_options']['separator'] = '';
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Surname (field_surname) */
