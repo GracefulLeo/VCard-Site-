@@ -16,6 +16,32 @@
 function _groups_attach_page_content(&$page, $user_wrapper) {
   $my_groups = $user_wrapper->field_groups->value();
   if (!empty($my_groups)) {
+    // Sort by "changed", newest first.
+    $sorted = [];
+    foreach ($my_groups as $key => $group) {
+      $sorted[$group->changed] = $key;
+    }
+    krsort($sorted);
+
+    foreach ($sorted as $key) {
+      $logo_uri = '';
+      if (!empty($my_groups[$key]->field_logotype)) {
+        $logo_uri = $my_groups[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
+      }
+
+      try {
+        $page['entity_list_wrapper']['nano']['entity_list'][] = [
+          '#markup' => theme('entity_nano_teaser', [
+            'entity_type' => 'group',
+            'id' => $my_groups[$key]->id,
+            'logo_uri' => $logo_uri,
+            'title' => $my_groups[$key]->field_group_name[LANGUAGE_NONE][0]['value'],
+          ]),
+        ];
+      } catch (Exception $e) {
+        watchdog('theme', 'entity_nano_teaser error: @e', ['@e' => $e]);
+      }
+    }
   }
 
   // "Add new group" link.

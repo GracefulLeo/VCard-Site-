@@ -33,7 +33,7 @@ function _vcard_attach_page_content(&$page, $user_wrapper) {
         $page['entity_list_wrapper']['nano']['entity_list'][] = [
           '#markup' => theme('entity_nano_teaser', [
             'entity_type' => 'vcard',
-            'nid' => $my_vcards[$key]->nid,
+            'id' => $my_vcards[$key]->nid,
             'logo_uri' => $logo_uri,
             'title' => $my_vcards[$key]->title,
           ]),
