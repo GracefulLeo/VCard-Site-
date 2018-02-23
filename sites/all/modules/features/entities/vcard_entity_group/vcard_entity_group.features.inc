@@ -14,7 +14,11 @@ function vcard_entity_group_eck_bundle_info() {
       'entity_type' => 'group',
       'name' => 'group',
       'label' => 'Group',
-      'config' => array(),
+      'config' => array(
+        'managed_properties' => array(
+          'changed' => 'changed',
+        ),
+      ),
     ),
   );
   return $items;
@@ -28,7 +32,13 @@ function vcard_entity_group_eck_entity_type_info() {
     'group' => array(
       'name' => 'group',
       'label' => 'Group',
-      'properties' => array(),
+      'properties' => array(
+        'changed' => array(
+          'label' => 'Changed',
+          'type' => 'integer',
+          'behavior' => 'changed',
+        ),
+      ),
     ),
   );
   return $items;
