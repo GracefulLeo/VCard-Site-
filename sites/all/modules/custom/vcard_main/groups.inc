@@ -66,10 +66,10 @@ function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
       '#value' => t('Save'),
       '#weight' => 100,
     ];
-  }
 
-  $form['#validate'][] = 'vcard_main_group_form_validation';
-  $form['#submit'][] = 'vcard_main_group_form_submit';
+    $form['#validate'][] = 'vcard_main_group_form_validation';
+    $form['#submit'][] = 'vcard_main_group_form_submit';
+  }
 
   return $form;
 }
@@ -78,14 +78,20 @@ function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
  * Delivery ajax for "Add new group".
  */
 function vcard_main_group_add_ajax($ajax) {
+  $form = drupal_get_form('vcard_main_group_form');
+  $output = drupal_render($form);
+
   if ($ajax === 'ajax') {
+    $commands = [];
+    $commands[] = ajax_command_replace('#add-entity-wrapper', $output);
+
     return [
       '#type' => 'ajax',
-      '#commands' => [ajax_command_replace('#add-entity-wrapper', render(drupal_get_form('vcard_main_group_form')))],
+      '#commands' => $commands,
     ];
   }
   else {
-    return render(drupal_get_form('vcard_main_group_form'));
+    return $output;
   }
 }
 
@@ -101,6 +107,11 @@ function vcard_main_group_form_validation($form, &$form_state) {
  */
 function vcard_main_group_form_submit($form, &$form_state) {
   $group_entity = $form_state['values']['group'];
+  field_attach_submit('group', $group_entity, $form, $form_state);
+  entity_save('group', $group_entity);
+
+  // Save relations to user.
+  _user_entityreference_field_save('field_groups', $group_entity->id);
 
   drupal_goto('groups');
 }

@@ -221,6 +221,44 @@ function vcard_main_entity_ajax_callback($page_callback_result) {
 }
 
 /**
+ * Helper function save relations to user entity field.
+ *
+ * @param $field_name
+ *  Entity reference field name in user entity.
+ * @param $entity_id
+ *  For example: VCard node "nid" or Group entity "id".
+ */
+function _user_entityreference_field_save($field_name, $entity_id) {
+  global $user;
+  $wrapper = entity_metadata_wrapper('user', $user);
+
+  if (isset($wrapper->{$field_name})) {
+    $entity_field = $wrapper->{$field_name}->value();
+    $ids = [];
+    foreach ($entity_field as $key => $item) {
+      // Remove ids of referenced entities that has been deleted.
+      if (!$item) {
+        unset($wrapper->{$field_name}[$key]);
+      }
+      else {
+        $ids[] = $item->id;
+      }
+    }
+    // Save if new VCard created.
+    if (!in_array($entity_id, $ids)) {
+      $wrapper->{$field_name}[] = intval($entity_id);
+    }
+  }
+  else {
+    watchdog(
+      'error',
+      t('Field @field_name does not exists for user.', ['@field_name' => $field_name])
+    );
+  }
+  $wrapper->save();
+}
+
+/**
  * Home page title callback.
  */
 function vcard_main_my_vcards_title() {

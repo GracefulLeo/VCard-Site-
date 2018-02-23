@@ -107,7 +107,6 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
 
   // Show elements for authorized users only.
   if ($user->uid) {
-    $user_entity = entity_load_single('user', $user->uid);
 
     if (is_numeric($id)) {
       $vcard_node = node_load($id);
@@ -148,10 +147,6 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
     $form['node'] = [
       '#type' => 'value',
       '#value' => $vcard_node,
-    ];
-    $form['user_entity'] = [
-      '#type' => 'value',
-      '#value' => $user_entity,
     ];
 
     $form['submit'] = [
@@ -225,7 +220,11 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   $vcard_node = $form_state['values']['node'];
   field_attach_submit('node', $vcard_node, $form, $form_state);
   $vcard_node = node_submit($vcard_node);
-  node_save($vcard_node);
+  try {
+    node_save($vcard_node);
+  } catch (Exception $e) {
+    watchdog('vcard_main_my_vcard_form_submit', '<pre>@e</pre>', ['@e' => print_r($e, TRUE)]);
+  }
 
   // Set surname, name and middle name as node title.
   $vcard_wrapper = entity_metadata_wrapper('node', $vcard_node);
@@ -237,29 +236,8 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   $vcard_wrapper->title->set($title);
   $vcard_wrapper->save();
 
-
   // Save relations to user.
-  $user = $form_state['values']['user_entity'];
-  $wrapper = entity_metadata_wrapper('user', $user);
-  if (isset($wrapper->field_my_vcards)) {
-    $vcard_field = $wrapper->field_my_vcards->value();
-    $ids = [];
-    foreach ($vcard_field as $key => $item) {
-      // Remove ids of referenced nodes that has been deleted.
-      if (!$item) {
-        unset($wrapper->field_my_vcards[$key]);
-      }
-      $ids[] = $item->nid;
-    }
-    // Save if new VCard created.
-    if (!in_array($vcard_node->nid, $ids)) {
-      $wrapper->field_my_vcards[] = intval($vcard_node->nid);
-    }
-  }
-  else {
-    watchdog('error', t('Field \'vcard\' does not exists for user.'));
-  }
-  $wrapper->save();
+  _user_entityreference_field_save('field_my_vcards', $vcard_node->nid);
 
   drupal_goto('my-vcards');
 }
