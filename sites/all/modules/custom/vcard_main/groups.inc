@@ -64,6 +64,8 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
       'class' => ['use-ajax'],
     ],
   ];
+  // @todo Find better attach this js.
+  drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/groups.js');
 }
 
 /**
@@ -156,7 +158,7 @@ function vcard_main_group_view_ajax($id = NULL) {
   if (is_numeric($id)) {
     $group_entity = entity_load_single('group', $id);
 
-    return theme('group_details_view', ['group', $group_entity]);
+    return theme('group_details_view', ['group' => $group_entity]);
   }
 
   return FALSE;

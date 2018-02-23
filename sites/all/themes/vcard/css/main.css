@@ -220,7 +220,7 @@ body {
 }
 /* Base64 image field. */
 .field-name-field-base64-vcard img {
-  border: 1px solid #000;
+  border: 1px solid #ddd;
 }
 /* Ajax throbber. */
 .ajax-progress-throbber {
@@ -306,4 +306,33 @@ body {
   border-radius: 100%;
   padding: 5px;
   font-weight: bold;
+}
+/* Group view. */
+.contact-wrapper {
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.contact-info {
+  display: flex;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  align-items: center;
+}
+.contact-logo {
+  height: 64px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+.contact-person {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+}
+.contact-person .position {
+  color: #999;
+}
+.contact-wrapper .vcard-image {
+  display: none;
 }

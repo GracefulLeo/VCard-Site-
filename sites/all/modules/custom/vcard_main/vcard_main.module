@@ -230,7 +230,8 @@ function _entity_page($entity_type = NULL) {
  * @param $page_callback_result
  */
 function vcard_main_entity_ajax_callback($page_callback_result) {
-  print $page_callback_result;
+  // @todo Remove drupal_get_js().
+  print $page_callback_result.drupal_get_js();
   drupal_page_footer();
 }
 
