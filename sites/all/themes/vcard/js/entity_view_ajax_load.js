@@ -1,10 +1,9 @@
 (function ($) {
   Drupal.behaviors.entityViewAjaxLoad = {
     attach: function (context) {
-      var itemType = 'vcard';
-
-      $('.list-item-' + itemType + ':not(.list-item-processed)', context)
+      $('.list-item:not(.list-item-processed)', context)
           .bind('click', function () {
+            var itemType = $(this).data('type');
             $(this).siblings().removeClass('list-item-processed');
             $(this).addClass('list-item-processed');
             $('.entity-view-wrapper')

@@ -78,6 +78,12 @@ function vcard_preprocess_views_view(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_theme.
+ */
+function vcard_preprocess_group_details_view(&$variables) {
+}
+
+/**
  * Returns HTML for an individual form element.
  *
  * Combine multiple values into a table with drag-n-drop reordering.

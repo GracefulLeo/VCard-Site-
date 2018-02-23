@@ -76,6 +76,13 @@ function vcard_main_menu() {
     'access arguments' => ['access content'],
     'delivery callback' => 'ajax_deliver',
   ];
+  $items['ajax/group/%/view'] = [
+    'page callback' => 'vcard_main_group_view_ajax',
+    'page arguments' => [2],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['access content'],
+    'delivery callback' => 'vcard_main_entity_ajax_callback',
+  ];
   $items['history'] = [
     'title' => 'History',
     'menu_name' => 'main-menu',
@@ -109,7 +116,7 @@ function vcard_main_theme($existing, $type, $theme, $path) {
     'entity_nano_teaser' => [
       'variables' => [
         'entity_type' => NULL,
-        'id' => NULL,
+        'nid' => NULL,
         'logo_uri' => NULL,
         'title' => NULL,
       ],
@@ -128,6 +135,13 @@ function vcard_main_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'template' => 'my-vcard-form',
       'path' => $templates,
+    ],
+    'group_details_view' => [
+      'variables' => [
+        'group' => NULL,
+      ],
+      'path' => $templates,
+      'template' => 'group-details-view',
     ],
   ];
 }

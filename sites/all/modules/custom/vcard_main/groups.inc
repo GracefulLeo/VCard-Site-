@@ -33,7 +33,7 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
         $page['entity_list_wrapper']['nano']['entity_list'][] = [
           '#markup' => theme('entity_nano_teaser', [
             'entity_type' => 'group',
-            'id' => $my_groups[$key]->id,
+            'nid' => $my_groups[$key]->id,
             'logo_uri' => $logo_uri,
             'title' => $my_groups[$key]->field_group_name[LANGUAGE_NONE][0]['value'],
           ]),
@@ -140,4 +140,24 @@ function vcard_main_group_form_submit($form, &$form_state) {
   _user_entityreference_field_save('field_groups', $group_entity->id);
 
   drupal_goto('groups');
+}
+
+/**
+ * Delivery ajax for view Group.
+ *
+ * @param null $id
+ *
+ * @return array|mixed
+ * @throws \Exception
+ */
+function vcard_main_group_view_ajax($id = NULL) {
+  global $user;
+
+  if (is_numeric($id)) {
+    $group_entity = entity_load_single('group', $id);
+
+    return theme('group_details_view', ['group', $group_entity]);
+  }
+
+  return FALSE;
 }
