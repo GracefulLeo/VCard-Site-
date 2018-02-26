@@ -16,5 +16,25 @@
         $(this).removeClass('active');
       })
     }
+  };
+
+  Drupal.behaviors.event = {
+    attach: function (context) {
+      $(context).ajaxStart(function () {
+        $('.ajax-vcard-throbber-wrapper', context).css({
+          'z-index': 9999,
+          'opacity': '.2'
+        })
+      });
+      $(context).ajaxSuccess(function () {
+        // Set delay for very fast ajax, because fast flashing is bad for eyes.
+        setTimeout(function () {
+          $('.ajax-vcard-throbber-wrapper', context).css({
+            'z-index': -9999,
+            'opacity': 0
+          })
+        }, 300)
+      })
+    }
   }
 })(jQuery);

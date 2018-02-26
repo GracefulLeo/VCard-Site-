@@ -198,5 +198,9 @@
   <?php endif; ?>
 
   <?php if ($messages && $zurb_foundation_messages_modal): print $messages; endif; ?>
+
+    <div class="ajax-vcard-throbber-wrapper">
+        <div class="ajax-vcard-throbber"></div>
+    </div>
 </div>
 <!--/.page -->
