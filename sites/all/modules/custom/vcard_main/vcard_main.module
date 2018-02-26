@@ -230,8 +230,7 @@ function _entity_page($entity_type = NULL) {
  * @param $page_callback_result
  */
 function vcard_main_entity_ajax_callback($page_callback_result) {
-  // @todo Remove drupal_get_js().
-  print $page_callback_result.drupal_get_js();
+  print $page_callback_result;
   drupal_page_footer();
 }
 
@@ -256,7 +255,7 @@ function _user_entityreference_field_save($field_name, $entity_id) {
         unset($wrapper->{$field_name}[$key]);
       }
       else {
-        $ids[] = $item->id;
+        $ids[] = $item->type == 'vcard' ? $item->nid : $item->id;
       }
     }
     // Save if new VCard created.
