@@ -263,47 +263,51 @@ body {
 #vcard-main-my-vcard-form .nano-content {
   padding-right: 5px;
 }
-#vcard-main-my-vcard-form .form-item {
+/* Fields. */
+.form-item {
   margin: 0;
 }
-#vcard-main-my-vcard-form .form-item input {
+.form-item input {
   border: none;
   border-bottom: 1px solid #ddd;
   box-shadow: none;
   margin-bottom: 8px;
 }
-#vcard-main-my-vcard-form .form-item input::placeholder {
+.form-item input::placeholder {
   opacity: .5;
 }
-#vcard-main-my-vcard-form .form-item input:focus {
+.form-item input:focus {
   background: #fff;
   border-bottom: 2px solid #1a1a1a;
+  box-shadow: none;
 }
-#vcard-main-my-vcard-form .form-item .tabledrag-toggle-weight-wrapper {
+.form-item .tabledrag-toggle-weight-wrapper {
   display: none;
 }
 /* Field logotype. */
-#vcard-main-my-vcard-form .field-name-field-logotype {
+.field-name-field-logotype {
   margin-bottom: 8px;
 }
-#vcard-main-my-vcard-form .field-type-image .description {
+.field-type-image .description {
   display: none;
 }
-#vcard-main-my-vcard-form .field-type-image .image-widget-data {
+.field-type-image .image-widget-data {
   display: flex;
   height: 37px;
   width: 100%;
 }
-#vcard-main-my-vcard-form .field-type-image .image-widget-data button {
+.field-type-image .image-widget-data button {
   line-height: 0;
 }
-#vcard-main-my-vcard-form .field-name-field-logotype label,
-#vcard-main-my-vcard-form .field-name-field-logotype .form-file,
-#vcard-main-my-vcard-form .field-type-image .image-preview,
-#vcard-main-my-vcard-form .field-type-image .file-size {
+.field-name-field-logotype label,
+.field-name-field-logotype .form-file,
+.field-type-image .file-size {
   display: none;
 }
-#vcard-main-my-vcard-form .field-type-image .logo-text {
+#vcard-main-my-vcard-form .field-type-image .image-preview {
+  display: none;
+}
+.field-type-image .logo-text {
   line-height: 37px;
   vertical-align: middle;
   padding: 0 20px 0 8px;
@@ -354,4 +358,21 @@ body {
 }
 .contact-wrapper .vcard-image {
   display: none;
+}
+/* Modal popups. */
+#modalContent .modal-header {
+  height: 54px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding: 0 20px;
+}
+#modalContent #modal-title {
+  flex-grow: 1;
+}
+#modalContent .close {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
 }

@@ -45,14 +45,15 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
   }
 
   // "Add new group" link.
-  drupal_add_library('system', 'drupal.ajax');
-
   $page['entity_view_wrapper']['nano']['content']['add'] = [
     '#type' => 'container',
     '#attributes' => [
       'id' => 'add-entity-wrapper',
     ],
   ];
+  // Enable popup style settings.
+  vcard_main_group_ctools_popup_style();
+  // Create modal link to popup.
   $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
     '#type' => 'link',
     '#href' => 'group/add/nojs',
@@ -60,12 +61,9 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
     '#prefix' => '<i class="material-icons">',
     '#suffix' => '</i>',
     '#attributes' => [
-      'id' => 'add-new-group',
-      'class' => ['use-ajax'],
+      'class' => ['ctools-use-modal', 'ctools-modal-groups-popup'],
     ],
   ];
-  // @todo Find better attach this js.
-  drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/groups.js');
 }
 
 /**
@@ -84,6 +82,15 @@ function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
 
     field_attach_form('group', $group_entity, $form, $form_state);
 
+    // Remove "My contacts" field, contacts will add in other popup.
+    unset($form['field_my_contacts']);
+
+    // Style fields.
+    foreach (['field_group_name', 'field_description'] as $field) {
+      $form[$field][LANGUAGE_NONE][0]['value']['#attributes']['placeholder'] = $form[$field][LANGUAGE_NONE][0]['#title'];
+      $form[$field][LANGUAGE_NONE][0]['value']['#title_display'] = 'invisible';
+    }
+
     $form['group'] = [
       '#type' => 'value',
       '#value' => $group_entity,
@@ -95,8 +102,12 @@ function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
       '#weight' => 100,
     ];
 
-    $form['#validate'][] = 'vcard_main_group_form_validation';
-    $form['#submit'][] = 'vcard_main_group_form_submit';
+    // Add js for rewrite Logotype field.
+    $form['#attached'] = [
+      'js' => [
+        drupal_get_path('module', 'vcard_main') . '/js/field_logotype.js',
+      ],
+    ];
   }
 
   return $form;
@@ -105,21 +116,56 @@ function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
 /**
  * Delivery ajax for "Add new group".
  */
-function vcard_main_group_add_ajax($ajax) {
-  $form = drupal_get_form('vcard_main_group_form');
-  $output = drupal_render($form);
-
-  if ($ajax === 'ajax') {
-    $commands = [];
-    $commands[] = ajax_command_replace('#add-entity-wrapper', $output);
-
-    return [
-      '#type' => 'ajax',
-      '#commands' => $commands,
-    ];
+function vcard_main_group_add_ajax($js = NULL) {
+  if (!$js) {
+    return drupal_get_form('vcard_main_group_form');
   }
-  else {
-    return $output;
+
+  ctools_include('ajax');
+  ctools_include('modal');
+
+  $form_state = [
+    'ajax' => TRUE,
+    'title' => t('Add group'),
+  ];
+
+  $output = ctools_modal_form_wrapper('vcard_main_group_form', $form_state);
+  print ajax_render($output);
+  drupal_exit();
+}
+
+/**
+ *Popup’s settings function.
+ */
+function vcard_main_group_ctools_popup_style() {
+  static $added = FALSE;
+  if ($added == FALSE) {
+    $added = TRUE;
+
+    ctools_include('modal');
+    ctools_include('ajax');
+    ctools_modal_add_js();
+
+    $popup_style = [
+      'groups-popup' => [
+        'modalSize' => [
+          'type' => 'fixed',
+          'width' => 420,
+          'height' => 'auto',
+        ],
+        'modalOptions' => [
+          'opacity' => (float) 0.8,
+          'background-color' => '#084b57',
+        ],
+        'closeText' => '<i class="material-icons">close</i>',
+        'animation' => 'fadeIn',
+        'modalTheme' => 'groupsPopupHTML',
+        'animationSpeed' => 'slow',
+      ],
+    ];
+
+    drupal_add_js($popup_style, 'setting');
+    ctools_add_js('groups_modal_popup', 'vcard_main');
   }
 }
 
@@ -141,7 +187,15 @@ function vcard_main_group_form_submit($form, &$form_state) {
   // Save relations to user.
   _user_entityreference_field_save('field_groups', $group_entity->id);
 
-  drupal_goto('groups');
+  ctools_include('modal');
+  ctools_include('ajax');
+  ctools_add_js('ajax-responder');
+
+  // Closing the popup.
+  $commands[] = ctools_modal_command_dismiss();
+  $commands[] = ctools_ajax_command_reload();
+  print ajax_render($commands);
+  drupal_exit();
 }
 
 /**
@@ -153,8 +207,6 @@ function vcard_main_group_form_submit($form, &$form_state) {
  * @throws \Exception
  */
 function vcard_main_group_view_ajax($id = NULL) {
-  global $user;
-
   if (is_numeric($id)) {
     $group_entity = entity_load_single('group', $id);
 

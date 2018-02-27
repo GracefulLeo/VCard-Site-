@@ -69,12 +69,11 @@ function vcard_main_menu() {
     'access arguments' => ['create vcard content'],
     'type' => MENU_CALLBACK,
   ];
-  $items['group/add/%'] = [
+  $items['group/add/%ctools_js'] = [
     'page callback' => 'vcard_main_group_add_ajax',
     'page arguments' => [2],
     'type' => MENU_CALLBACK,
     'access arguments' => ['access content'],
-    'delivery callback' => 'ajax_deliver',
   ];
   $items['ajax/group/%/view'] = [
     'page callback' => 'vcard_main_group_view_ajax',

@@ -193,7 +193,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
 
     $form['#attached'] = [
       'js' => [
-        drupal_get_path('module', 'vcard_main') . '/js/my_vcard_form.js',
+        drupal_get_path('module', 'vcard_main') . '/js/field_logotype.js',
       ],
     ];
     $form['#validate'][] = 'vcard_main_my_vcard_form_validation';
