@@ -53,6 +53,11 @@ jQuery(document).ready(function ($) {
 
   // Define fabric.Objects and save to variable.
   fields.forEach(function (item) {
+    // Do not need render VCard title on canvas.
+    if (item === 'edit-title') {
+      return;
+    }
+
     elements[item] = new fabric.Text($('#' + item).val(), {
       fontSize: 16,
       top: elPadding,
