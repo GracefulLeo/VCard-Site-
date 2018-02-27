@@ -64,6 +64,7 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
       'class' => ['ctools-use-modal', 'ctools-modal-groups-popup'],
     ],
   ];
+  drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/groups.js');
 }
 
 /**
