@@ -1,9 +1,12 @@
 (function ($) {
+  Drupal.behaviors.nanoScrollerInit = {
+    attach: function (context) {
+      $('.nano', context).nanoScroller();
+    }
+  };
+
   Drupal.behaviors.themeVCard = {
     attach: function (context) {
-      // Initialize NanoScroller.
-      $(".nano", context).nanoScroller();
-
       $('.dropdown-header', context).hover(function () {
         $(this).find('.icon-bar:nth-child(2)').addClass('active');
       }, function () {
