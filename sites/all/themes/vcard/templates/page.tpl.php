@@ -68,12 +68,9 @@
               </div>
           </section>
           <section class="row" id="toolbar">
-              <div class="large-4 medium-4 columns">
-                <?php if (!empty($page['header'])) {
-                  print render($page['header']);
-                } ?>
-              </div>
-              <div class="large-8 medium-8 columns"></div>
+            <?php if (!empty($page['header'])) {
+              print render($page['header']);
+            }; ?>
           </section>
       <?php endif; ?>
         <!-- End title, slogan and menu -->

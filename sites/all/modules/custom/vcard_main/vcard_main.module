@@ -82,6 +82,12 @@ function vcard_main_menu() {
     'access arguments' => ['access content'],
     'delivery callback' => 'vcard_main_entity_ajax_callback',
   ];
+  $items['ajax/group/%/credits'] = [
+    'page callback' => 'vcard_main_group_credits_ajax',
+    'page arguments' => [2],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['access content'],
+  ];
   $items['history'] = [
     'title' => 'History',
     'menu_name' => 'main-menu',
@@ -269,6 +275,39 @@ function _user_entityreference_field_save($field_name, $entity_id) {
     );
   }
   $wrapper->save();
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function vcard_main_block_info() {
+  $blocks = [];
+
+  $blocks['groups_toolbar'] = [
+    'info' => t('Groups toolbar'),
+    'cache' => DRUPAL_NO_CACHE,
+    'status' => TRUE,
+    'region' => 'header',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'groups',
+  ];
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function vcard_main_block_view($delta = '') {
+  $block = [];
+
+  switch ($delta) {
+    case 'groups_toolbar':
+      $block['content'] = ' ';
+      break;
+  }
+
+  return $block;
 }
 
 /**

@@ -188,15 +188,19 @@ function vcard_main_group_form_submit($form, &$form_state) {
   // Save relations to user.
   _user_entityreference_field_save('field_groups', $group_entity->id);
 
-  ctools_include('modal');
-  ctools_include('ajax');
-  ctools_add_js('ajax-responder');
+  if (isset($form_state['ajax']) && $form_state['ajax'] === TRUE) {
+    ctools_include('modal');
+    ctools_include('ajax');
+    ctools_add_js('ajax-responder');
 
-  // Closing the popup.
-  $commands[] = ctools_modal_command_dismiss();
-  $commands[] = ctools_ajax_command_reload();
-  print ajax_render($commands);
-  drupal_exit();
+    // Closing the popup.
+    $commands[] = ctools_modal_command_dismiss();
+    $commands[] = ctools_ajax_command_reload();
+    print ajax_render($commands);
+    drupal_exit();
+  }
+
+  drupal_goto('groups');
 }
 
 /**
@@ -215,4 +219,22 @@ function vcard_main_group_view_ajax($id = NULL) {
   }
 
   return FALSE;
+}
+
+/**
+ * Return json with group's title and description.
+ *
+ * @param int $id
+ *
+ * @return string
+ */
+function vcard_main_group_credits_ajax($id = NULL) {
+  if (is_numeric($id)) {
+    $group_entity = entity_load_single('group', $id);
+
+    drupal_json_output([
+      'title' => $group_entity->field_group_name[LANGUAGE_NONE][0]['value'],
+      'description' => @$group_entity->field_description[LANGUAGE_NONE][0]['value'],
+    ]);
+  }
 }

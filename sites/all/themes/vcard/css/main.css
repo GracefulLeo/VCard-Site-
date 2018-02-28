@@ -106,7 +106,7 @@ body {
 /* Header toolbar. */
 #toolbar .block-views-exp-contacts-page {
   display: flex;
-  justify-content: center;
+  justify-content: start;
 }
 #toolbar .block-views-exp-contacts-page .views-exposed-form .views-exposed-widgets {
   margin: 0;
@@ -131,6 +131,7 @@ body {
 #toolbar .block-views-exp-contacts-page .form-item input {
   padding-left: 35px;
   margin: 0 20px 0 0;
+  border-bottom: none;
 }
 /* Page content. */
 .l-main {
@@ -329,6 +330,36 @@ body {
   border-radius: 100%;
   padding: 5px;
   font-weight: bold;
+}
+/* Group toolbar. */
+.group-toolbar-column {
+  display: none;
+  height: 72px;
+  padding: 0 30px;
+}
+.group-header-wrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: normal;
+  justify-content: center;
+  flex-grow: 1;
+}
+.group-header-wrapper .group-title {
+  font-weight: bold;
+}
+.group-header-wrapper .group-description {
+  font-size: 0.8rem;
+}
+.group-actions {
+  display: flex;
+  align-items: center;
+}
+.group-actions i {
+  cursor: pointer;
+  margin: 0 10px;
+}
+.group-actions a {
+  color: #fff;
 }
 /* Group view. */
 .contact-wrapper {
