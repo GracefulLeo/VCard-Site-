@@ -361,6 +361,35 @@ body {
 .group-actions a {
   color: #fff;
 }
+.group-actions #group-options.active {
+  color: #333;
+}
+/* Group toolbar menu. */
+.dropdown-group-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  display: none;
+  min-width: 160px;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .15);
+  background-clip: padding-box;
+  padding-top: 15px;
+}
+.dropdown-group-menu li {
+  font-size: 12px;
+  line-height: 21px;
+  color: #42749b;
+  float: none;
+}
+.dropdown-group-menu li a {
+  padding: 11px 19px 10px 21px;
+}
+.dropdown-group-menu li:hover {
+  background-color: #99dee6;
+}
 /* Group view. */
 .contact-wrapper {
   margin-bottom: 20px;

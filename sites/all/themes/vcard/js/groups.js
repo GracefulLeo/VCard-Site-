@@ -10,4 +10,13 @@
       });
     }
   };
+
+  Drupal.behaviors.groupActionsDropdown = {
+    attach: function (context) {
+      $('#group-options', context).bind('click', function () {
+        $(this).toggleClass('active');
+        $('.dropdown-group-menu').fadeToggle();
+      });
+    }
+  };
 })(jQuery);
