@@ -19,4 +19,13 @@
       });
     }
   };
+
+  Drupal.behaviors.setActiveContactsInList = {
+    attach: function (context) {
+      $('#vcard-main-group-manage-contacts-form', context).find('input:checked').parent().addClass('active');
+      $('#vcard-main-group-manage-contacts-form', context).find('label').bind('click', function () {
+        $(this).parent().toggleClass('active');
+      })
+    }
+  };
 })(jQuery);

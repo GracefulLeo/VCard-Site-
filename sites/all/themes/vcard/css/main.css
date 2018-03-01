@@ -422,6 +422,14 @@ body {
   display: none;
 }
 /* Modal popups. */
+#modalBackdrop .popup-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #ddd;
+  font-size: 50px;
+  cursor: pointer;
+}
 #modalContent .modal-header {
   height: 54px;
   display: flex;
@@ -442,4 +450,32 @@ body {
 .confirmation.ctools-use-modal-processed .button {
   width: 49%;
   margin-top: 20px;
+}
+/* Manage group's contacts. */
+#vcard-main-group-manage-contacts-form .form-checkbox {
+  display: none;
+}
+#vcard-main-group-manage-contacts-form .form-type-checkbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  height: 58px;
+  padding-left: 18px;
+  margin: 0;
+}
+#vcard-main-group-manage-contacts-form .form-type-checkbox.active {
+  background-color: #00acc1 !important;
+}
+#vcard-main-group-manage-contacts-form .form-type-checkbox label {
+  width: 100%;
+}
+#vcard-main-group-manage-contacts-form .form-type-checkbox:hover {
+  background-color: #99dee6;
+}
+#vcard-main-group-manage-contacts-form button {
+  margin-top: 20px;
+}
+#vcard-main-group-manage-contacts-form .logo-micro img {
+  width: 50px;
 }

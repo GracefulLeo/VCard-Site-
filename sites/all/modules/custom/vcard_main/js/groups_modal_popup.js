@@ -3,9 +3,6 @@
     return '<div id="ctools-modal" class="popups-box groups-popup">' +
         '     <div class="ctools-modal-content ctools-modal-groups-popup">' +
         '       <div class="modal-header">' +
-        '         <span class="popups-close">' +
-        '           <span class="close">' + Drupal.CTools.Modal.currentSettings.closeText + '</span>' +
-        '         </span>' +
         '         <span id="modal-title" class="modal-title"></span>' +
         '       </div>' +
         '       <div class="modal-msg"></div>' +
@@ -18,11 +15,18 @@
         '   </div>';
   };
 
+  Drupal.behaviors.addModalCloseIcon = {
+    attach: function () {
+      $('#modalBackdrop').html('<i class="material-icons popup-close">close</i>');
+    }
+  };
+
   Drupal.behaviors.alignPopup = {
     attach: function () {
       if ($('#modalContent').length) {
         setTimeout(function () {
-          modalContentResize()
+          modalContentResize();
+          $('#modalBackdrop').css({height: '100%', width: '100%'});
         }, 100)
       }
     }

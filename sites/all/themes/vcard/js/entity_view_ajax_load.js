@@ -19,28 +19,16 @@
                 $('.group-header-wrapper .group-description').text(response.description || '');
               });
 
-              // Set currentTarget id to "edit" and "remove" links.
-              $('#group-edit').bind('click', function () {
-                var url = Drupal.settings.basePath + 'group/edit/' + id + '/nojs';
-                var link = $('<a></a>').attr('href', url)
-                    .addClass('ctools-modal-groups-popup ctools-use-modal-processed')
-                    .click(Drupal.CTools.clickAjaxLink);
-                Drupal.ajax[url] = new Drupal.ajax(url, link.get(0), {
-                  url: url,
-                  event: 'click'
-                });
-                link.click();
+              // Set currentTarget id to "manage group's contacts" link.
+              $('#group-contact-edit').on('click', function () {
+                attachModalPopup(Drupal.settings.basePath + 'group/manage-contacts/' + id + '/nojs')
               });
-              $('#group-delete').bind('click', function () {
-                var url = Drupal.settings.basePath + 'group/delete/' + id + '/nojs';
-                var link = $('<a></a>').attr('href', url)
-                    .addClass('ctools-modal-groups-popup ctools-use-modal-processed')
-                    .click(Drupal.CTools.clickAjaxLink);
-                Drupal.ajax[url] = new Drupal.ajax(url, link.get(0), {
-                  url: url,
-                  event: 'click'
-                });
-                link.click();
+              // Set currentTarget id to "edit" and "remove" links.
+              $('#group-edit').on('click', function () {
+                attachModalPopup(Drupal.settings.basePath + 'group/edit/' + id + '/nojs')
+              });
+              $('#group-delete').on('click', function () {
+                attachModalPopup(Drupal.settings.basePath + 'group/delete/' + id + '/nojs')
               });
             }
 
@@ -48,4 +36,15 @@
           });
     }
   };
+
+  function attachModalPopup(url) {
+    var link = $('<a></a>').attr('href', url)
+        .addClass('ctools-modal-groups-popup ctools-use-modal-processed')
+        .click(Drupal.CTools.clickAjaxLink);
+    Drupal.ajax[url] = new Drupal.ajax(url, link.get(0), {
+      url: url,
+      event: 'click'
+    });
+    link.click();
+  }
 })(jQuery);

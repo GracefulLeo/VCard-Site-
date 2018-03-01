@@ -136,7 +136,7 @@ function vcard_main_group_add_ajax($js = NULL) {
 }
 
 /**
- *Popup’s settings function.
+ * Popup’s settings function.
  */
 function vcard_main_group_ctools_popup_style() {
   static $added = FALSE;
@@ -251,6 +251,83 @@ function vcard_main_group_edit_ajax($id = NULL, $js = NULL) {
   ];
 
   $output = ctools_modal_form_wrapper('vcard_main_group_form', $form_state);
+  print ajax_render($output);
+  drupal_exit();
+}
+
+/**
+ * Manage group's contacts form.
+ */
+function vcard_main_group_manage_contacts_form($form, &$form_state, $id = NULL) {
+  global $user;
+
+  if ($user->uid) {
+    if (is_numeric($id)) {
+      $group_entity = entity_load_single('group', $id);
+    }
+    else {
+      return MENU_NOT_FOUND;
+    }
+
+    field_attach_form('group', $group_entity, $form, $form_state);
+
+    // Remove all fields except "My contacts" field.
+    unset($form['field_group_name']);
+    unset($form['field_logotype']);
+    unset($form['field_description']);
+
+    $form['field_my_contacts'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+
+    $form['group'] = [
+      '#type' => 'value',
+      '#value' => $group_entity,
+    ];
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#weight' => 100,
+    ];
+  }
+
+  return $form;
+}
+
+/**
+ * Manage group's contacts form submit.
+ */
+function vcard_main_group_manage_contacts_form_submit($form, &$form_state) {
+  $group_entity = $form_state['values']['group'];
+  field_attach_submit('group', $group_entity, $form, $form_state);
+  entity_save('group', $group_entity);
+
+  _close_ctools_modal_popup($form_state);
+
+  drupal_goto('groups');
+}
+
+/**
+ * "Manage contacts in group" page ajax callback.
+ */
+function vcard_main_group_manage_contacts_ajax($id = NULL, $js = NULL) {
+  if (!$js) {
+    return drupal_get_form('vcard_main_group_manage_contacts_form', $id);
+  }
+
+  ctools_include('ajax');
+  ctools_include('modal');
+
+  $form_state = [
+    'ajax' => TRUE,
+    'title' => t('Manage contacts'),
+    'build_info' => [
+      'args' => [
+        $id,
+      ],
+    ],
+  ];
+
+  $output = ctools_modal_form_wrapper('vcard_main_group_manage_contacts_form', $form_state);
   print ajax_render($output);
   drupal_exit();
 }
