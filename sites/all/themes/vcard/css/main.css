@@ -384,8 +384,10 @@ body {
   color: #42749b;
   float: none;
 }
-.dropdown-group-menu li a {
+.dropdown-group-menu li span {
   padding: 11px 19px 10px 21px;
+  cursor: pointer;
+  color: #008cba;
 }
 .dropdown-group-menu li:hover {
   background-color: #99dee6;
@@ -435,4 +437,11 @@ body {
   align-items: center;
   color: #fff;
   cursor: pointer;
+}
+/* Popup confirm form. */
+.confirmation.ctools-use-modal-processed #edit-submit,
+.confirmation.ctools-use-modal-processed #edit-cancel {
+  display: inline-block;
+  width: 49%;
+  margin-top: 20px;
 }

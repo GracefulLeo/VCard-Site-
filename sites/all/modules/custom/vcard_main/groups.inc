@@ -70,7 +70,7 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
 /**
  * "Groups" form callback for "add", "edit" pages.
  */
-function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
+function vcard_main_group_form($form, &$form_state, $id = NULL) {
   global $user;
 
   if ($user->uid) {
@@ -115,7 +115,7 @@ function vcard_main_group_form($form, &$form_state, $id = NULL, $op = NULL) {
 }
 
 /**
- * Delivery ajax for "Add new group".
+ * Modal ajax callback for "Add new group".
  */
 function vcard_main_group_add_ajax($js = NULL) {
   if (!$js) {
@@ -188,17 +188,7 @@ function vcard_main_group_form_submit($form, &$form_state) {
   // Save relations to user.
   _user_entityreference_field_save('field_groups', $group_entity->id);
 
-  if (isset($form_state['ajax']) && $form_state['ajax'] === TRUE) {
-    ctools_include('modal');
-    ctools_include('ajax');
-    ctools_add_js('ajax-responder');
-
-    // Closing the popup.
-    $commands[] = ctools_modal_command_dismiss();
-    $commands[] = ctools_ajax_command_reload();
-    print ajax_render($commands);
-    drupal_exit();
-  }
+  _close_ctools_modal_popup($form_state);
 
   drupal_goto('groups');
 }
@@ -236,5 +226,142 @@ function vcard_main_group_credits_ajax($id = NULL) {
       'title' => $group_entity->field_group_name[LANGUAGE_NONE][0]['value'],
       'description' => @$group_entity->field_description[LANGUAGE_NONE][0]['value'],
     ]);
+  }
+}
+
+/**
+ * Modal ajax callback for "Edit group".
+ */
+function vcard_main_group_edit_ajax($id = NULL, $js = NULL) {
+  if (!$js) {
+    return drupal_get_form('vcard_main_group_form', $id);
+  }
+
+  ctools_include('ajax');
+  ctools_include('modal');
+
+  $form_state = [
+    'ajax' => TRUE,
+    'title' => t('Edit group'),
+    'build_info' => [
+      'args' => [
+        $id,
+      ],
+    ],
+  ];
+
+  $output = ctools_modal_form_wrapper('vcard_main_group_form', $form_state);
+  print ajax_render($output);
+  drupal_exit();
+}
+
+/**
+ * Page callback for deleting Groups.
+ */
+function vcard_main_group_remove_form($form, &$form_state, $id) {
+  global $user;
+
+  $user_wrapper = entity_metadata_wrapper('user', $user);
+  $group_wrapper = entity_metadata_wrapper('group', $id);
+
+  // Check is the group created by user.
+  $field_groups = $user_wrapper->field_groups->value();
+  $ids = [];
+  foreach ($field_groups as $group) {
+    $ids[] = $group->id;
+  }
+  if (!in_array($id, $ids)) {
+    drupal_not_found();
+    drupal_exit();
+  }
+
+  $form['title'] = [
+    '#type' => 'item',
+    '#markup' => t('Delete group: "@name"?', ['@name' => $group_wrapper->field_group_name->value()]),
+  ];
+
+  $form['id'] = [
+    '#type' => 'value',
+    '#value' => $id,
+  ];
+  $form['user_wrapper'] = [
+    '#type' => 'value',
+    '#value' => $user_wrapper,
+  ];
+
+  return confirm_form(
+    $form,
+    t('Are you sure to delete the Group?'),
+    'groups',
+    t('This action cannot be undone.'),
+    t('Delete'),
+    t('Cancel'));
+}
+
+/**
+ * Group remove form submit.
+ */
+function vcard_main_group_remove_form_submit($form, &$form_state) {
+  if ($form_state['values']['confirm']) {
+    $id = $form_state['values']['id'];
+    $user_wrapper = $form_state['values']['user_wrapper'];
+
+    // Remove relations from "user" first.
+    foreach ($user_wrapper->field_groups->value() as $key => $item) {
+      if ($item->id === $id) {
+        $user_wrapper->field_groups[$key]->set(NULL);
+        break;
+      }
+    }
+    $user_wrapper->save();
+
+    // Remove vcard entity.
+    entity_delete('group', $id);
+  }
+
+  _close_ctools_modal_popup($form_state);
+
+  $form_state['redirect'] = 'groups';
+}
+
+function vcard_main_group_remove_ajax($id = NULL, $js = NULL) {
+  if (!$js) {
+    return drupal_get_form('vcard_main_group_remove_form', $id);
+  }
+
+  ctools_include('ajax');
+  ctools_include('modal');
+
+  $form_state = [
+    'ajax' => TRUE,
+    'title' => t('Delete group'),
+    'build_info' => [
+      'args' => [
+        $id,
+      ],
+    ],
+  ];
+
+  $output = ctools_modal_form_wrapper('vcard_main_group_remove_form', $form_state);
+  print ajax_render($output);
+  drupal_exit();
+}
+
+/**
+ * Helper function closing popup.
+ *
+ * @param $form_state
+ */
+function _close_ctools_modal_popup($form_state) {
+  if (isset($form_state['ajax']) && $form_state['ajax'] === TRUE) {
+    ctools_include('modal');
+    ctools_include('ajax');
+    ctools_add_js('ajax-responder');
+
+    // Closing the popup.
+    $commands[] = ctools_modal_command_dismiss();
+    $commands[] = ctools_ajax_command_reload();
+    print ajax_render($commands);
+    drupal_exit();
   }
 }

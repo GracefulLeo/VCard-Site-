@@ -26,8 +26,16 @@
         </div>
         <nav class="dropdown-group-menu">
             <ul class="links inline-list clearfix">
-                <li><a href="#"><?php print t('Edit group'); ?></a></li>
-                <li><a href="#"><?php print t('Delete group'); ?></a></li>
+                <li>
+                    <span id="group-edit">
+                      <?php print t('Edit group'); ?>
+                    </span>
+                </li>
+                <li>
+                  <span id="group-delete">
+                      <?php print t('Delete group'); ?>
+                    </span>
+                </li>
             </ul>
         </nav>
     </div>

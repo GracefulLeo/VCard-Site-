@@ -18,7 +18,32 @@
                 $('.group-header-wrapper .group-title').text(response.title);
                 $('.group-header-wrapper .group-description').text(response.description || '');
               });
+
+              // Set currentTarget id to "edit" and "remove" links.
+              $('#group-edit').bind('click', function () {
+                var url = Drupal.settings.basePath + 'group/edit/' + id + '/nojs';
+                var link = $('<a></a>').attr('href', url)
+                    .addClass('ctools-modal-groups-popup ctools-use-modal-processed')
+                    .click(Drupal.CTools.clickAjaxLink);
+                Drupal.ajax[url] = new Drupal.ajax(url, link.get(0), {
+                  url: url,
+                  event: 'click'
+                });
+                link.click();
+              });
+              $('#group-delete').bind('click', function () {
+                var url = Drupal.settings.basePath + 'group/delete/' + id + '/nojs';
+                var link = $('<a></a>').attr('href', url)
+                    .addClass('ctools-modal-groups-popup ctools-use-modal-processed')
+                    .click(Drupal.CTools.clickAjaxLink);
+                Drupal.ajax[url] = new Drupal.ajax(url, link.get(0), {
+                  url: url,
+                  event: 'click'
+                });
+                link.click();
+              });
             }
+
             return false;
           });
     }

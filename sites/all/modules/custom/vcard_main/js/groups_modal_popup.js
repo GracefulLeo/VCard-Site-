@@ -31,8 +31,17 @@
   Drupal.behaviors.closePopups = {
     attach: function () {
       $('#modalBackdrop').bind('click', function () {
-        modalContentClose();
+        location.reload()
       })
+    }
+  };
+
+  Drupal.behaviors.styleConfirmationCloseLink = {
+    attach: function () {
+      var $modal = $('#modalContent');
+      if ($modal.length && $modal.find('a#edit-cancel')) {
+        $modal.find('#edit-cancel').addClass('button');
+      }
     }
   };
 })(jQuery);

@@ -88,6 +88,18 @@ function vcard_main_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => ['access content'],
   ];
+  $items['group/edit/%/%ctools_js'] = [
+    'page callback' => 'vcard_main_group_edit_ajax',
+    'page arguments' => [2, 3],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['edit own vcard content'],
+  ];
+  $items['group/delete/%/%ctools_js'] = [
+    'page callback' => 'vcard_main_group_remove_ajax',
+    'page arguments' => [2, 3],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['delete own vcard content'],
+  ];
   $items['history'] = [
     'title' => 'History',
     'menu_name' => 'main-menu',
