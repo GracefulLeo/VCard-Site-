@@ -384,3 +384,17 @@ function vcard_main_form_views_exposed_form_alter(&$form, &$form_state, $form_id
   $form['combine']['#attributes'] = ['placeholder' => t('Search')];
   $form['combine']['#title'] = '<i class="material-icons">search</i>';
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function vcard_main_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'vcard_main_my_vcard_form_remove':
+    case 'vcard_main_group_remove_form':
+      $form['actions']['cancel']['#attributes'] = [
+        'class' => 'button',
+      ];
+      break;
+  }
+}

@@ -439,9 +439,7 @@ body {
   cursor: pointer;
 }
 /* Popup confirm form. */
-.confirmation.ctools-use-modal-processed #edit-submit,
-.confirmation.ctools-use-modal-processed #edit-cancel {
-  display: inline-block;
+.confirmation.ctools-use-modal-processed .button {
   width: 49%;
   margin-top: 20px;
 }

@@ -277,7 +277,7 @@ function vcard_main_group_remove_form($form, &$form_state, $id) {
 
   $form['title'] = [
     '#type' => 'item',
-    '#markup' => t('Delete group: "@name"?', ['@name' => $group_wrapper->field_group_name->value()]),
+    '#markup' => t('Delete group: "%name"?', ['%name' => $group_wrapper->field_group_name->value()]),
   ];
 
   $form['id'] = [
