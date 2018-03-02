@@ -331,6 +331,27 @@ body {
   padding: 5px;
   font-weight: bold;
 }
+/* My-VCards toolbar. */
+.my-vcards-toolbar-column {
+  display: none;
+  height: 72px;
+  padding: 0 30px;
+}
+.my-vcards-actions {
+  display: flex;
+  align-items: center;
+}
+.my-vcards-actions a {
+  display: flex;
+  color: #fff;
+  opacity: .9;
+}
+.my-vcards-actions a:hover {
+  opacity: 1;
+}
+.my-vcards-toolbar-column.right .my-vcards-actions a {
+  margin-left: 30px;
+}
 /* Group toolbar. */
 .group-toolbar-column {
   display: none;
@@ -357,9 +378,10 @@ body {
 .group-actions i {
   cursor: pointer;
   margin: 0 10px;
+  opacity: .9;
 }
-.group-actions a {
-  color: #fff;
+.group-actions i:hover {
+  opacity: 1;
 }
 .group-actions #group-options.active {
   color: #333;

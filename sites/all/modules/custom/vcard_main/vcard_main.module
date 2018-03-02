@@ -301,6 +301,14 @@ function _user_entityreference_field_save($field_name, $entity_id) {
 function vcard_main_block_info() {
   $blocks = [];
 
+  $blocks['my_vcards_toolbar'] = [
+    'info' => t('My VCards toolbar'),
+    'cache' => DRUPAL_NO_CACHE,
+    'status' => TRUE,
+    'region' => 'header',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'my-vcards',
+  ];
   $blocks['groups_toolbar'] = [
     'info' => t('Groups toolbar'),
     'cache' => DRUPAL_NO_CACHE,
@@ -320,6 +328,7 @@ function vcard_main_block_view($delta = '') {
   $block = [];
 
   switch ($delta) {
+    case 'my_vcards_toolbar':
     case 'groups_toolbar':
       $block['content'] = ' ';
       break;

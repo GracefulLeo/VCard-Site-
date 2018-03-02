@@ -81,7 +81,8 @@ function vcard_main_vcard_view_ajax($id = NULL) {
 
       return theme('vcard_details_view', [
         'node' => $vcard_node,
-        'editable' => $editable,
+        // @todo We can remove it from vcard_details_view theme and template.
+        'editable' => FALSE,
       ]);
     }
   }
