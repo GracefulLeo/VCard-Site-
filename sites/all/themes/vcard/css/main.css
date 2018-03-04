@@ -375,6 +375,10 @@ body {
   display: flex;
   align-items: center;
 }
+.group-actions a {
+  color: #fff;
+  opacity: .9;
+}
 .group-actions i {
   cursor: pointer;
   margin: 0 10px;
