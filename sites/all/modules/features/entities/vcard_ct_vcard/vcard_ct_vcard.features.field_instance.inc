@@ -214,9 +214,9 @@ function vcard_ct_vcard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'module' => 'email',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'email_default',
+        'type' => 'text_default',
         'weight' => 9,
       ),
       'image' => array(
@@ -237,15 +237,16 @@ function vcard_ct_vcard_field_default_field_instances() {
     'label' => 'E-mail',
     'required' => 0,
     'settings' => array(
+      'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'email',
+      'module' => 'text',
       'settings' => array(
         'size' => 60,
       ),
-      'type' => 'email_textfield',
+      'type' => 'text_textfield',
       'weight' => 10,
     ),
   );

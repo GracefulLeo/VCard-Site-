@@ -172,8 +172,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
             }
 
             // Set placeholders.
-            $value_key = $item[LANGUAGE_NONE]['#field_name'] === 'field_mail' ? 'email' : 'value';
-            $value[$value_key]['#attributes']['placeholder'] = $item[LANGUAGE_NONE]['#title'];
+            $value['value']['#attributes']['placeholder'] = $item[LANGUAGE_NONE]['#title'];
 
             // Remove useless weights.
             unset($value['_weight']);

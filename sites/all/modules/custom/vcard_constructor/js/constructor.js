@@ -13,7 +13,7 @@
       canvas.backgroundColor = '#fbfff8';
 
       var $form = $('#vcard-main-my-vcard-form');
-      var fieldsText = $form.find('.field-type-text, .field-type-email');
+      var fieldsText = $form.find('.field-type-text');
       // Add image on canvas if loaded before.
       addLogo();
 
@@ -164,13 +164,13 @@
           'field_name[und][0][value]': {
             required: true
           },
-          'field_mail[und][0][email]': {
+          'field_mail[und][0][value]': {
             email: true
           },
-          'field_mail[und][1][email]': {
+          'field_mail[und][1][value]': {
             email: true
           },
-          'field_mail[und][2][email]': {
+          'field_mail[und][2][value]': {
             email: true
           }
         }
