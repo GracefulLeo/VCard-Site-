@@ -55,6 +55,7 @@ function _update_global_variables() {
   // Private local files served by Drupal.
   variable_set('file_default_scheme', 'private');
   // Account settings.
+  variable_set('user_register', '1');
   variable_set('user_pictures', FALSE);
   variable_set('user_email_verification', FALSE);
 }
