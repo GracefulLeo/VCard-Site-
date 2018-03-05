@@ -54,6 +54,9 @@ function _update_global_variables() {
   variable_set('file_temporary_path', 'sites/default/files/tmp');
   // Private local files served by Drupal.
   variable_set('file_default_scheme', 'private');
+  // Account settings.
+  variable_set('user_pictures', FALSE);
+  variable_set('user_email_verification', FALSE);
 }
 
 /**
