@@ -413,3 +413,12 @@ function vcard_main_form_alter(&$form, &$form_state, $form_id) {
       break;
   }
 }
+
+/**
+ * Implements hook_user_presave().
+ */
+function vcard_main_user_presave(&$edit, $account, $category) {
+  if (isset($account->is_new) && $account->is_new) {
+    $edit['name'] = $edit['mail'];
+  }
+}
