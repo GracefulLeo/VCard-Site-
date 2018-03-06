@@ -36,6 +36,19 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
     ),
   );
   $endpoint->resources = array(
+    'file' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => '1',
+        ),
+        'retrieve' => array(
+          'enabled' => '1',
+        ),
+        'delete' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
     'node' => array(
       'operations' => array(
         'retrieve' => array(
@@ -59,13 +72,16 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
           'enabled' => '1',
         ),
       ),
-      'targeted_actions' => array(
-        'attach_file' => array(
+    ),
+    'user' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => '1',
+        ),
+        'update' => array(
           'enabled' => '1',
         ),
       ),
-    ),
-    'user' => array(
       'actions' => array(
         'login' => array(
           'enabled' => '1',
