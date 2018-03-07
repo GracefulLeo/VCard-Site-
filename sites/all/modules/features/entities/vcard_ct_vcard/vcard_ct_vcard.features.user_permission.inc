@@ -10,6 +10,16 @@
 function vcard_ct_vcard_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: 'access content'.
+  $permissions['access content'] = array(
+    'name' => 'access content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create vcard content'.
   $permissions['create vcard content'] = array(
     'name' => 'create vcard content',

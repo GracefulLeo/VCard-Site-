@@ -31,6 +31,7 @@ features[field_instance][] = node-vcard-field_position
 features[field_instance][] = node-vcard-field_surname
 features[field_instance][] = node-vcard-field_web_site
 features[node][] = vcard
+features[user_permission][] = access content
 features[user_permission][] = create vcard content
 features[user_permission][] = delete any vcard content
 features[user_permission][] = delete own vcard content
