@@ -50,6 +50,9 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         'delete' => array(
           'enabled' => '1',
         ),
+        'index' => array(
+          'enabled' => '1',
+        ),
       ),
     ),
     'file' => array(
