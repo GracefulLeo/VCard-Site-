@@ -8,6 +8,8 @@
  */
 function vcard_core_install() {
   _uninstall_core_modules();
+  // Remove default home link.
+  menu_link_delete(NULL, '<front>');
   _vcard_theme_enable();
   _update_global_variables();
   // Remove orphaned actions.
