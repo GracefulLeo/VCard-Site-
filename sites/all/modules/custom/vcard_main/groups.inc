@@ -442,3 +442,23 @@ function _close_ctools_modal_popup($form_state) {
     drupal_exit();
   }
 }
+
+class GroupEntityController extends EntityAPIController {
+
+  public function delete($ids, DatabaseTransaction $transaction = NULL) {
+    global $user;
+
+    $entities = $ids ? $this->load($ids) : FALSE;
+    if (!$entities) {
+      // Do nothing, in case invalid or no ids have been passed.
+      return;
+    }
+    $group = end($entities);
+    if ($group->uid !== $user->uid && !user_access('administer site configuration')) {
+      // User can't delete other user's group.
+      return;
+    }
+
+    return parent::delete($ids, $transaction);
+  }
+}

@@ -17,6 +17,7 @@ function vcard_entity_group_eck_bundle_info() {
       'config' => array(
         'managed_properties' => array(
           'changed' => 'changed',
+          'uid' => 'uid',
         ),
       ),
     ),
@@ -37,6 +38,11 @@ function vcard_entity_group_eck_entity_type_info() {
           'label' => 'Changed',
           'type' => 'integer',
           'behavior' => 'changed',
+        ),
+        'uid' => array(
+          'label' => 'Author',
+          'type' => 'integer',
+          'behavior' => 'author',
         ),
       ),
     ),

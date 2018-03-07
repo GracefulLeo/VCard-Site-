@@ -390,6 +390,7 @@ function vcard_main_entity_info_alter(&$entity_info) {
     'label' => t('Image'),
     'custom settings' => TRUE,
   ];
+  $entity_info['group']['controller class'] = 'GroupEntityController';
 }
 
 /**
