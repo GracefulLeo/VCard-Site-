@@ -52,8 +52,8 @@ function _update_global_variables() {
   variable_set('file_public_path', 'sites/default/files/public');
   variable_set('file_private_path', 'sites/default/files/private');
   variable_set('file_temporary_path', 'sites/default/files/tmp');
-  // Private local files served by Drupal.
-  variable_set('file_default_scheme', 'private');
+  // Public local files served by Drupal.
+  variable_set('file_default_scheme', 'public');
   // Account settings.
   variable_set('user_register', '1');
   variable_set('user_pictures', FALSE);

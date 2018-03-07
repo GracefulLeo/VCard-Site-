@@ -20,5 +20,15 @@ function vcard_services_endpoint_v1_user_default_permissions() {
     'module' => 'services',
   );
 
+  // Exported permission: 'save file information'.
+  $permissions['save file information'] = array(
+    'name' => 'save file information',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'services',
+  );
+
   return $permissions;
 }
