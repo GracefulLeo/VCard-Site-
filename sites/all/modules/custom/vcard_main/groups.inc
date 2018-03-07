@@ -456,7 +456,9 @@ class GroupEntityController extends EntityAPIController {
     $group = end($entities);
     if ($group->uid !== $user->uid && !user_access('administer site configuration')) {
       // User can't delete other user's group.
-      return;
+      return services_error(t('Access denied for user @user', [
+        '@user' => isset($user->name) ? $user->name : 'anonymous',
+      ]), 403);
     }
 
     return parent::delete($ids, $transaction);
