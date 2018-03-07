@@ -36,6 +36,22 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
     ),
   );
   $endpoint->resources = array(
+    'entity_group' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => '1',
+        ),
+        'retrieve' => array(
+          'enabled' => '1',
+        ),
+        'update' => array(
+          'enabled' => '1',
+        ),
+        'delete' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
     'file' => array(
       'operations' => array(
         'create' => array(
