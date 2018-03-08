@@ -471,6 +471,7 @@ function _user_resource_update($uid, $account) {
     return services_error(t('You are not allowed to change your username.'), 406);
   }
 
+  $account_loaded = (object) array_merge((array) $account_loaded, (array) $account);
   $form_state['values']['op'] = variable_get('services_user_save_button_resource_update', t('Save'));
   $form_state['values']['#user_category'] = $category;
   $form_state['values']['#account'] = $account_loaded;
