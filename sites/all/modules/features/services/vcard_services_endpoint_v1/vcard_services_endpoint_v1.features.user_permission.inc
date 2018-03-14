@@ -10,6 +10,16 @@
 function vcard_services_endpoint_v1_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: 'get any binary files'.
+  $permissions['get any binary files'] = array(
+    'name' => 'get any binary files',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'services',
+  );
+
   // Exported permission: 'get own binary files'.
   $permissions['get own binary files'] = array(
     'name' => 'get own binary files',
