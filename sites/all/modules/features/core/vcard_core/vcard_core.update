@@ -1,0 +1,75 @@
+<?php
+/**
+ * @file
+ *
+ */
+
+/**
+ * Update socialfield's services. Change default social services as we need.
+ */
+function vcard_core_update_7002() {
+  $services = [
+    'facebook' => [
+      'name' => 'Facebook',
+      'icon' => 'icon-facebook',
+      'validation_pattern' => '*facebook.com/*',
+    ],
+    'twitter' => [
+      'name' => 'Twitter',
+      'icon' => 'icon-twitter',
+      'validation_pattern' => '*twitter.com/*',
+    ],
+    'googleplus' => [
+      'name' => 'Google+',
+      'icon' => 'icon-gplus',
+      'validation_pattern' => '*plus.google.com/*',
+    ],
+    'linkedin' => [
+      'name' => 'LinkedIn',
+      'icon' => 'icon-linkedin',
+      'validation_pattern' => '*linkedin.com/*',
+    ],
+    'youtube' => [
+      'name' => 'YouTube',
+      'icon' => 'icon-youtube',
+      'validation_pattern' => '*youtube.com/*',
+    ],
+    'instagram' => [
+      'name' => 'Instagram',
+      'icon' => 'icon-instagram',
+      'validation_pattern' => '*instagram.com/*',
+    ],
+    'vk' => [
+      'name' => 'VK',
+      'icon' => 'icon-vkontakte',
+      'validation_pattern' => '*vk.com/*',
+    ],
+    'skype' => [
+      'name' => 'Skype',
+      'icon' => 'icon-skype',
+      'validation_pattern' => '*',
+    ],
+    'viber' => [
+      'name' => 'Viber',
+      'icon' => 'icon-phone-circled',
+      'validation_pattern' => '*',
+    ],
+    'whatsapp' => [
+      'name' => 'WhatsApp',
+      'icon' => 'icon-whatsapp',
+      'validation_pattern' => '*',
+    ],
+    'telegram' => [
+      'name' => 'Telegram',
+      'icon' => 'icon-telegram',
+      'validation_pattern' => '@*',
+    ],
+    'messenger' => [
+      'name' => 'Facebook Messenger',
+      'icon' => 'icon-chat',
+      'validation_pattern' => '*',
+    ],
+  ];
+
+  variable_set('socialfield_services', $services);
+}

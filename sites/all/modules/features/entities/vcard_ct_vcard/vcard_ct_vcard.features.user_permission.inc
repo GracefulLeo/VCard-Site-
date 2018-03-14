@@ -61,5 +61,15 @@ function vcard_ct_vcard_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'view services'.
+  $permissions['view services'] = array(
+    'name' => 'view services',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'socialfield',
+  );
+
   return $permissions;
 }

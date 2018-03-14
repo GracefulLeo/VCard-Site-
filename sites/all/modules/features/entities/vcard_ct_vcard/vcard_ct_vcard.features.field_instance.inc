@@ -435,6 +435,93 @@ function vcard_ct_vcard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-vcard-field_social_links'.
+  $field_instances['node-vcard-field_social_links'] = array(
+    'bundle' => 'vcard',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'socialfield',
+        'settings' => array(
+          'link_text' => FALSE,
+        ),
+        'type' => 'socialfield_formatter',
+        'weight' => 13,
+      ),
+      'image' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_social_links',
+    'label' => 'Social links',
+    'required' => 0,
+    'settings' => array(
+      'services' => array(
+        'facebook' => 'facebook',
+        'googleplus' => 'googleplus',
+        'instagram' => 'instagram',
+        'linkedin' => 'linkedin',
+        'messenger' => 'messenger',
+        'skype' => 'skype',
+        'telegram' => 'telegram',
+        'twitter' => 'twitter',
+        'viber' => 'viber',
+        'vk' => 'vk',
+        'whatsapp' => 'whatsapp',
+        'youtube' => 'youtube',
+      ),
+      'used_services' => array(
+        'facebook' => 'facebook',
+        'googleplus' => 'googleplus',
+        'instagram' => 'instagram',
+        'linkedin' => 'linkedin',
+        'messenger' => 'messenger',
+        'skype' => 'skype',
+        'telegram' => 'telegram',
+        'twitter' => 'twitter',
+        'viber' => 'viber',
+        'vk' => 'vk',
+        'whatsapp' => 'whatsapp',
+        'youtube' => 'youtube',
+      ),
+      'user_register_form' => FALSE,
+      'weights' => array(
+        'facebook' => -10,
+        'googleplus' => -8,
+        'instagram' => -5,
+        'linkedin' => -7,
+        'messenger' => 1,
+        'skype' => -3,
+        'telegram' => 0,
+        'twitter' => -9,
+        'viber' => -2,
+        'vk' => -4,
+        'whatsapp' => -1,
+        'youtube' => -6,
+      ),
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'socialfield',
+      'settings' => array(),
+      'type' => 'socialfield_widget',
+      'weight' => 12,
+    ),
+  );
+
   // Exported field_instance: 'node-vcard-field_surname'.
   $field_instances['node-vcard-field_surname'] = array(
     'bundle' => 'vcard',
@@ -537,6 +624,7 @@ function vcard_ct_vcard_field_default_field_instances() {
   t('Name');
   t('Phone');
   t('Position');
+  t('Social links');
   t('Surname');
   t('Web site');
   t('base64 vcard');
