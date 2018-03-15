@@ -55,6 +55,13 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         ),
       ),
     ),
+    'entity_user' => array(
+      'operations' => array(
+        'update' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
     'file' => array(
       'operations' => array(
         'create' => array(
@@ -95,9 +102,6 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
     'user' => array(
       'operations' => array(
         'retrieve' => array(
-          'enabled' => '1',
-        ),
-        'update' => array(
           'enabled' => '1',
         ),
       ),
