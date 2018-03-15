@@ -39,4 +39,3 @@ features[user_permission][] = delete any vcard content
 features[user_permission][] = delete own vcard content
 features[user_permission][] = edit any vcard content
 features[user_permission][] = edit own vcard content
-features[user_permission][] = view services
