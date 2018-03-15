@@ -6,11 +6,9 @@ package = ACore
 ; Contrib modules.
 dependencies[] = blob
 dependencies[] = email_registration
-dependencies[] = font_icons
 dependencies[] = jquery_update
 dependencies[] = rest_server
 dependencies[] = services_entity
-dependencies[] = socialfield
 ; Constrib modules need to disable on production.
 dependencies[] = admin_menu
 dependencies[] = adminimal_admin_menu
