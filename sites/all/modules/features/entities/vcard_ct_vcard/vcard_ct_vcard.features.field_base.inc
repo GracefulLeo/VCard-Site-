@@ -197,16 +197,16 @@ function vcard_ct_vcard_field_default_field_bases() {
   // Exported field_base: 'field_social_links'.
   $field_bases['field_social_links'] = array(
     'active' => 1,
-    'cardinality' => -1,
+    'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_social_links',
     'indexes' => array(),
     'locked' => 0,
-    'module' => 'socialfield',
+    'module' => 'blob',
     'settings' => array(),
     'translatable' => 0,
-    'type' => 'social_links_field',
+    'type' => 'blob',
   );
 
   // Exported field_base: 'field_surname'.

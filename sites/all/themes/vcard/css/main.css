@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+a:focus {
+  outline: none;
+}
 body {
   background: url("../images/bg_grey_rect.png");
   font-family: "Roboto", sans-serif;
@@ -330,6 +333,56 @@ body {
   border-radius: 100%;
   padding: 5px;
   font-weight: bold;
+}
+/* Social links. */
+.social-fieldset .form-item {
+  display: flex;
+}
+.social-fieldset .service {
+  width: 37px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  color: #fff;
+  margin-right: 10px;
+}
+.service-facebook {
+  background-color: #3b5998;
+}
+.service-twitter {
+  background-color: #1da1f2;
+}
+.service-googleplus {
+  background-color: #dd4b39;
+}
+.service-linkedin {
+  background-color: #0077b5;
+}
+.service-youtube {
+  background-color: #f00;
+}
+.service-instagram {
+  background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf);
+}
+.service-vk {
+  background-color: #45668e;
+}
+.service-skype {
+  background-color: #00aff0;
+}
+.service-viber {
+  background-color: #8f5db7;
+}
+.service-whatsapp {
+  background-color: #25d366;
+}
+.service-telegram {
+  background-color: #08c;
+}
+.service-messenger {
+  background-color: #0084ff;
 }
 /* My-VCards toolbar. */
 .my-vcards-toolbar-column {

@@ -32,6 +32,7 @@ stylesheets[all][] = css/vcard.css
 ; Custom css.
 stylesheets[all][] = css/nanoscroller.css
 stylesheets[all][] = css/main.css
+stylesheets[all][] = css/fontello.css
 
 ; Block loading of foundation.min.css from the base theme. This file should either
 ; not exist or be blank in your subtheme. See https://drupal.org/node/263967

@@ -150,6 +150,132 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
       '#value' => $vcard_node,
     ];
 
+    $social_links_values = FALSE;
+    if (isset($vcard_node->field_social_links)) {
+      $social_links_values = json_decode($vcard_node->field_social_links[LANGUAGE_NONE][0]['value']);
+    }
+    // Social links.
+    $form['social'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Social links'),
+      '#weight' => 15,
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#tree' => TRUE,
+      '#attributes' => [
+        'class' => ['social-fieldset'],
+      ],
+    ];
+    $form['social']['facebook'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Facebook'),
+      ],
+      '#field_prefix' => '<span class="service service-facebook"><i class="icon icon-facebook"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->social->facebook : '',
+    ];
+    $form['social']['twitter'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Twitter'),
+      ],
+      '#field_prefix' => '<span class="service service-twitter"><i class="icon icon-twitter"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->social->twitter : '',
+    ];
+    $form['social']['google_plus'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Google+'),
+      ],
+      '#field_prefix' => '<span class="service service-googleplus"><i class="icon icon-gplus"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->social->google_plus : '',
+    ];
+    $form['social']['linkedin'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('LinkedIn'),
+      ],
+      '#field_prefix' => '<span class="service service-linkedin"><i class="icon icon-linkedin"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->social->linkedin : '',
+    ];
+    $form['social']['youtube'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('YouTube'),
+      ],
+      '#field_prefix' => '<span class="service service-youtube"><i class="icon icon-youtube"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->social->youtube : '',
+    ];
+    $form['social']['instagram'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Instagram'),
+      ],
+      '#field_prefix' => '<span class="service service-instagram"><i class="icon icon-instagram"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->social->instagram : '',
+    ];
+    $form['social']['vk'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('VKontakte'),
+      ],
+      '#field_prefix' => '<span class="service service-vk"><i class="icon icon-vkontakte"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->social->vk : '',
+    ];
+
+    // Messengers fieldset.
+    $form['messengers'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Messengers'),
+      '#weight' => 16,
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#tree' => TRUE,
+      '#attributes' => [
+        'class' => ['social-fieldset'],
+      ],
+    ];
+    $form['messengers']['skype'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Skype'),
+      ],
+      '#field_prefix' => '<span class="service service-skype"><i class="icon icon-skype"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->messengers->skype : '',
+    ];
+    $form['messengers']['viber'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Viber'),
+      ],
+      '#field_prefix' => '<span class="service service-viber"><i class="icon icon-phone-circled"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->messengers->viber : '',
+    ];
+    $form['messengers']['whatsapp'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('WhatsApp'),
+      ],
+      '#field_prefix' => '<span class="service service-whatsapp"><i class="icon icon-whatsapp"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->messengers->whatsapp : '',
+    ];
+    $form['messengers']['telegram'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Telegram'),
+      ],
+      '#field_prefix' => '<span class="service service-telegram"><i class="icon icon-telegram"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->messengers->telegram : '',
+    ];
+    $form['messengers']['fb_messenger'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'placeholder' => t('Facebook messenger'),
+      ],
+      '#field_prefix' => '<span class="service service-messenger"><i class="icon icon-chat"></i></span>',
+      '#default_value' => $social_links_values ? $social_links_values->messengers->fb_messenger : '',
+    ];
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => t('Save'),
@@ -221,6 +347,12 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   $vcard_node = $form_state['values']['node'];
   field_attach_submit('node', $vcard_node, $form, $form_state);
   $vcard_node = node_submit($vcard_node);
+
+  $vcard_node->field_social_links[LANGUAGE_NONE][0]['value'] = json_encode([
+    'social' => $form_state['values']['social'],
+    'messengers' => $form_state['values']['messengers'],
+  ]);
+
   try {
     node_save($vcard_node);
   } catch (Exception $e) {

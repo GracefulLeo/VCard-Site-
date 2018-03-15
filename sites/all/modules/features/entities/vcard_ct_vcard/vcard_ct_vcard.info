@@ -5,7 +5,6 @@ dependencies[] = blob
 dependencies[] = features
 dependencies[] = image
 dependencies[] = node
-dependencies[] = socialfield
 dependencies[] = text
 dependencies[] = vcard_main
 features[features_api][] = api:2
