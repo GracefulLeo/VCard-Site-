@@ -558,3 +558,7 @@ body {
 #vcard-main-group-manage-contacts-form .logo-micro img {
   width: 50px;
 }
+/* History. */
+.history-blue-text {
+  color: #1e90ff;
+}

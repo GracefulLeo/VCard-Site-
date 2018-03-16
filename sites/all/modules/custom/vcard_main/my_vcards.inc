@@ -343,8 +343,11 @@ function vcard_main_my_vcard_form_validation($form, &$form_state) {
  * "My VCard" page form submit.
  */
 function vcard_main_my_vcard_form_submit($form, &$form_state) {
-  // Save VCard entity.
   $vcard_node = $form_state['values']['node'];
+  // Save to variable old node and check for changes after VCard update.
+  $old_node = isset($vcard_node->nid) ? node_load($vcard_node->nid) : FALSE;
+
+  // Save VCard entity.
   field_attach_submit('node', $vcard_node, $form, $form_state);
   $vcard_node = node_submit($vcard_node);
 
@@ -371,6 +374,40 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
 
   // Save relations to user.
   _user_entityreference_field_save('field_my_vcards', $vcard_node->nid);
+
+
+  // Look for changes on edited VCards.
+  if ($old_node) {
+    $history = new History();
+    $history->setPerson($vcard_wrapper->field_surname->value() . ' ' . $vcard_wrapper->field_name->value());
+    $history->setVCardID($vcard_wrapper->nid->value());
+
+    foreach ($old_node as $field_name => $item) {
+      if ($field_name !== 'field_base64_vcard' && strstr($field_name, 'field_')) {
+        $value_type = $field_name === 'field_logotype' ? 'fid' : 'value';
+
+        // Collect data from fields for comparison.
+        $old = $new = [];
+        if (!empty($item)) {
+          foreach ($item[LANGUAGE_NONE] as $value) {
+            $old[] = $value[$value_type];
+          }
+        }
+        if (!empty($vcard_node->{$field_name}[LANGUAGE_NONE])) {
+          foreach ($vcard_node->{$field_name}[LANGUAGE_NONE] as $value) {
+            $new[] = $value[$value_type];
+          }
+        }
+
+        if ($old != $new) {
+          $history->{$field_name}($old, $new);
+        }
+      }
+    }
+
+    $history->save();
+  }
+
 
   drupal_goto('my-vcards');
 }
