@@ -394,6 +394,18 @@ function vcard_main_entity_info_alter(&$entity_info) {
 }
 
 /**
+ * Implements hook_schema_alter().
+ */
+function vcard_main_schema_alter(&$schema) {
+  $schema['users']['fields']['changed'] = [
+    'description' => 'The Unix timestamp when the node was most recently saved.',
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+  ];
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function vcard_main_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
