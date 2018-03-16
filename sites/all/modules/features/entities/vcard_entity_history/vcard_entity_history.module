@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VCard: Entity: History feature.
+ */
+
+include_once 'vcard_entity_history.features.inc';

@@ -18,11 +18,13 @@ dependencies[] = views_ui
 
 ; Custom modules.
 dependencies[] = vcard_constructor
+dependencies[] = vcard_entities
 dependencies[] = vcard_main
 
 ; Features.
 dependencies[] = vcard_ct_vcard
 dependencies[] = vcard_entity_group
+dependencies[] = vcard_entity_history
 dependencies[] = vcard_field_groups
 dependencies[] = vcard_field_my_contacts
 dependencies[] = vcard_field_my_vcards

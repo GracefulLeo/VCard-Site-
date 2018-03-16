@@ -1,0 +1,8 @@
+name = VCard: Entity: History
+core = 7.x
+package = Features: Entity
+dependencies[] = eck
+dependencies[] = features
+features[eck_bundle][] = history_history
+features[eck_entity_type][] = history
+features[features_api][] = api:2

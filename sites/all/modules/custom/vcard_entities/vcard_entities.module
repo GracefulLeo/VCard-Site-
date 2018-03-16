@@ -1,0 +1,48 @@
+<?php
+/**
+ * @file
+ *
+ * Provides functionality for entities.
+ */
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function vcard_entities_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'eck' && $plugin_type == 'property_behavior') {
+    return 'plugins/' . $plugin_type;
+  }
+}
+
+/**
+ * Implements hook_eck_property_types().
+ */
+function vcard_entities_eck_property_types() {
+  return [
+    'integer' => t('Integer'),
+    'long_text' => t('Long text'),
+  ];
+}
+
+/**
+ * Implements hook_eck_property_type_schema_alter().
+ */
+function vcard_entities_eck_property_type_schema_alter(&$schema, $type) {
+  switch ($type) {
+    case 'integer':
+      $schema = [
+        'description' => 'Integer',
+        'type' => 'varchar',
+        'length' => 20,
+      ];
+      break;
+
+    case 'long_text':
+      $schema = [
+        'description' => 'Long text',
+        'type' => 'text',
+        'size' => 'normal',
+      ];
+      break;
+  }
+}
