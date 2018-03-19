@@ -16,7 +16,6 @@ function vcard_entity_history_eck_bundle_info() {
       'label' => 'History',
       'config' => array(
         'managed_properties' => array(
-          'person' => 'person',
           'body_teaser' => 'body_teaser',
           'full_body' => 'full_body',
           'vcard_id' => 'vcard_id',
@@ -39,11 +38,6 @@ function vcard_entity_history_eck_entity_type_info() {
       'name' => 'history',
       'label' => 'History',
       'properties' => array(
-        'person' => array(
-          'label' => 'Person',
-          'type' => 'text',
-          'behavior' => 'textfield',
-        ),
         'body_teaser' => array(
           'label' => 'Body teaser',
           'type' => 'text',

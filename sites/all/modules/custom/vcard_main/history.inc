@@ -30,10 +30,6 @@ class History {
     }
   }
 
-  public function setPerson($person) {
-    $this->entity->person = $person;
-  }
-
   public function field_logotype($from, $to) {
     $this->fields['field_logotype'] = [
       'label' => t('logotype'),
