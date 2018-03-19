@@ -151,7 +151,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
     ];
 
     $social_links_values = FALSE;
-    if (isset($vcard_node->field_social_links)) {
+    if (isset($vcard_node->field_social_links) && !empty($vcard_node->field_social_links)) {
       $social_links_values = json_decode($vcard_node->field_social_links[LANGUAGE_NONE][0]['value']);
     }
     // Social links.
