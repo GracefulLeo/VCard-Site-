@@ -379,7 +379,6 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   // Look for changes on edited VCards.
   if ($old_node) {
     $history = new History();
-    $history->setPerson($vcard_wrapper->field_surname->value() . ' ' . $vcard_wrapper->field_name->value());
     $history->setVCardID($vcard_wrapper->nid->value());
 
     foreach ($old_node as $field_name => $item) {
