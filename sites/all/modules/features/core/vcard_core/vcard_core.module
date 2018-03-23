@@ -8,3 +8,19 @@
  * Defines site main theme name.
  */
 define('VCARD_THEME_NAME', 'vcard');
+
+/**
+ * Defines social links names.
+ */
+define('FACEBOOK', 'Facebook');
+define('TWITTER', 'Twitter');
+define('GOOGLE_PLUS', 'Google+');
+define('LINKEDIN', 'LinkedIn');
+define('YOUTUBE', 'YouTube');
+define('INSTAGRAM', 'Instagram');
+define('VKONTAKTE', 'VKontakte');
+define('SKYPE', 'Skype');
+define('VIBER', 'Viber');
+define('WHATSAPP', 'WhatsApp');
+define('TELEGRAM', 'Telegram');
+define('MESSENGER', 'Facebook messenger');

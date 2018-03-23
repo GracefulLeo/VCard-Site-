@@ -120,10 +120,21 @@ class History {
     $this->count++;
   }
 
-  // @todo
   public function field_social_links($from, $to) {
+    $from = is_array($from) ? end($from) : $from;
+    $from = (array) json_decode($from);
+    $to = is_array($to) ? end($to) : $to;
+    $to = (array) json_decode($to);
 
-    $this->count++;
+    $keys = array_keys(array_diff_assoc($from, $to));
+    foreach ($keys as $key) {
+      $this->fields[$key] = [
+        'label' => $key,
+        'from' => check_plain($from[$key]),
+        'to' => check_plain($to[$key]),
+      ];
+      $this->count++;
+    }
   }
 
   public function save() {
