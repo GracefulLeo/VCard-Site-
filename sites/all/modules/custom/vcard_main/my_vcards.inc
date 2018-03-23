@@ -172,7 +172,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Facebook'),
       ],
       '#field_prefix' => '<span class="service service-facebook"><i class="icon icon-facebook"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->social->facebook : '',
+      '#default_value' => $social_links_values ? $social_links_values->facebook : '',
     ];
     $form['social']['twitter'] = [
       '#type' => 'textfield',
@@ -180,7 +180,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Twitter'),
       ],
       '#field_prefix' => '<span class="service service-twitter"><i class="icon icon-twitter"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->social->twitter : '',
+      '#default_value' => $social_links_values ? $social_links_values->twitter : '',
     ];
     $form['social']['google_plus'] = [
       '#type' => 'textfield',
@@ -188,7 +188,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Google+'),
       ],
       '#field_prefix' => '<span class="service service-googleplus"><i class="icon icon-gplus"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->social->google_plus : '',
+      '#default_value' => $social_links_values ? $social_links_values->google_plus : '',
     ];
     $form['social']['linkedin'] = [
       '#type' => 'textfield',
@@ -196,7 +196,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('LinkedIn'),
       ],
       '#field_prefix' => '<span class="service service-linkedin"><i class="icon icon-linkedin"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->social->linkedin : '',
+      '#default_value' => $social_links_values ? $social_links_values->linkedin : '',
     ];
     $form['social']['youtube'] = [
       '#type' => 'textfield',
@@ -204,7 +204,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('YouTube'),
       ],
       '#field_prefix' => '<span class="service service-youtube"><i class="icon icon-youtube"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->social->youtube : '',
+      '#default_value' => $social_links_values ? $social_links_values->youtube : '',
     ];
     $form['social']['instagram'] = [
       '#type' => 'textfield',
@@ -212,7 +212,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Instagram'),
       ],
       '#field_prefix' => '<span class="service service-instagram"><i class="icon icon-instagram"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->social->instagram : '',
+      '#default_value' => $social_links_values ? $social_links_values->instagram : '',
     ];
     $form['social']['vk'] = [
       '#type' => 'textfield',
@@ -220,7 +220,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('VKontakte'),
       ],
       '#field_prefix' => '<span class="service service-vk"><i class="icon icon-vkontakte"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->social->vk : '',
+      '#default_value' => $social_links_values ? $social_links_values->vk : '',
     ];
 
     // Messengers fieldset.
@@ -241,7 +241,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Skype'),
       ],
       '#field_prefix' => '<span class="service service-skype"><i class="icon icon-skype"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->messengers->skype : '',
+      '#default_value' => $social_links_values ? $social_links_values->skype : '',
     ];
     $form['messengers']['viber'] = [
       '#type' => 'textfield',
@@ -249,7 +249,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Viber'),
       ],
       '#field_prefix' => '<span class="service service-viber"><i class="icon icon-phone-circled"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->messengers->viber : '',
+      '#default_value' => $social_links_values ? $social_links_values->viber : '',
     ];
     $form['messengers']['whatsapp'] = [
       '#type' => 'textfield',
@@ -257,7 +257,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('WhatsApp'),
       ],
       '#field_prefix' => '<span class="service service-whatsapp"><i class="icon icon-whatsapp"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->messengers->whatsapp : '',
+      '#default_value' => $social_links_values ? $social_links_values->whatsapp : '',
     ];
     $form['messengers']['telegram'] = [
       '#type' => 'textfield',
@@ -265,7 +265,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Telegram'),
       ],
       '#field_prefix' => '<span class="service service-telegram"><i class="icon icon-telegram"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->messengers->telegram : '',
+      '#default_value' => $social_links_values ? $social_links_values->telegram : '',
     ];
     $form['messengers']['fb_messenger'] = [
       '#type' => 'textfield',
@@ -273,7 +273,7 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         'placeholder' => t('Facebook messenger'),
       ],
       '#field_prefix' => '<span class="service service-messenger"><i class="icon icon-chat"></i></span>',
-      '#default_value' => $social_links_values ? $social_links_values->messengers->fb_messenger : '',
+      '#default_value' => $social_links_values ? $social_links_values->fb_messenger : '',
     ];
 
     $form['submit'] = [
@@ -323,8 +323,6 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
         drupal_get_path('module', 'vcard_main') . '/js/jquery.validate.min.js',
       ],
     ];
-    $form['#validate'][] = 'vcard_main_my_vcard_form_validation';
-    $form['#submit'][] = 'vcard_main_my_vcard_form_submit';
     $form['#theme'] = ['my_vcard_form'];
   }
 
@@ -351,10 +349,9 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   field_attach_submit('node', $vcard_node, $form, $form_state);
   $vcard_node = node_submit($vcard_node);
 
-  $vcard_node->field_social_links[LANGUAGE_NONE][0]['value'] = json_encode([
-    'social' => $form_state['values']['social'],
-    'messengers' => $form_state['values']['messengers'],
-  ]);
+  $vcard_node->field_social_links[LANGUAGE_NONE][0]['value'] = json_encode(
+    $form_state['values']['social'] + $form_state['values']['messengers']
+  );
 
   try {
     node_save($vcard_node);
