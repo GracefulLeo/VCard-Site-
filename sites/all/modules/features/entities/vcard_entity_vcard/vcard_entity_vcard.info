@@ -1,0 +1,12 @@
+name = VCard: Entity: VCard
+core = 7.x
+package = Features: Entity
+dependencies[] = eck
+dependencies[] = features
+features[eck_bundle][] = vcard_vcard
+features[eck_entity_type][] = vcard
+features[features_api][] = api:2
+features[user_permission][] = eck add vcard vcard entities
+features[user_permission][] = eck delete vcard vcard entities
+features[user_permission][] = eck edit vcard vcard entities
+features[user_permission][] = eck view vcard vcard entities
