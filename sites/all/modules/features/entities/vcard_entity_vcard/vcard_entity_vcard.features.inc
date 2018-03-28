@@ -20,7 +20,6 @@ function vcard_entity_vcard_eck_bundle_info() {
           'uid' => 'uid',
           'created' => 'created',
           'changed' => 'changed',
-          'logotype' => 'logotype',
           'surname' => 'surname',
           'name' => 'name',
           'middle_name' => 'middle_name',
@@ -67,11 +66,6 @@ function vcard_entity_vcard_eck_entity_type_info() {
           'label' => 'Changed',
           'type' => 'integer',
           'behavior' => 'changed',
-        ),
-        'logotype' => array(
-          'label' => 'Logotype',
-          'type' => 'integer',
-          'behavior' => 'integer',
         ),
         'surname' => array(
           'label' => 'Surname',
