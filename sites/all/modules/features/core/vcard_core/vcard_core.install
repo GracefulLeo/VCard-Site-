@@ -55,12 +55,6 @@ function _vcard_theme_enable() {
 function _update_global_variables() {
   // Set frontpage path.
   variable_set('site_frontpage', 'my-vcards');
-  // File system path.
-  variable_set('file_public_path', 'sites/default/files/public');
-  variable_set('file_private_path', 'sites/default/files/private');
-  variable_set('file_temporary_path', 'sites/default/files/tmp');
-  // Public local files served by Drupal.
-  variable_set('file_default_scheme', 'public');
   // Account settings.
   variable_set('user_register', '1');
   variable_set('user_pictures', FALSE);
