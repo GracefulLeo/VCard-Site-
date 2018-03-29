@@ -13,7 +13,7 @@
 <?php foreach ($rows as $id => $row): ?>
     <div<?php if ($classes_array[$id]) {
       print ' class="' . $classes_array[$id] . '"';
-    } ?> data-id="<?php print $view->result[$id]->nid; ?>"
+    } ?> data-id="<?php print $view->result[$id]->id; ?>"
          data-type="vcard">
       <?php print $row; ?>
     </div>

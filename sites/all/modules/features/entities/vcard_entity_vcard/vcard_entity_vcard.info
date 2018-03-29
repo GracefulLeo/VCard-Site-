@@ -4,6 +4,7 @@ package = Features: Entity
 dependencies[] = eck
 dependencies[] = features
 dependencies[] = image
+dependencies[] = vcard_field_logotype
 features[eck_bundle][] = vcard_vcard
 features[eck_entity_type][] = vcard
 features[features_api][] = api:2

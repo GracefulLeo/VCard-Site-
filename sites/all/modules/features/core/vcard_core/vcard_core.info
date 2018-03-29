@@ -28,6 +28,7 @@ dependencies[] = vcard_field_groups
 dependencies[] = vcard_field_history
 dependencies[] = vcard_field_my_contacts
 dependencies[] = vcard_field_my_vcards
+dependencies[] = vcard_field_logotype
 dependencies[] = vcard_image_style_micro_logo
 dependencies[] = vcard_menu_main_menu
 dependencies[] = vcard_services_endpoint_v1

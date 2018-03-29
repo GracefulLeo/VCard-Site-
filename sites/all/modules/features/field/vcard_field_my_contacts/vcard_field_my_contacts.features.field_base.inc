@@ -38,7 +38,7 @@ function vcard_field_my_contacts_field_default_field_bases() {
           'view_name' => 'contacts',
         ),
       ),
-      'target_type' => 'node',
+      'target_type' => 'vcard',
     ),
     'translatable' => 0,
     'type' => 'entityreference',

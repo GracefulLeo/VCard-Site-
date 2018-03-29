@@ -29,14 +29,14 @@ function vcard_main_menu() {
     'title' => 'Add VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form'],
-    'access arguments' => ['create vcard content'],
+    'access arguments' => ['create entity'],
     'type' => MENU_CALLBACK,
   ];
   $items['ajax/vcard/%/view'] = [
     'page callback' => 'vcard_main_vcard_view_ajax',
     'page arguments' => [2],
     'type' => MENU_CALLBACK,
-    'access arguments' => ['access content'],
+    'access arguments' => ['view entities'],
     'delivery callback' => 'vcard_main_entity_ajax_callback',
   ];
   $items['my-vcards/%/%'] = [
@@ -45,14 +45,14 @@ function vcard_main_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form', 1, 2],
     'access callback' => 'user_access',
-    'access arguments' => ['edit own vcard content'],
+    'access arguments' => ['edit own entity'],
     'type' => MENU_CALLBACK,
   ];
   $items['my-vcards/%/remove'] = [
     'title' => 'Remove VCard',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_my_vcard_form_remove', 1],
-    'access arguments' => ['delete own vcard content'],
+    'access arguments' => ['delete own entity'],
     'type' => MENU_CALLBACK,
   ];
   $items['groups'] = [
@@ -392,4 +392,62 @@ function vcard_main_user_presave(&$edit, $account, $category) {
     $edit['name'] = $edit['mail'];
   }
   $edit['changed'] = time();
+}
+
+/**
+ * Implements hook_permission().
+ */
+function vcard_main_permission() {
+  return [
+    'create entity' => [
+      'title' => 'Add entity',
+      'description' => 'Add VCard, Group etc',
+    ],
+    'view entities' => [
+      'title' => 'View own entity list',
+      'description' => 'View own VCards, Groups etc',
+    ],
+    'edit own entity' => [
+      'title' => 'Edit own entity',
+      'description' => 'Edit own VCard, Group etc',
+    ],
+    'delete own entity' => [
+      'title' => 'Delete own entity',
+      'description' => 'Delete own VCard, Group etc',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_user_default_permissions_alter().
+ */
+function vcard_main_user_default_permissions_alter(&$permissions) {
+  $permissions['create entity'] = [
+    'name' => 'create entity',
+    'roles' => [
+      'authenticated user' => 'authenticated user',
+    ],
+    'module' => 'vcard_main',
+  ];
+  $permissions['view entities'] = [
+    'name' => 'view entities',
+    'roles' => [
+      'authenticated user' => 'authenticated user',
+    ],
+    'module' => 'vcard_main',
+  ];
+  $permissions['edit own entity'] = [
+    'name' => 'edit own entity',
+    'roles' => [
+      'authenticated user' => 'authenticated user',
+    ],
+    'module' => 'vcard_main',
+  ];
+  $permissions['delete own entity'] = [
+    'name' => 'delete own entity',
+    'roles' => [
+      'authenticated user' => 'authenticated user',
+    ],
+    'module' => 'vcard_main',
+  ];
 }
