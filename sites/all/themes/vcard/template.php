@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Defines path to VCard logotype default image.
+ */
+define('VCARD_DEFAULT_LOGO_MICRO_IMAGE', drupal_get_path('theme', 'vcard') . '/images/business-card-svgrepo-com.svg');
+
+/**
  * Implements template_preprocess_entity.
  */
 function vcard_preprocess_entity(&$variables) {
