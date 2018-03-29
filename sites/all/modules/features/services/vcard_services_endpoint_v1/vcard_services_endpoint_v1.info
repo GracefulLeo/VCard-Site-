@@ -8,6 +8,3 @@ dependencies[] = services
 features[ctools][] = services:services:3
 features[features_api][] = api:2
 features[services_endpoint][] = v1
-features[user_permission][] = get any binary files
-features[user_permission][] = get own binary files
-features[user_permission][] = save file information

@@ -417,37 +417,3 @@ function vcard_main_permission() {
     ],
   ];
 }
-
-/**
- * Implements hook_user_default_permissions_alter().
- */
-function vcard_main_user_default_permissions_alter(&$permissions) {
-  $permissions['create entity'] = [
-    'name' => 'create entity',
-    'roles' => [
-      'authenticated user' => 'authenticated user',
-    ],
-    'module' => 'vcard_main',
-  ];
-  $permissions['view entities'] = [
-    'name' => 'view entities',
-    'roles' => [
-      'authenticated user' => 'authenticated user',
-    ],
-    'module' => 'vcard_main',
-  ];
-  $permissions['edit own entity'] = [
-    'name' => 'edit own entity',
-    'roles' => [
-      'authenticated user' => 'authenticated user',
-    ],
-    'module' => 'vcard_main',
-  ];
-  $permissions['delete own entity'] = [
-    'name' => 'delete own entity',
-    'roles' => [
-      'authenticated user' => 'authenticated user',
-    ],
-    'module' => 'vcard_main',
-  ];
-}

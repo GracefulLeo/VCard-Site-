@@ -18,7 +18,3 @@ features[field_instance][] = group-group-field_description
 features[field_instance][] = group-group-field_group_name
 features[field_instance][] = group-group-field_logotype
 features[field_instance][] = group-group-field_my_contacts
-features[user_permission][] = eck add group group entities
-features[user_permission][] = eck delete group group entities
-features[user_permission][] = eck edit group group entities
-features[user_permission][] = eck view group group entities
