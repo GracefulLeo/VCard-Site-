@@ -7,7 +7,6 @@ dependencies[] = features
 dependencies[] = image
 dependencies[] = options
 dependencies[] = text
-dependencies[] = vcard_ct_vcard
 dependencies[] = vcard_field_my_contacts
 features[eck_bundle][] = group_group
 features[eck_entity_type][] = group

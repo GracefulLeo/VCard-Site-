@@ -226,6 +226,7 @@ body {
 }
 .vcard-view-loaded .row {
   margin: 0;
+  display: flex;
 }
 .vcard-description .columns {
   display: flex;

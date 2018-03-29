@@ -1,21 +1,8 @@
 <div class="vcard-view-loaded">
     <div class="vcard-with-actions">
         <div class="vcard-image">
-          <?php print drupal_render($img); ?>
+            <img src="<?php print $base64; ?>">
         </div>
-      <?php if ($editable): ?>
-          <div class="actions">
-              <a href="my-vcards/<?php print $id; ?>/edit">
-                  <i class="material-icons">border_color</i>
-              </a>
-              <a href="my-vcards/<?php print $id; ?>/clone">
-                  <i class="material-icons">content_copy</i>
-              </a>
-              <a href="my-vcards/<?php print $id; ?>/remove">
-                  <i class="material-icons">delete</i>
-              </a>
-          </div>
-      <?php endif; ?>
     </div>
     <div class="vcard-description">
         <div class="row">

@@ -41,7 +41,7 @@ function vcard_entities_eck_property_type_schema_alter(&$schema, $type) {
       $schema = [
         'description' => 'Long text',
         'type' => 'text',
-        'size' => 'normal',
+        'size' => 'big',
       ];
       break;
   }

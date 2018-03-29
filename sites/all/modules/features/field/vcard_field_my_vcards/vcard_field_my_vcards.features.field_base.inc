@@ -39,7 +39,7 @@ function vcard_field_my_vcards_field_default_field_bases() {
           'vcard' => 'vcard',
         ),
       ),
-      'target_type' => 'node',
+      'target_type' => 'vcard',
     ),
     'translatable' => 0,
     'type' => 'entityreference',

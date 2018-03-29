@@ -2,7 +2,7 @@
   var canvas = null;
 
   Drupal.behaviors.constructorVCard = {
-    attach: function (context) {
+    attach: function () {
       if (canvas === null) {
         canvas = new fabric.Canvas('vcard-constructor');
       }
@@ -13,7 +13,7 @@
       canvas.backgroundColor = '#fbfff8';
 
       var $form = $('#vcard-main-my-vcard-form');
-      var fieldsText = $form.find('.field-type-text');
+      var fieldsText = $form.find('.form-type-textfield');
       // Add image on canvas if loaded before.
       addLogo();
 
@@ -141,36 +141,23 @@
   Drupal.behaviors.saveVCard = {
     attach: function (context) {
       $('#my-vcard-form-submit', context).once().bind('click', function () {
-        $('#edit-field-base64-vcard-und-0-value').val(canvas.toDataURL('png'));
+        $('#base64-vcard').val(canvas.toDataURL('png'));
       });
     }
   };
 
-  Drupal.behaviors.hideFieldBase64 = {
-    attach: function (context) {
-      // Hide field_base64_vcard if its view textfield, but not image.
-      $('.field-name-field-base64-vcard', context).find('textarea')
-          .closest('.field-name-field-base64-vcard').css({display: 'none'});
-    }
-  };
-
+  // @todo Add validators for all fields.
   Drupal.behaviors.vcardFormValidation = {
     attach: function (context) {
       $('#vcard-main-my-vcard-form', context).validate({
         rules: {
-          'field_surname[und][0][value]': {
+          'surname': {
             required: true
           },
-          'field_name[und][0][value]': {
+          'name': {
             required: true
           },
-          'field_mail[und][0][value]': {
-            email: true
-          },
-          'field_mail[und][1][value]': {
-            email: true
-          },
-          'field_mail[und][2][value]': {
+          'email': {
             email: true
           }
         }

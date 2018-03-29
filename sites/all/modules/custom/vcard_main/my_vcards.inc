@@ -33,7 +33,7 @@ function _vcard_attach_page_content(&$page, $user_wrapper) {
         $page['entity_list_wrapper']['nano']['entity_list'][] = [
           '#markup' => theme('entity_nano_teaser', [
             'entity_type' => 'vcard',
-            'nid' => $my_vcards[$key]->nid,
+            'entity_id' => $my_vcards[$key]->id,
             'logo_uri' => $logo_uri,
             'title' => $my_vcards[$key]->title,
           ]),
@@ -71,18 +71,10 @@ function vcard_main_vcard_view_ajax($id = NULL) {
   global $user;
 
   if (is_numeric($id)) {
-    $vcard_node = node_load($id);
-    if ($user->uid && $vcard_node) {
-      // Check is user author of vcard.
-      $editable = FALSE;
-      if ($user->uid === $vcard_node->uid) {
-        $editable = TRUE;
-      }
-
+    $vcard_entity = entity_load_single('vcard', $id);
+    if ($user->uid && $vcard_entity) {
       return theme('vcard_details_view', [
-        'node' => $vcard_node,
-        // @todo We can remove it from vcard_details_view theme and template.
-        'editable' => FALSE,
+        'vcard_entity' => $vcard_entity,
       ]);
     }
   }
@@ -110,49 +102,73 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
   if ($user->uid) {
 
     if (is_numeric($id)) {
-      $vcard_node = node_load($id);
-      if ($user->name !== $vcard_node->name) {
+      $vcard_entity = entity_load_single('vcard', $id);
+      if ((int) $user->uid !== (int) $vcard_entity->uid) {
         drupal_not_found();
         drupal_exit();
       }
       if ($op == 'clone') {
-        $vcard_node = clone $vcard_node;
-        $vcard_node->is_new = TRUE;
-        unset($vcard_node->nid);
-        unset($vcard_node->vid);
+        module_load_include('inc', 'entity', 'includes/entity.ui');
+        $vcard_entity = entity_ui_clone_entity('vcard', $vcard_entity);
+        unset($vcard_entity->id);
+        unset($vcard_entity->uid);
+        unset($vcard_entity->created);
+        unset($vcard_entity->changed);
       }
     }
     else {
-      $values = [
-        'type' => 'vcard',
-        'uid' => $user->uid,
-        'status' => 1,
-        'comment' => 0,
-        'promote' => 0,
-      ];
-      $vcard_node = entity_create('node', $values);
+      $vcard_entity = entity_create('vcard', ['type' => 'vcard']);
     }
 
-    field_attach_form('node', $vcard_node, $form, $form_state);
+    // Attach field logotype to container at first, it works with other custom
+    // fields weights.
+    $form['logo'] = [
+      '#type' => 'container',
+      '#weigth' => 0,
+    ];
+    field_attach_form('vcard', $vcard_entity, $form['logo'], $form_state);
 
-    // Extra field for node title property.
-    $form['title'] = [
-      '#type' => 'textfield',
-      '#default_value' => isset($vcard_node->title) ? $vcard_node->title : '',
-      '#weight' => -1,
+    // Build form fields.
+    $properties = [
+      'title' => t('VCard name (visible only to you)'),
+      'surname' => t('Surname'),
+      'name' => t('Name'),
+      'middle_name' => t('Middle name'),
+      'company' => t('Company'),
+      'address' => t('Address'),
+      'position' => t('Position'),
+      'web_site' => t('Web site'),
+      'phone' => t('Phone'),
+      'email' => t('E-mail'),
+    ];
+    $weight = 0;
+    foreach ($properties as $property => $placeholder) {
+      $form[$property] = [
+        '#type' => 'textfield',
+        '#default_value' => isset($vcard_entity->{$property}) ? $vcard_entity->{$property} : '',
+        '#attributes' => [
+          'placeholder' => $placeholder,
+        ],
+        '#weight' => $weight++,
+      ];
+    }
+    $form['title']['#weight'] = -1;
+    $form['base64_vcard'] = [
+      '#type' => 'hidden',
+      '#default_value' => isset($vcard_entity->base64_vcard) ? $vcard_entity->base64_vcard : '',
       '#attributes' => [
-        'placeholder' => t('VCard name (visible only to you)'),
+        'id' => 'base64-vcard',
       ],
     ];
 
-    $form['node'] = [
+    $form['vcard_entity'] = [
       '#type' => 'value',
-      '#value' => $vcard_node,
+      '#value' => $vcard_entity,
     ];
 
     $social_links_values = FALSE;
-    if (isset($vcard_node->field_social_links) && !empty($vcard_node->field_social_links)) {
-      $social_links_values = json_decode($vcard_node->field_social_links[LANGUAGE_NONE][0]['value']);
+    if (isset($vcard_entity->social_links) && !empty($vcard_entity->social_links)) {
+      $social_links_values = json_decode($vcard_entity->social_links);
     }
     // Social links.
     $form['social'] = [
@@ -285,38 +301,6 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
       ],
     ];
 
-    // Alter fields.
-    foreach ($form as $name => &$item) {
-      if (strstr($name, 'field_')) {
-        if (in_array($item[LANGUAGE_NONE]['#field_name'], [
-          'field_phone',
-          'field_mail',
-        ])) {
-          foreach ($item[LANGUAGE_NONE] as $key => &$value) {
-            if (!is_numeric($key)) {
-              continue;
-            }
-
-            // Set placeholders.
-            $value['value']['#attributes']['placeholder'] = $item[LANGUAGE_NONE]['#title'];
-
-            // Remove useless weights.
-            unset($value['_weight']);
-          }
-          // Change "add_more" text.
-          $item[LANGUAGE_NONE]['add_more']['#value'] = 'add';
-          $item[LANGUAGE_NONE]['add_more']['#prefix'] = '<i class="material-icons">';
-          $item[LANGUAGE_NONE]['add_more']['#suffix'] = '</i>';
-          $item[LANGUAGE_NONE]['add_more']['#weight'] = DRUPAL_WEIGHT_SELECT_MAX;
-        }
-        elseif (isset($item['#attributes']['class']) && in_array('field-type-text', $item['#attributes']['class'])) {
-          // Hide titles and set placeholders.
-          $item[LANGUAGE_NONE][0]['value']['#title_display'] = 'invisible';
-          $item[LANGUAGE_NONE][0]['value']['#attributes']['placeholder'] = $item[LANGUAGE_NONE]['#title'];
-        }
-      }
-    }
-
     $form['#attached'] = [
       'js' => [
         drupal_get_path('module', 'vcard_main') . '/js/field_logotype.js',
@@ -333,76 +317,78 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
  * "My VCard" page form validation.
  */
 function vcard_main_my_vcard_form_validation($form, &$form_state) {
-  field_attach_form_validate('node', $form_state['values']['node'], $form, $form_state);
-  node_validate($form_state['values']['node'], $form, $form_state);
+  field_attach_form_validate('vcard', $form_state['values']['vcard_entity'], $form, $form_state);
 }
 
 /**
  * "My VCard" page form submit.
  */
 function vcard_main_my_vcard_form_submit($form, &$form_state) {
-  $vcard_node = $form_state['values']['node'];
-  // Save to variable old node and check for changes after VCard update.
-  $old_node = isset($vcard_node->nid) ? node_load($vcard_node->nid) : FALSE;
+  $vcard_entity = $form_state['values']['vcard_entity'];
+  // Save to variable old entity and check for changes after VCard update.
+  $old_vcard = isset($vcard_entity->id) ? entity_load_single('vcard', $vcard_entity->id) : FALSE;
 
   // Save VCard entity.
-  field_attach_submit('node', $vcard_node, $form, $form_state);
-  $vcard_node = node_submit($vcard_node);
+  field_attach_submit('vcard', $vcard_entity, $form, $form_state);
+  $vcard_wrapper = entity_metadata_wrapper('vcard', $vcard_entity);
 
-  $vcard_node->field_social_links[LANGUAGE_NONE][0]['value'] = json_encode(
-    $form_state['values']['social'] + $form_state['values']['messengers']
-  );
-
-  try {
-    node_save($vcard_node);
-  } catch (Exception $e) {
-    watchdog('vcard_main_my_vcard_form_submit', '<pre>@e</pre>', ['@e' => print_r($e, TRUE)]);
+  // Save values to properties.
+  foreach ($form_state['values'] as $property => $value) {
+    if ($vcard_wrapper->__isset($property) && $property !== 'field_logotype') {
+      $vcard_wrapper->{$property}->set($value);
+    }
   }
 
-  // Set surname, name and middle name as node title.
-  $vcard_wrapper = entity_metadata_wrapper('node', $vcard_node);
-  // Set title to node.
-  $title = 'VCard #' . $vcard_node->nid;
+  // Set title to vcard.
   if (!empty($form_state['values']['title'])) {
     $title = $form_state['values']['title'];
   }
+  else {
+    global $user;
+    $user_wrapper = entity_metadata_wrapper('user', $user);
+    $title = 'VCard #' . ((int) count($user_wrapper->field_my_vcards->value()) + 1);
+  }
   $vcard_wrapper->title->set($title);
+  $vcard_wrapper->social_links->set(json_encode(
+    $form_state['values']['social'] + $form_state['values']['messengers']
+  ));
   $vcard_wrapper->save();
 
   // Save relations to user.
-  _user_entityreference_field_save('field_my_vcards', $vcard_node->nid);
+  _user_entityreference_field_save('field_my_vcards', $vcard_entity->id);
 
 
   // Look for changes on edited VCards.
-  if ($old_node) {
-    $history = new History();
-    $history->setVCardID($vcard_wrapper->nid->value());
-
-    foreach ($old_node as $field_name => $item) {
-      if ($field_name !== 'field_base64_vcard' && strstr($field_name, 'field_')) {
-        $value_type = $field_name === 'field_logotype' ? 'fid' : 'value';
-
-        // Collect data from fields for comparison.
-        $old = $new = [];
-        if (!empty($item)) {
-          foreach ($item[LANGUAGE_NONE] as $value) {
-            $old[] = $value[$value_type];
-          }
-        }
-        if (!empty($vcard_node->{$field_name}[LANGUAGE_NONE])) {
-          foreach ($vcard_node->{$field_name}[LANGUAGE_NONE] as $value) {
-            $new[] = $value[$value_type];
-          }
-        }
-
-        if ($old != $new) {
-          $history->{$field_name}($old, $new);
-        }
-      }
-    }
-
-    $history->save();
-  }
+  //      if ($old_vcard) {
+  //        $history = new History();
+  //        $history->setVCardID($vcard_wrapper->id->value());
+  //    dpm($old_vcard, 'old');
+  //    dpm($vcard_entity, 'new');
+  //        foreach ($old_vcard as $field_name => $item) {
+  //          if ($field_name !== 'field_base64_vcard' && strstr($field_name, 'field_')) {
+  //            $value_type = $field_name === 'field_logotype' ? 'fid' : 'value';
+  //
+  //            // Collect data from fields for comparison.
+  //            $old = $new = [];
+  //            if (!empty($item)) {
+  //              foreach ($item[LANGUAGE_NONE] as $value) {
+  //                $old[] = $value[$value_type];
+  //              }
+  //            }
+  //            if (!empty($vcard_entity->{$field_name}[LANGUAGE_NONE])) {
+  //              foreach ($vcard_entity->{$field_name}[LANGUAGE_NONE] as $value) {
+  //                $new[] = $value[$value_type];
+  //              }
+  //            }
+  //
+  //            if ($old != $new) {
+  //              $history->{$field_name}($old, $new);
+  //            }
+  //          }
+  //        }
+  //
+  //  //      $history->save();
+  //      }
 
 
   drupal_goto('my-vcards');
@@ -414,14 +400,19 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
 function vcard_main_my_vcard_form_remove($form, &$form_state, $id) {
   global $user;
 
-  $wrapper = entity_metadata_wrapper('node', $id);
+  $vcard_entity = entity_load_single('vcard', $id);
 
-  if ($user->name !== $wrapper->value()->name) {
+  if ((int) $user->uid !== (int) $vcard_entity->uid) {
     drupal_not_found();
     drupal_exit();
   }
 
-  $form['image'] = node_view(node_load($id), 'image');
+  $form['container'] = [
+    '#type' => 'container',
+  ];
+  $form['container']['image'] = [
+    '#markup' => '<img src="' . $vcard_entity->base64_vcard . '"/>',
+  ];
 
   $form['id'] = [
     '#type' => 'value',
@@ -448,7 +439,7 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
     // Remove relations from "user" first.
     $wrapper = entity_metadata_wrapper('user', $user);
     foreach ($wrapper->field_my_vcards->value() as $key => $item) {
-      if ($item->nid == $id) {
+      if ($item->id == $id) {
         $wrapper->field_my_vcards[$key]->set(NULL);
         break;
       }
@@ -456,7 +447,7 @@ function vcard_main_my_vcard_form_remove_submit($form, &$form_state) {
     $wrapper->save();
 
     // Remove vcard entity.
-    node_delete($id);
+    entity_delete('vcard', $id);
   }
 
   $form_state['redirect'] = 'my-vcards';

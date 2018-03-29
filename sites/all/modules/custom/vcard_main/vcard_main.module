@@ -139,7 +139,7 @@ function vcard_main_theme($existing, $type, $theme, $path) {
     'entity_nano_teaser' => [
       'variables' => [
         'entity_type' => NULL,
-        'nid' => NULL,
+        'entity_id' => NULL,
         'logo_uri' => NULL,
         'title' => NULL,
       ],
@@ -148,8 +148,7 @@ function vcard_main_theme($existing, $type, $theme, $path) {
     ],
     'vcard_details_view' => [
       'variables' => [
-        'node' => NULL,
-        'editable' => FALSE,
+        'vcard_entity' => NULL,
       ],
       'path' => $templates,
       'template' => 'vcard-details-view',
@@ -263,7 +262,7 @@ function vcard_main_entity_ajax_callback($page_callback_result) {
  * @param $field_name
  *  Entity reference field name in user entity.
  * @param $entity_id
- *  For example: VCard node "nid" or Group entity "id".
+ *  ECK entity "id".
  */
 function _user_entityreference_field_save($field_name, $entity_id) {
   global $user;
@@ -278,7 +277,7 @@ function _user_entityreference_field_save($field_name, $entity_id) {
         unset($wrapper->{$field_name}[$key]);
       }
       else {
-        $ids[] = $item->type == 'vcard' ? $item->nid : $item->id;
+        $ids[] = $item->id;
       }
     }
     // Save if new VCard created.
@@ -347,70 +346,11 @@ function vcard_main_my_vcards_title() {
 }
 
 /**
- * Implements hook_field_formatter_info().
- */
-function vcard_main_field_formatter_info() {
-  return [
-    'base64_image' => [
-      'label' => t('Base64 image'),
-      'description' => t('Render external path to image or base64 text as image.'),
-      'field types' => [
-        'text_long',
-        'blob',
-        'blob_long',
-      ],
-    ],
-  ];
-}
-
-/**
- * Implements hook_field_formatter_view().
- */
-function vcard_main_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  $element = [];
-
-  switch ($display['type']) {
-    case 'base64_image':
-      foreach ($items as $delta => $item) {
-        $element[$delta] = [
-          '#markup' => '<img src="' . $item['value'] . '" />',
-        ];
-      }
-      break;
-  }
-
-  return $element;
-}
-
-/**
  * Implements hook_entity_info_alter().
  */
 function vcard_main_entity_info_alter(&$entity_info) {
-  $entity_info['node']['view modes']['image'] = [
-    'label' => t('Image'),
-    'custom settings' => TRUE,
-  ];
+  // Custom controllers.
   $entity_info['group']['controller class'] = 'GroupEntityController';
-}
-
-/**
- * Implements hook_schema_alter().
- */
-function vcard_main_schema_alter(&$schema) {
-  $schema['users']['fields']['changed'] = [
-    'description' => 'The Unix timestamp when the node was most recently saved.',
-    'type' => 'int',
-    'not null' => TRUE,
-    'default' => 0,
-  ];
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function vcard_main_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
-  $form['combine']['#attributes'] = ['placeholder' => t('Search')];
-  $form['combine']['#title'] = '<i class="material-icons">search</i>';
 }
 
 /**
@@ -418,6 +358,11 @@ function vcard_main_form_views_exposed_form_alter(&$form, &$form_state, $form_id
  */
 function vcard_main_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
+    case 'views_exposed_form':
+      $form['combine']['#attributes'] = ['placeholder' => t('Search')];
+      $form['combine']['#title'] = '<i class="material-icons">search</i>';
+      break;
+
     case 'vcard_main_my_vcard_form_remove':
     case 'vcard_main_group_remove_form':
       $form['actions']['cancel']['#attributes'] = [
@@ -425,6 +370,18 @@ function vcard_main_form_alter(&$form, &$form_state, $form_id) {
       ];
       break;
   }
+}
+
+/**
+ * Implements hook_schema_alter().
+ */
+function vcard_main_schema_alter(&$schema) {
+  $schema['users']['fields']['changed'] = [
+    'description' => 'The Unix timestamp when the user was most recently saved.',
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+  ];
 }
 
 /**

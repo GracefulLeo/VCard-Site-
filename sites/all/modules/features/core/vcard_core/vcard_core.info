@@ -4,7 +4,6 @@ core = 7.x
 package = ACore
 
 ; Contrib modules.
-dependencies[] = blob
 dependencies[] = email_registration
 dependencies[] = jquery_update
 dependencies[] = rest_server
@@ -22,7 +21,6 @@ dependencies[] = vcard_entities
 dependencies[] = vcard_main
 
 ; Features.
-dependencies[] = vcard_ct_vcard
 dependencies[] = vcard_entity_group
 dependencies[] = vcard_entity_history
 dependencies[] = vcard_entity_vcard

@@ -62,25 +62,12 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         ),
       ),
     ),
-    'file' => array(
+    'entity_vcard' => array(
       'operations' => array(
         'create' => array(
           'enabled' => '1',
         ),
         'retrieve' => array(
-          'enabled' => '1',
-        ),
-        'delete' => array(
-          'enabled' => '1',
-        ),
-      ),
-    ),
-    'node' => array(
-      'operations' => array(
-        'retrieve' => array(
-          'enabled' => '1',
-        ),
-        'create' => array(
           'enabled' => '1',
         ),
         'update' => array(
@@ -93,8 +80,16 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
           'enabled' => '1',
         ),
       ),
-      'relationships' => array(
-        'files' => array(
+    ),
+    'file' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => '1',
+        ),
+        'retrieve' => array(
+          'enabled' => '1',
+        ),
+        'delete' => array(
           'enabled' => '1',
         ),
       ),
