@@ -93,21 +93,17 @@ function vcard_preprocess_group_details_view(&$variables) {
         }
       }
 
-      $full_name = $contact->field_surname[LANGUAGE_NONE][0]['value'] . ' ' .
-        $contact->field_name[LANGUAGE_NONE][0]['value'];
-      if (!empty($contact->field_middle_name)) {
-        $full_name .= ' ' . $contact->field_middle_name[LANGUAGE_NONE][0]['value'];
+      $full_name = $contact->surname . ' ' . $contact->name;
+      if (!empty($contact->middle_name)) {
+        $full_name .= ' ' . $contact->middle_name;
       }
-
-      $vcard = node_view($contact, 'image');
 
       $variables['contacts'][] = [
         'logo' => $logo,
         'full_name' => $full_name,
         'position' => !empty($contact->field_position) ? $contact->field_position[LANGUAGE_NONE][0]['value'] : '',
-        'vcard' => render($vcard),
+        'vcard' => $contact->base64_vcard,
       ];
-
     }
   }
 }

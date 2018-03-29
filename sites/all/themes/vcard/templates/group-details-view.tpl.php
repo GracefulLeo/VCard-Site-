@@ -16,7 +16,7 @@
               <i class="material-icons">keyboard_arrow_down</i>
           </div>
           <div class="vcard-image">
-            <?php print render($contact['vcard']); ?>
+              <img src="<?php print $contact['vcard']; ?>"/>
           </div>
       </div>
   <?php endforeach; ?>

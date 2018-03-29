@@ -60,51 +60,51 @@ function vcard_main_menu() {
     'menu_name' => 'main-menu',
     'page callback' => '_entity_page',
     'page arguments' => ['group'],
-    'access arguments' => ['access content'],
+    'access arguments' => ['view entities'],
   ];
   $items['group/add'] = [
     'title' => 'Add group',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['vcard_main_group_form'],
-    'access arguments' => ['create vcard content'],
+    'access arguments' => ['create entity'],
     'type' => MENU_CALLBACK,
   ];
   $items['group/add/%ctools_js'] = [
     'page callback' => 'vcard_main_group_add_ajax',
     'page arguments' => [2],
     'type' => MENU_CALLBACK,
-    'access arguments' => ['access content'],
+    'access arguments' => ['create entity'],
   ];
   $items['ajax/group/%/view'] = [
     'page callback' => 'vcard_main_group_view_ajax',
     'page arguments' => [2],
     'type' => MENU_CALLBACK,
-    'access arguments' => ['access content'],
+    'access arguments' => ['view entities'],
     'delivery callback' => 'vcard_main_entity_ajax_callback',
   ];
   $items['ajax/group/%/credits'] = [
     'page callback' => 'vcard_main_group_credits_ajax',
     'page arguments' => [2],
     'type' => MENU_CALLBACK,
-    'access arguments' => ['access content'],
+    'access arguments' => ['view entities'],
   ];
   $items['group/edit/%/%ctools_js'] = [
     'page callback' => 'vcard_main_group_edit_ajax',
     'page arguments' => [2, 3],
     'type' => MENU_CALLBACK,
-    'access arguments' => ['edit own vcard content'],
+    'access arguments' => ['edit own entity'],
   ];
   $items['group/delete/%/%ctools_js'] = [
     'page callback' => 'vcard_main_group_remove_ajax',
     'page arguments' => [2, 3],
     'type' => MENU_CALLBACK,
-    'access arguments' => ['delete own vcard content'],
+    'access arguments' => ['delete own entity'],
   ];
   $items['group/manage-contacts/%/%ctools_js'] = [
     'page callback' => 'vcard_main_group_manage_contacts_ajax',
     'page arguments' => [2, 3],
     'type' => MENU_CALLBACK,
-    'access arguments' => ['edit own vcard content'],
+    'access arguments' => ['edit own entity'],
   ];
   $items['history'] = [
     'title' => 'History',

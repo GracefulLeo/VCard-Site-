@@ -33,7 +33,7 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
         $page['entity_list_wrapper']['nano']['entity_list'][] = [
           '#markup' => theme('entity_nano_teaser', [
             'entity_type' => 'group',
-            'nid' => $my_groups[$key]->id,
+            'entity_id' => $my_groups[$key]->id,
             'logo_uri' => $logo_uri,
             'title' => $my_groups[$key]->field_group_name[LANGUAGE_NONE][0]['value'],
           ]),
