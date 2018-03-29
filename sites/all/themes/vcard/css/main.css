@@ -170,9 +170,11 @@ body {
 .list-item.list-item-processed {
   background-color: #00acc1;
 }
+.logo-micro {
+  min-width: 94px;
+}
 .logo-micro img {
-  width: 64px;
-  margin-right: 30px;
+  max-width: 64px;
 }
 .vcard-title {
   overflow: hidden;
@@ -483,12 +485,6 @@ body {
   border: 1px solid #ccc;
   align-items: center;
 }
-.contact-logo {
-  height: 64px;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-}
 .contact-person {
   display: flex;
   flex-direction: column;
@@ -556,8 +552,14 @@ body {
 #vcard-main-group-manage-contacts-form button {
   margin-top: 20px;
 }
+#vcard-main-group-manage-contacts-form .logo-micro {
+  min-width: 70px;
+  display: inline-block;
+}
 #vcard-main-group-manage-contacts-form .logo-micro img {
-  width: 50px;
+  max-width: 50px;
+  max-height: 50px;
+  width: auto;
 }
 /* History. */
 .history-blue-text {
