@@ -337,6 +337,20 @@ function vcard_main_block_view($delta = '') {
 }
 
 /**
+ * Implements hook_block_info_alter().
+ */
+function vcard_main_block_info_alter(&$blocks, $theme, $code_blocks) {
+  switch ($theme) {
+    case VCARD_THEME_NAME:
+      $blocks['views']['-exp-contacts-page']['status'] = TRUE;
+      $blocks['views']['-exp-contacts-page']['region'] = 'header';
+      $blocks['views']['-exp-contacts-page']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['views']['-exp-contacts-page']['pages'] = 'contacts';
+      break;
+  }
+}
+
+/**
  * Home page title callback.
  */
 function vcard_main_my_vcards_title() {
