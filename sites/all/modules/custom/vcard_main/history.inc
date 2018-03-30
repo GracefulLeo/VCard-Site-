@@ -31,99 +31,111 @@ class History {
   }
 
   public function field_logotype($from, $to) {
+    $content = FALSE;
+    if ($to) {
+      $file = file_load($to);
+      $image = image_load($file->uri);
+      $content = [
+        'file' => [
+          '#theme' => 'image_style',
+          '#style_name' => 'thumbnail',
+          '#path' => $image->source,
+          '#width' => $image->info['width'],
+          '#height' => $image->info['height'],
+        ],
+      ];
+    }
     $this->fields['field_logotype'] = [
       'label' => t('logotype'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => '',
+      'to' => $content ? drupal_render($content) : '',
     ];
     $this->count++;
   }
 
-  public function field_surname($from, $to) {
-    $this->fields['field_surname'] = [
+  public function surname($from, $to) {
+    $this->fields['surname'] = [
       'label' => t('last name'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_name($from, $to) {
-    $this->fields['field_name'] = [
+  public function name($from, $to) {
+    $this->fields['name'] = [
       'label' => t('name'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_middle_name($from, $to) {
-    $this->fields['field_middle_name'] = [
+  public function middle_name($from, $to) {
+    $this->fields['middle_name'] = [
       'label' => t('middle name'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_company_name($from, $to) {
-    $this->fields['field_company_name'] = [
+  public function company($from, $to) {
+    $this->fields['company'] = [
       'label' => t('company'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_address($from, $to) {
-    $this->fields['field_address'] = [
+  public function address($from, $to) {
+    $this->fields['address'] = [
       'label' => t('address'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_position($from, $to) {
-    $this->fields['field_position'] = [
+  public function position($from, $to) {
+    $this->fields['position'] = [
       'label' => t('position'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_web_site($from, $to) {
-    $this->fields['field_web_site'] = [
+  public function web_site($from, $to) {
+    $this->fields['web_site'] = [
       'label' => t('web site'),
-      'from' => is_array($from) ? end($from) : $from,
-      'to' => is_array($to) ? end($to) : $to,
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_phone($from, $to) {
-    $this->fields['field_phone'] = [
-      'label' => format_plural(min(count($from), count($to)), 'phone number', 'phone numbers'),
-      'from' => implode(', ', $from),
-      'to' => implode(', ', $to),
+  public function phone($from, $to) {
+    $this->fields['phone'] = [
+      'label' => t('phone number'),
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_mail($from, $to) {
-    $this->fields['field_mail'] = [
-      'label' => format_plural(min(count($from), count($to)), 'e-mail', 'e-mails'),
-      'from' => implode(', ', $from),
-      'to' => implode(', ', $to),
+  public function email($from, $to) {
+    $this->fields['mail'] = [
+      'label' => t('e-mail'),
+      'from' => $from,
+      'to' => $to,
     ];
     $this->count++;
   }
 
-  public function field_social_links($from, $to) {
-    $from = is_array($from) ? end($from) : $from;
+  public function social_links($from, $to) {
     $from = (array) json_decode($from);
-    $to = is_array($to) ? end($to) : $to;
     $to = (array) json_decode($to);
 
     $keys = array_keys(array_diff_assoc($from, $to));
@@ -156,16 +168,16 @@ class History {
 
     foreach ($this->fields as $field) {
       $output .= '<p>';
-      if (empty($field['from'])) {
-        $output .= t('Added !label: !to', [
-          '!label' => self::wrapText($field['label']),
-          '!to' => self::wrapText($field['to']),
-        ]);
-      }
-      elseif (empty($field['to'])) {
+      if (empty($field['to'])) {
         $output .= t('Deleted !label: !from', [
           '!label' => self::wrapText($field['label']),
           '!from' => self::wrapText($field['from']),
+        ]);
+      }
+      elseif (empty($field['from'])) {
+        $output .= t('Added !label: !to', [
+          '!label' => self::wrapText($field['label']),
+          '!to' => self::wrapText($field['to']),
         ]);
       }
       else {
@@ -183,5 +195,11 @@ class History {
 
   private static function wrapText($s) {
     return "<span class='history-blue-text'>$s</span>";
+  }
+
+  /**
+   * Empty __call() for ignoring calls of nonexistent methods.
+   */
+  public function __call($name, $arguments) {
   }
 }

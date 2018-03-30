@@ -350,36 +350,27 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
 
 
   // Look for changes on edited VCards.
-  //      if ($old_vcard) {
-  //        $history = new History();
-  //        $history->setVCardID($vcard_wrapper->id->value());
-  //    dpm($old_vcard, 'old');
-  //    dpm($vcard_entity, 'new');
-  //        foreach ($old_vcard as $field_name => $item) {
-  //          if ($field_name !== 'field_base64_vcard' && strstr($field_name, 'field_')) {
-  //            $value_type = $field_name === 'field_logotype' ? 'fid' : 'value';
-  //
-  //            // Collect data from fields for comparison.
-  //            $old = $new = [];
-  //            if (!empty($item)) {
-  //              foreach ($item[LANGUAGE_NONE] as $value) {
-  //                $old[] = $value[$value_type];
-  //              }
-  //            }
-  //            if (!empty($vcard_entity->{$field_name}[LANGUAGE_NONE])) {
-  //              foreach ($vcard_entity->{$field_name}[LANGUAGE_NONE] as $value) {
-  //                $new[] = $value[$value_type];
-  //              }
-  //            }
-  //
-  //            if ($old != $new) {
-  //              $history->{$field_name}($old, $new);
-  //            }
-  //          }
-  //        }
-  //
-  //  //      $history->save();
-  //      }
+  if ($old_vcard) {
+    $history = new History();
+    $history->setVCardID($vcard_wrapper->id->value());
+
+    foreach ($old_vcard as $field_name => $item) {
+      if ($field_name === 'field_logotype') {
+        $old = !empty($old_vcard->field_logotype[LANGUAGE_NONE]) ? $old_vcard->field_logotype[LANGUAGE_NONE][0]['fid'] : '';
+        $new = !empty($vcard_entity->field_logotype[LANGUAGE_NONE]) ? $vcard_entity->field_logotype[LANGUAGE_NONE][0]['fid'] : '';
+      }
+      else {
+        $old = $old_vcard->{$field_name};
+        $new = $vcard_entity->{$field_name};
+      }
+
+      if ($old !== $new) {
+        $history->{$field_name}($old, $new);
+      }
+    }
+
+    $history->save();
+  }
 
 
   drupal_goto('my-vcards');
