@@ -141,17 +141,8 @@ function vcard_main_my_vcard_form($form, &$form_state, $id = NULL, $op = NULL) {
       'phone' => t('Phone'),
       'email' => t('E-mail'),
     ];
-    $weight = 0;
-    foreach ($properties as $property => $placeholder) {
-      $form[$property] = [
-        '#type' => 'textfield',
-        '#default_value' => isset($vcard_entity->{$property}) ? $vcard_entity->{$property} : '',
-        '#attributes' => [
-          'placeholder' => $placeholder,
-        ],
-        '#weight' => $weight++,
-      ];
-    }
+    // Build fields to accordance with properties.
+    _form_build_properties($form, $vcard_entity, $properties);
     $form['title']['#weight'] = -1;
     $form['base64_vcard'] = [
       '#type' => 'hidden',

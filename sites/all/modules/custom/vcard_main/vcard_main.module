@@ -295,6 +295,29 @@ function _user_entityreference_field_save($field_name, $entity_id) {
 }
 
 /**
+ * Helper function creates textfields with default values from entity.
+ *
+ * @param $form
+ * @param $entity
+ *  VCard, Group etc.
+ * @param array $properties
+ *  array($property => $placeholder, ...)
+ */
+function _form_build_properties(&$form, $entity, $properties) {
+  $weight = 0;
+  foreach ($properties as $property => $placeholder) {
+    $form[$property] = [
+      '#type' => 'textfield',
+      '#default_value' => isset($entity->{$property}) ? $entity->{$property} : '',
+      '#attributes' => [
+        'placeholder' => $placeholder,
+      ],
+      '#weight' => $weight++,
+    ];
+  }
+}
+
+/**
  * Implements hook_block_info().
  */
 function vcard_main_block_info() {

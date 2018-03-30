@@ -18,6 +18,8 @@ function vcard_entity_group_eck_bundle_info() {
         'managed_properties' => array(
           'changed' => 'changed',
           'uid' => 'uid',
+          'name' => 'name',
+          'description' => 'description',
         ),
       ),
     ),
@@ -43,6 +45,16 @@ function vcard_entity_group_eck_entity_type_info() {
           'label' => 'Author',
           'type' => 'integer',
           'behavior' => 'author',
+        ),
+        'name' => array(
+          'label' => 'Name',
+          'type' => 'text',
+          'behavior' => 'textfield',
+        ),
+        'description' => array(
+          'label' => 'Description',
+          'type' => 'text',
+          'behavior' => 'textfield',
         ),
       ),
     ),

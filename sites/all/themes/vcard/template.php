@@ -101,7 +101,7 @@ function vcard_preprocess_group_details_view(&$variables) {
       $variables['contacts'][] = [
         'logo' => $logo,
         'full_name' => $full_name,
-        'position' => !empty($contact->field_position) ? $contact->field_position[LANGUAGE_NONE][0]['value'] : '',
+        'position' => $contact->position,
         'vcard' => $contact->base64_vcard,
       ];
     }

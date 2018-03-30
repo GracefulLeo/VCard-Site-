@@ -35,7 +35,7 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
             'entity_type' => 'group',
             'entity_id' => $my_groups[$key]->id,
             'logo_uri' => $logo_uri,
-            'title' => $my_groups[$key]->field_group_name[LANGUAGE_NONE][0]['value'],
+            'title' => $my_groups[$key]->name,
           ]),
         ];
       } catch (Exception $e) {
@@ -86,11 +86,12 @@ function vcard_main_group_form($form, &$form_state, $id = NULL) {
     // Remove "My contacts" field, contacts will add in other popup.
     unset($form['field_my_contacts']);
 
-    // Style fields.
-    foreach (['field_group_name', 'field_description'] as $field) {
-      $form[$field][LANGUAGE_NONE][0]['value']['#attributes']['placeholder'] = $form[$field][LANGUAGE_NONE][0]['#title'];
-      $form[$field][LANGUAGE_NONE][0]['value']['#title_display'] = 'invisible';
-    }
+    $properties = [
+      'name' => t('Group name'),
+      'description' => t('Description'),
+    ];
+    // Build fields to accordance with properties.
+    _form_build_properties($form, $group_entity, $properties);
 
     $form['group'] = [
       '#type' => 'value',
@@ -183,6 +184,8 @@ function vcard_main_group_form_validation($form, &$form_state) {
 function vcard_main_group_form_submit($form, &$form_state) {
   $group_entity = $form_state['values']['group'];
   field_attach_submit('group', $group_entity, $form, $form_state);
+  $group_entity->name = $form_state['values']['name'];
+  $group_entity->description = $form_state['values']['description'];
   entity_save('group', $group_entity);
 
   // Save relations to user.
@@ -223,8 +226,8 @@ function vcard_main_group_credits_ajax($id = NULL) {
     $group_entity = entity_load_single('group', $id);
 
     drupal_json_output([
-      'title' => $group_entity->field_group_name[LANGUAGE_NONE][0]['value'],
-      'description' => @$group_entity->field_description[LANGUAGE_NONE][0]['value'],
+      'title' => $group_entity->name,
+      'description' => @$group_entity->description,
     ]);
   }
 }
@@ -272,9 +275,7 @@ function vcard_main_group_manage_contacts_form($form, &$form_state, $id = NULL) 
     field_attach_form('group', $group_entity, $form, $form_state);
 
     // Remove all fields except "My contacts" field.
-    unset($form['field_group_name']);
     unset($form['field_logotype']);
-    unset($form['field_description']);
 
     $form['field_my_contacts'][LANGUAGE_NONE]['#title_display'] = 'invisible';
 
@@ -354,7 +355,7 @@ function vcard_main_group_remove_form($form, &$form_state, $id) {
 
   $form['title'] = [
     '#type' => 'item',
-    '#markup' => t('Delete group: "%name"?', ['%name' => $group_wrapper->field_group_name->value()]),
+    '#markup' => t('Delete group: "%name"?', ['%name' => $group_wrapper->name->value()]),
   ];
 
   $form['id'] = [

@@ -35,7 +35,7 @@
   Drupal.behaviors.closePopups = {
     attach: function () {
       $('#modalBackdrop').bind('click', function () {
-        location.reload()
+        modalContentClose()
       })
     }
   };
