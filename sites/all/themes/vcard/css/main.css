@@ -17,8 +17,30 @@ body {
   margin: 0;
 }
 /* Error messages. */
-.l-messages {
-  float: right;
+.l-messages .columns {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  height: calc(100vh - 170px);
+}
+.l-messages .columns > div {
+  min-height: 50%;
+  width: 50%;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.l-messages .columns .close {
+  color: #fff;
+  font-size: 5em;
+  position: absolute;
+  top: 30px;
+  right: 0;
 }
 /* Throbber. */
 .ajax-vcard-throbber-wrapper {

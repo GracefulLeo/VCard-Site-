@@ -24,3 +24,14 @@ define('VIBER', 'Viber');
 define('WHATSAPP', 'WhatsApp');
 define('TELEGRAM', 'Telegram');
 define('MESSENGER', 'Facebook messenger');
+
+/**
+ * Implements hook_mail_alter().
+ */
+function vcard_core_mail_alter(&$message) {
+  switch ($message['key']) {
+    case 'register_no_approval_required':
+      $message['send'] = FALSE;
+      break;
+  }
+}
