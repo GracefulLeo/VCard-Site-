@@ -29,9 +29,14 @@ define('MESSENGER', 'Facebook messenger');
  * Implements hook_mail_alter().
  */
 function vcard_core_mail_alter(&$message) {
-  switch ($message['key']) {
-    case 'register_no_approval_required':
-      $message['send'] = FALSE;
-      break;
-  }
+  $message['send'] = FALSE;
+}
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function vcard_core_block_info_alter(&$blocks, $theme, $code_blocks) {
+  // Configure default blocks.
+  $blocks['system']['navigation']['status'] = FALSE;
+  $blocks['user']['login']['region'] = 'content';
 }
