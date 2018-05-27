@@ -10,10 +10,7 @@ define('VCARD_DEFAULT_LOGO_MICRO_IMAGE', drupal_get_path('theme', 'vcard') . '/i
  */
 function vcard_preprocess_html(&$variables) {
   // Block access to site after two 404 error.
-  $baned_ips = variable_get('baned_ips', []);
-  if ($baned_ips) {
-    $baned_ips = unserialize($baned_ips);
-  }
+  $baned_ips = unserialize(variable_get('baned_ips', 'a:0:{}'));
 
   $ip = $_SERVER['REMOTE_ADDR'];
   if (in_array($ip, $baned_ips)) {
