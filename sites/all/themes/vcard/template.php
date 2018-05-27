@@ -6,6 +6,37 @@
 define('VCARD_DEFAULT_LOGO_MICRO_IMAGE', drupal_get_path('theme', 'vcard') . '/images/business-card-svgrepo-com.svg');
 
 /**
+ * Implements template_preprocess_html.
+ */
+function vcard_preprocess_html(&$variables) {
+  // Block access to site after two 404 error.
+  $baned_ips = variable_get('baned_ips', []);
+  if ($baned_ips) {
+    $baned_ips = unserialize($baned_ips);
+  }
+
+  $ip = $_SERVER['REMOTE_ADDR'];
+  if (in_array($ip, $baned_ips)) {
+    die('Matrix has you...');
+  }
+
+  $status = drupal_get_http_header("status");
+  if ($status == '404 Not Found') {
+    // After first "404 error" save suspicious ip.
+    // If the ip already exists in "suspicious ips" array save ip to "baned ips".
+    $suspicious_ips = variable_get('suspicious_ips', []);
+    if (in_array($ip, $suspicious_ips)) {
+      array_push($baned_ips, $ip);
+      variable_set('baned_ips', serialize($baned_ips));
+    }
+    else {
+      array_push($suspicious_ips, $ip);
+      variable_set('suspicious_ips', $suspicious_ips);
+    }
+  }
+}
+
+/**
  * Implements template_preprocess_entity.
  */
 function vcard_preprocess_entity(&$variables) {
