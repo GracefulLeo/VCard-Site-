@@ -50,9 +50,6 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         'delete' => array(
           'enabled' => '1',
         ),
-        'index' => array(
-          'enabled' => '1',
-        ),
       ),
     ),
     'entity_user' => array(
@@ -76,9 +73,6 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         'delete' => array(
           'enabled' => '1',
         ),
-        'index' => array(
-          'enabled' => '1',
-        ),
       ),
     ),
     'file' => array(
@@ -97,6 +91,9 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
     'user' => array(
       'operations' => array(
         'retrieve' => array(
+          'enabled' => '1',
+        ),
+        'update' => array(
           'enabled' => '1',
         ),
       ),
