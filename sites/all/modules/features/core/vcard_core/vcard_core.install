@@ -12,10 +12,16 @@ function vcard_core_install() {
   _update_global_variables();
   // Remove orphaned actions.
   actions_synchronize(TRUE);
-  // Add property "Changed" to "users".
-  if (!db_field_exists('users', 'changed')) {
-    $schema = drupal_get_schema('users');
-    db_add_field('users', 'changed', $schema['fields']['changed']);
+  // Add properties to "users" table.
+  $properties = [
+    'changed',
+    'last_login_token',
+  ];
+  foreach ($properties as $property) {
+    if (!db_field_exists('users', $property)) {
+      $schema = drupal_get_schema('users');
+      db_add_field('users', $property, $schema['fields'][$property]);
+    }
   }
 }
 

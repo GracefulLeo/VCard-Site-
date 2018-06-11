@@ -419,6 +419,12 @@ function vcard_main_schema_alter(&$schema) {
     'not null' => TRUE,
     'default' => 0,
   ];
+  $schema['users']['fields']['last_login_token'] = [
+    'description' => 'Token generated when user synchronize to server.',
+    'type' => 'varchar',
+    'length' => 20,
+    'not null' => FALSE,
+  ];
 }
 
 /**
@@ -427,6 +433,8 @@ function vcard_main_schema_alter(&$schema) {
 function vcard_main_user_presave(&$edit, $account, $category) {
   if (isset($account->is_new) && $account->is_new) {
     $edit['name'] = $edit['mail'];
+    // Generate random first login token if user register from site.
+    $edit['last_login_token'] = bin2hex(random_bytes(10));
   }
   $edit['changed'] = time();
 }
@@ -453,4 +461,33 @@ function vcard_main_permission() {
       'description' => 'Delete own VCard, Group etc',
     ],
   ];
+}
+
+/**
+ * Generate UUID.
+ *
+ * @return string
+ */
+function _get_uuid() {
+  try {
+    $data = random_bytes(16);
+    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+
+    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+  } catch (Exception $_) {
+    return '';
+  }
+}
+
+/**
+ * Check has UUID valid format.
+ *
+ * @param $uuid
+ *
+ * @return bool
+ */
+function _uuid_is_valid($uuid) {
+  return preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?' .
+      '[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $uuid) === 1;
 }

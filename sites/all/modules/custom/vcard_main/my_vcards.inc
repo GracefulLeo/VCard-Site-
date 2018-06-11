@@ -315,6 +315,8 @@ function vcard_main_my_vcard_form_validation($form, &$form_state) {
  * "My VCard" page form submit.
  */
 function vcard_main_my_vcard_form_submit($form, &$form_state) {
+  global $user;
+
   $vcard_entity = $form_state['values']['vcard_entity'];
   // Save to variable old entity and check for changes after VCard update.
   $old_vcard = isset($vcard_entity->id) ? entity_load_single('vcard', $vcard_entity->id) : FALSE;
@@ -335,7 +337,6 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
     $title = $form_state['values']['title'];
   }
   else {
-    global $user;
     $user_wrapper = entity_metadata_wrapper('user', $user);
     $title = 'VCard #' . ((int) count($user_wrapper->field_my_vcards->value()) + 1);
   }
@@ -343,6 +344,10 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   $vcard_wrapper->social_links->set(json_encode(
     $form_state['values']['social'] + $form_state['values']['messengers']
   ));
+  if (empty($vcard_wrapper->uuid->value())) {
+    $vcard_wrapper->uuid->set(_get_uuid());
+  }
+  $vcard_wrapper->token->set($user->last_login_token);
   $vcard_wrapper->save();
 
   // Save relations to user.
