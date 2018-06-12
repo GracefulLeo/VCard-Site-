@@ -52,6 +52,16 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         ),
       ),
     ),
+    'entity_history' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => '1',
+        ),
+        'retrieve' => array(
+          'enabled' => '1',
+        ),
+      ),
+    ),
     'entity_user' => array(
       'operations' => array(
         'update' => array(

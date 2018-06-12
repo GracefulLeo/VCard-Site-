@@ -37,6 +37,15 @@ function vcard_permissions_user_default_permissions() {
     'module' => 'eck',
   );
 
+  // Exported permission: 'eck add history history entities'.
+  $permissions['eck add history history entities'] = array(
+    'name' => 'eck add history history entities',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'eck',
+  );
+
   // Exported permission: 'eck add vcard vcard entities'.
   $permissions['eck add vcard vcard entities'] = array(
     'name' => 'eck add vcard vcard entities',
@@ -85,6 +94,15 @@ function vcard_permissions_user_default_permissions() {
   // Exported permission: 'eck view group group entities'.
   $permissions['eck view group group entities'] = array(
     'name' => 'eck view group group entities',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'eck',
+  );
+
+  // Exported permission: 'eck view history history entities'.
+  $permissions['eck view history history entities'] = array(
+    'name' => 'eck view history history entities',
     'roles' => array(
       'authenticated user' => 'authenticated user',
     ),
