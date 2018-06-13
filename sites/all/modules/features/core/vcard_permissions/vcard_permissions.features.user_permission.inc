@@ -91,6 +91,15 @@ function vcard_permissions_user_default_permissions() {
     'module' => 'eck',
   );
 
+  // Exported permission: 'eck edit vcard_comment vcard_comment entities'.
+  $permissions['eck edit vcard_comment vcard_comment entities'] = array(
+    'name' => 'eck edit vcard_comment vcard_comment entities',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'eck',
+  );
+
   // Exported permission: 'eck view group group entities'.
   $permissions['eck view group group entities'] = array(
     'name' => 'eck view group group entities',
@@ -112,6 +121,15 @@ function vcard_permissions_user_default_permissions() {
   // Exported permission: 'eck view vcard vcard entities'.
   $permissions['eck view vcard vcard entities'] = array(
     'name' => 'eck view vcard vcard entities',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'eck',
+  );
+
+  // Exported permission: 'eck view vcard_comment vcard_comment entities'.
+  $permissions['eck view vcard_comment vcard_comment entities'] = array(
+    'name' => 'eck view vcard_comment vcard_comment entities',
     'roles' => array(
       'authenticated user' => 'authenticated user',
     ),

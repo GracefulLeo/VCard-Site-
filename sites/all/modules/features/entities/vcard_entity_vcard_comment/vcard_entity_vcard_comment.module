@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VCard: Entity: VCard comment feature.
+ */
+
+include_once 'vcard_entity_vcard_comment.features.inc';

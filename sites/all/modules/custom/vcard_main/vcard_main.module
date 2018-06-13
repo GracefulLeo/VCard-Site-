@@ -410,36 +410,6 @@ function vcard_main_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Implements hook_schema_alter().
- */
-function vcard_main_schema_alter(&$schema) {
-  $schema['users']['fields']['changed'] = [
-    'description' => 'The Unix timestamp when the user was most recently saved.',
-    'type' => 'int',
-    'not null' => TRUE,
-    'default' => 0,
-  ];
-  $schema['users']['fields']['last_login_token'] = [
-    'description' => 'Token generated when user synchronize to server.',
-    'type' => 'varchar',
-    'length' => 20,
-    'not null' => FALSE,
-  ];
-}
-
-/**
- * Implements hook_user_presave().
- */
-function vcard_main_user_presave(&$edit, $account, $category) {
-  if (isset($account->is_new) && $account->is_new) {
-    $edit['name'] = $edit['mail'];
-    // Generate random first login token if user register from site.
-    $edit['last_login_token'] = bin2hex(random_bytes(10));
-  }
-  $edit['changed'] = time();
-}
-
-/**
  * Implements hook_permission().
  */
 function vcard_main_permission() {
