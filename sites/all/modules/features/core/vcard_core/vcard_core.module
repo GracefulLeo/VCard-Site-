@@ -49,7 +49,7 @@ function vcard_core_schema_alter(&$schema) {
 function vcard_core_user_presave(&$edit, $account, $category) {
   if (isset($account->is_new) && $account->is_new) {
     // Generate random first login token if user register from site.
-    $edit['last_login_token'] = _get_uuid();
+    $edit['last_login_token'] = generate_uuid();
   }
   $edit['changed'] = time();
 }

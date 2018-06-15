@@ -15,37 +15,11 @@
  */
 function _groups_attach_page_content(&$page, $user_wrapper) {
   $my_groups = $user_wrapper->field_groups->value();
-  if (!empty($my_groups)) {
-    // Sort by "changed", newest first.
-    $sorted = [];
-    foreach ($my_groups as $key => $group) {
-      $sorted[$group->changed] = $key;
-    }
-    krsort($sorted);
 
-    foreach ($sorted as $key) {
-      $logo_uri = '';
-      if (!empty($my_groups[$key]->field_logotype)) {
-        $logo_uri = $my_groups[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
-      }
-
-      try {
-        $page['entity_list_wrapper']['nano']['entity_list'][] = [
-          '#markup' => theme('entity_nano_teaser', [
-            'entity_type' => 'group',
-            'entity_id' => $my_groups[$key]->id,
-            'logo_uri' => $logo_uri,
-            'title' => $my_groups[$key]->name,
-          ]),
-        ];
-      } catch (Exception $e) {
-        watchdog('theme', 'entity_nano_teaser error: @e', ['@e' => $e]);
-      }
-    }
-  }
+  $page['entity_list_wrapper']['nano']['entity_list'][] = drupal_get_form('vcard_main_build_list_items_form', $my_groups);
 
   // "Add new group" link.
-  $page['entity_view_wrapper']['nano']['content']['add'] = [
+  $page['entity_view_wrapper']['nano']['content']['view']['add'] = [
     '#type' => 'container',
     '#attributes' => [
       'id' => 'add-entity-wrapper',
@@ -54,7 +28,7 @@ function _groups_attach_page_content(&$page, $user_wrapper) {
   // Enable popup style settings.
   vcard_main_group_ctools_popup_style();
   // Create modal link to popup.
-  $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
+  $page['entity_view_wrapper']['nano']['content']['view']['add']['link'] = [
     '#type' => 'link',
     '#href' => 'group/add/nojs',
     '#title' => 'group_add',
@@ -194,42 +168,6 @@ function vcard_main_group_form_submit($form, &$form_state) {
   _close_ctools_modal_popup($form_state);
 
   drupal_goto('groups');
-}
-
-/**
- * Delivery ajax for view Group.
- *
- * @param null $id
- *
- * @return array|mixed
- * @throws \Exception
- */
-function vcard_main_group_view_ajax($id = NULL) {
-  if (is_numeric($id)) {
-    $group_entity = entity_load_single('group', $id);
-
-    return theme('group_details_view', ['group' => $group_entity]);
-  }
-
-  return FALSE;
-}
-
-/**
- * Return json with group's title and description.
- *
- * @param int $id
- *
- * @return string
- */
-function vcard_main_group_credits_ajax($id = NULL) {
-  if (is_numeric($id)) {
-    $group_entity = entity_load_single('group', $id);
-
-    drupal_json_output([
-      'title' => $group_entity->name,
-      'description' => @$group_entity->description,
-    ]);
-  }
 }
 
 /**

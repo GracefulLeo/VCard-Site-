@@ -75,19 +75,6 @@ function vcard_main_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => ['create entity'],
   ];
-  $items['ajax/group/%/view'] = [
-    'page callback' => 'vcard_main_group_view_ajax',
-    'page arguments' => [2],
-    'type' => MENU_CALLBACK,
-    'access arguments' => ['view entities'],
-    'delivery callback' => 'vcard_main_entity_ajax_callback',
-  ];
-  $items['ajax/group/%/credits'] = [
-    'page callback' => 'vcard_main_group_credits_ajax',
-    'page arguments' => [2],
-    'type' => MENU_CALLBACK,
-    'access arguments' => ['view entities'],
-  ];
   $items['group/edit/%/%ctools_js'] = [
     'page callback' => 'vcard_main_group_edit_ajax',
     'page arguments' => [2, 3],
@@ -138,7 +125,6 @@ function vcard_main_theme($existing, $type, $theme, $path) {
   return [
     'entity_nano_teaser' => [
       'variables' => [
-        'entity_type' => NULL,
         'entity_id' => NULL,
         'logo_uri' => NULL,
         'title' => NULL,
@@ -148,7 +134,7 @@ function vcard_main_theme($existing, $type, $theme, $path) {
     ],
     'vcard_details_view' => [
       'variables' => [
-        'vcard_entity' => NULL,
+        'vcard' => NULL,
       ],
       'path' => $templates,
       'template' => 'vcard-details-view',
@@ -164,6 +150,22 @@ function vcard_main_theme($existing, $type, $theme, $path) {
       ],
       'path' => $templates,
       'template' => 'group-details-view',
+    ],
+    'toolbar_vcard' => [
+      'variables' => [
+        'entity_id' => NULL,
+      ],
+      'path' => $templates,
+      'template' => 'toolbar-vcard',
+    ],
+    'toolbar_group' => [
+      'variables' => [
+        'entity_id' => NULL,
+        'title' => NULL,
+        'description' => NULL,
+      ],
+      'path' => $templates,
+      'template' => 'toolbar-group',
     ],
   ];
 }
@@ -224,6 +226,12 @@ function _entity_page($entity_type = NULL) {
       'class' => ['nano-content'],
     ],
   ];
+  $page['entity_view_wrapper']['nano']['content']['view'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'id' => 'entity-view-ajax-loaded',
+    ],
+  ];
 
   $user_wrapper = entity_metadata_wrapper('user', $user);
 
@@ -239,11 +247,132 @@ function _entity_page($entity_type = NULL) {
 
   $page['#attached'] = [
     'js' => [
-      drupal_get_path('theme', 'vcard') . '/js/entity_view_ajax_load.js',
+      drupal_get_path('theme', 'vcard') . '/js/entity_view.js',
     ],
   ];
 
   return $page;
+}
+
+/**
+ * Build form with item list for VCards, Groups and same entities.
+ *
+ * @param $form
+ * @param $form_state
+ * @param null $entity_reference_field_values
+ *  Array of entities from user's entity reference fields.
+ *
+ * @return mixed
+ */
+function vcard_main_build_list_items_form($form, &$form_state, $entity_reference_field_values = NULL) {
+  if (!empty($entity_reference_field_values)) {
+    $entity_type = end($entity_reference_field_values)->type;
+
+    // Sort by "changed", newest first.
+    $sorted = [];
+    foreach ($entity_reference_field_values as $key => $entity) {
+      $sorted[$entity->changed] = $key;
+    }
+    krsort($sorted);
+
+    $options = [];
+    foreach ($sorted as $key) {
+      $logo_uri = '';
+      if (!empty($entity_reference_field_values[$key]->field_logotype)) {
+        $logo_uri = $entity_reference_field_values[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
+      }
+
+      try {
+        $title = '';
+        switch ($entity_type) {
+          case 'vcard':
+            $title = $entity_reference_field_values[$key]->title;
+            break;
+
+          case 'group':
+            $title = $entity_reference_field_values[$key]->name;
+            break;
+        }
+
+        $options[$entity_reference_field_values[$key]->id] = theme('entity_nano_teaser', [
+          'logo_uri' => $logo_uri,
+          'title' => $title,
+        ]);
+      } catch (Exception $e) {
+        watchdog('theme', 'entity_nano_teaser error: @e', ['@e' => $e]);
+      }
+    }
+
+    $form['entities'] = [
+      '#type' => 'radios',
+      '#options' => $options,
+      '#ajax' => [
+        'callback' => 'vcard_main_entity_view_ajax_callback',
+        'wrapper' => 'entity-view-ajax-loaded',
+        'progress' => FALSE,
+      ],
+    ];
+    $form['entity_type'] = [
+      '#type' => 'value',
+      '#value' => $entity_type,
+    ];
+  }
+
+  return $form;
+}
+
+/**
+ * Ajax callback render entity view on right column and update toolbar.
+ *
+ * @param $form
+ * @param $form_state
+ *
+ * @return array|string
+ */
+function vcard_main_entity_view_ajax_callback($form, $form_state) {
+  $id = $form_state['values']['entities'];
+  $entity_type = $form_state['values']['entity_type'];
+
+  if (is_numeric($id)) {
+    $entity = entity_load_single($entity_type, $id);
+
+    $render = '';
+    try {
+      $render = theme("{$entity_type}_details_view", [$entity_type => $entity]);
+    } catch (Exception $e) {
+      watchdog('vcard_main_entity_view_ajax_callback', '<pre>@e</pre>', ['@e' => print_r($e, TRUE)]);
+    }
+
+    $toolbar = '';
+    try {
+      switch ($entity_type) {
+        case 'vcard':
+          $toolbar = theme("toolbar_{$entity_type}", ['entity_id' => $id]);
+          break;
+
+        case 'group':
+          $toolbar = theme("toolbar_{$entity_type}", [
+            'entity_id' => $id,
+            'title' => $entity->name,
+            'description' => $entity->description,
+          ]);
+          break;
+      }
+    } catch (Exception $e) {
+      watchdog('toolbar theme', '<pre>@e</pre>', ['@e' => print_r($e, TRUE)]);
+    }
+
+    $commands = [];
+    $commands[] = ajax_command_replace('#entity-view-ajax-loaded', '<div id="entity-view-ajax-loaded">' . $render . '</div>');
+    $commands[] = ajax_command_replace('#toolbar', '<section class="row" id="toolbar">' . $toolbar . '</section>');
+
+    return [
+      '#type' => 'ajax',
+      '#commands' => $commands,
+    ];
+  }
+
+  return '<div id="entity-view-ajax-loaded"></div>';
 }
 
 /**
@@ -315,48 +444,6 @@ function _form_build_properties(&$form, $entity, $properties) {
       '#weight' => $weight++,
     ];
   }
-}
-
-/**
- * Implements hook_block_info().
- */
-function vcard_main_block_info() {
-  $blocks = [];
-
-  $blocks['my_vcards_toolbar'] = [
-    'info' => t('My VCards toolbar'),
-    'cache' => DRUPAL_NO_CACHE,
-    'status' => TRUE,
-    'region' => 'header',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'my-vcards',
-  ];
-  $blocks['groups_toolbar'] = [
-    'info' => t('Groups toolbar'),
-    'cache' => DRUPAL_NO_CACHE,
-    'status' => TRUE,
-    'region' => 'header',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'groups',
-  ];
-
-  return $blocks;
-}
-
-/**
- * Implements hook_block_view().
- */
-function vcard_main_block_view($delta = '') {
-  $block = [];
-
-  switch ($delta) {
-    case 'my_vcards_toolbar':
-    case 'groups_toolbar':
-      $block['content'] = ' ';
-      break;
-  }
-
-  return $block;
 }
 
 /**
@@ -438,7 +525,7 @@ function vcard_main_permission() {
  *
  * @return string
  */
-function _get_uuid() {
+function generate_uuid() {
   try {
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40);

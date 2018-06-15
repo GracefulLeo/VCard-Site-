@@ -68,7 +68,7 @@ function vcard_preprocess_entity_nano_teaser(&$variables) {
  */
 function vcard_preprocess_vcard_details_view(&$variables) {
   $variables['icon_path'] = drupal_get_path('theme', 'vcard') . '/images';
-  $vcard_wrapper = entity_metadata_wrapper('vcard', $variables['vcard_entity']);
+  $vcard_wrapper = entity_metadata_wrapper('vcard', $variables['vcard']);
   $id = $vcard_wrapper->id->value();
   $variables['id'] = $id;
   $variables['base64'] = $vcard_wrapper->base64_vcard->value();
@@ -89,7 +89,7 @@ function vcard_preprocess_vcard_details_view(&$variables) {
  */
 function vcard_preprocess_views_view(&$variables) {
   if ($variables['view']->name === 'contacts') {
-    drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/entity_view_ajax_load.js');
+    drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/entity_view.js');
     drupal_add_js(drupal_get_path('theme', 'vcard') . '/js/exposed_auto_submit_fix.js');
   }
 }

@@ -15,42 +15,17 @@
  */
 function _vcard_attach_page_content(&$page, $user_wrapper) {
   $my_vcards = $user_wrapper->field_my_vcards->value();
-  if (!empty($my_vcards)) {
-    // Sort by "changed", newest first.
-    $sorted = [];
-    foreach ($my_vcards as $key => $vcard) {
-      $sorted[$vcard->changed] = $key;
-    }
-    krsort($sorted);
 
-    foreach ($sorted as $key) {
-      $logo_uri = '';
-      if (!empty($my_vcards[$key]->field_logotype)) {
-        $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
-      }
+  $page['entity_list_wrapper']['nano']['entity_list'][] = drupal_get_form('vcard_main_build_list_items_form', $my_vcards);
 
-      try {
-        $page['entity_list_wrapper']['nano']['entity_list'][] = [
-          '#markup' => theme('entity_nano_teaser', [
-            'entity_type' => 'vcard',
-            'entity_id' => $my_vcards[$key]->id,
-            'logo_uri' => $logo_uri,
-            'title' => $my_vcards[$key]->title,
-          ]),
-        ];
-      } catch (Exception $e) {
-        watchdog('theme', 'entity_nano_teaser error: @e', ['@e' => $e]);
-      }
-    }
-  }
   // "Add new VCard" link.
-  $page['entity_view_wrapper']['nano']['content']['add'] = [
+  $page['entity_view_wrapper']['nano']['content']['view']['add'] = [
     '#type' => 'container',
     '#attributes' => [
       'id' => 'add-entity-wrapper',
     ],
   ];
-  $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
+  $page['entity_view_wrapper']['nano']['content']['view']['add']['link'] = [
     '#type' => 'link',
     '#href' => 'my-vcards/add',
     '#title' => 'add',
@@ -74,7 +49,7 @@ function vcard_main_vcard_view_ajax($id = NULL) {
     $vcard_entity = entity_load_single('vcard', $id);
     if ($user->uid && $vcard_entity) {
       return theme('vcard_details_view', [
-        'vcard_entity' => $vcard_entity,
+        'vcard' => $vcard_entity,
       ]);
     }
   }
@@ -345,7 +320,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
     $form_state['values']['social'] + $form_state['values']['messengers']
   ));
   if (empty($vcard_wrapper->uuid->value())) {
-    $vcard_wrapper->uuid->set(_get_uuid());
+    $vcard_wrapper->uuid->set(generate_uuid());
   }
   $vcard_wrapper->token->set($user->last_login_token);
   $vcard_wrapper->save();
