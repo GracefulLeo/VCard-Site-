@@ -107,6 +107,13 @@ function vcard_main_menu() {
     'page arguments' => ['vcard_main_settings_form'],
     'access arguments' => ['access content'],
   ];
+  $items['privacy-policy'] = [
+    'title' => 'Privacy Policy',
+    'menu_name' => 'main-menu',
+    'page callback' => 'vcard_main_privacy_policy_page',
+    'access callback' => TRUE,
+    'file' => 'privacy_policy.inc',
+  ];
   $items['logout'] = [
     'title' => 'Log Out',
     'menu_name' => 'main-menu',
@@ -166,6 +173,10 @@ function vcard_main_theme($existing, $type, $theme, $path) {
       ],
       'path' => $templates,
       'template' => 'toolbar-group',
+    ],
+    'privacy_policy' => [
+      'path' => $templates,
+      'template' => 'privacy-policy',
     ],
   ];
 }

@@ -555,3 +555,18 @@ body {
 .history-blue-text {
   color: #1e90ff;
 }
+/* Privacy Policy. */
+#privacy-policy {
+  height: calc(100vh - 170px);
+}
+#privacy-policy article {
+  padding: 0 30px;
+}
+#privacy-policy .nano > .nano-pane > .nano-slider {
+  margin: 0 -10px;
+  border-radius: 10px;
+}
+#privacy-policy h1 {
+  text-align: center;
+  padding: 30px 0;
+}

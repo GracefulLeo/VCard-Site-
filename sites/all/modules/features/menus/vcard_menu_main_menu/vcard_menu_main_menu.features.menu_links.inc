@@ -27,7 +27,7 @@ function vcard_menu_main_menu_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 1,
+    'weight' => -49,
     'customized' => 1,
   );
   // Exported menu link: main-menu_groups:groups.
@@ -47,7 +47,7 @@ function vcard_menu_main_menu_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 2,
+    'weight' => -48,
     'customized' => 1,
   );
   // Exported menu link: main-menu_history:history.
@@ -64,7 +64,7 @@ function vcard_menu_main_menu_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 3,
+    'weight' => -47,
     'customized' => 1,
   );
   // Exported menu link: main-menu_log-out:logout.
@@ -81,7 +81,7 @@ function vcard_menu_main_menu_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 5,
+    'weight' => -44,
     'customized' => 1,
   );
   // Exported menu link: main-menu_my-vcards:my-vcards.
@@ -98,7 +98,24 @@ function vcard_menu_main_menu_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 0,
+    'weight' => -50,
+    'customized' => 1,
+  );
+  // Exported menu link: main-menu_privacy-policy:privacy-policy.
+  $menu_links['main-menu_privacy-policy:privacy-policy'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'privacy-policy',
+    'router_path' => 'privacy-policy',
+    'link_title' => 'Privacy Policy',
+    'options' => array(
+      'identifier' => 'main-menu_privacy-policy:privacy-policy',
+    ),
+    'module' => 'system',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -45,
     'customized' => 1,
   );
   // Exported menu link: main-menu_settings:settings.
@@ -115,7 +132,7 @@ function vcard_menu_main_menu_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 4,
+    'weight' => -46,
     'customized' => 1,
   );
 
@@ -126,6 +143,7 @@ function vcard_menu_main_menu_menu_default_menu_links() {
   t('History');
   t('Log Out');
   t('My VCards');
+  t('Privacy Policy');
   t('Settings');
 
   return $menu_links;
