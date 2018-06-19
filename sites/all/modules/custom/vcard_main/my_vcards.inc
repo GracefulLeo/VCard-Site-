@@ -354,6 +354,7 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
     // Get user ids who has this VCard in contacts.
     $referenced_user_ids = db_select('field_data_field_my_contacts', 'c')
       ->fields('c', ['entity_id'])
+      ->condition('entity_type', 'user')
       ->condition('field_my_contacts_target_id', $vcard_entity->id)
       ->execute()
       ->fetchAllKeyed(0, 0);
