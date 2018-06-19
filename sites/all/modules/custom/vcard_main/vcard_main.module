@@ -403,9 +403,14 @@ function vcard_main_entity_ajax_callback($page_callback_result) {
  *  Entity reference field name in user entity.
  * @param $entity_id
  *  ECK entity "id".
+ * @param null $user
+ *  User id to be updated.
  */
-function _user_entityreference_field_save($field_name, $entity_id) {
-  global $user;
+function _user_entityreference_field_save($field_name, $entity_id, $user = NULL) {
+  if (!is_numeric($user)) {
+    global $user;
+  }
+
   $wrapper = entity_metadata_wrapper('user', $user);
 
   if (isset($wrapper->{$field_name})) {

@@ -154,6 +154,8 @@ class History {
       $this->entity->body_teaser->set($this->buildBodyTeaser());
       $this->entity->full_body->set($this->buildFullBody());
       $this->entity->save();
+
+      return $this->entity->value();
     }
   }
 
