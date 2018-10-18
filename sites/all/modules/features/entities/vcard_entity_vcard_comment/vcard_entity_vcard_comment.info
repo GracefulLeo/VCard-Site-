@@ -1,0 +1,8 @@
+name = VCard: Entity: VCard comment
+core = 7.x
+package = Features: Entity
+dependencies[] = eck
+dependencies[] = features
+features[eck_bundle][] = vcard_comment_vcard_comment
+features[eck_entity_type][] = vcard_comment
+features[features_api][] = api:2

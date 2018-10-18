@@ -1,8 +1,6 @@
 <div class="vcard-view-loaded">
-    <div class="vcard-with-actions">
-        <div class="vcard-image">
-            <img src="<?php print $base64; ?>">
-        </div>
+    <div class="vcard-image">
+        <img src="<?php print $base64; ?>">
     </div>
     <div class="vcard-description">
         <div class="row">

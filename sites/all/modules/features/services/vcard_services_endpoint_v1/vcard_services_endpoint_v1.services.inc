@@ -50,7 +50,14 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         'delete' => array(
           'enabled' => '1',
         ),
-        'index' => array(
+      ),
+    ),
+    'entity_history' => array(
+      'operations' => array(
+        'create' => array(
+          'enabled' => '1',
+        ),
+        'retrieve' => array(
           'enabled' => '1',
         ),
       ),
@@ -76,7 +83,14 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
         'delete' => array(
           'enabled' => '1',
         ),
-        'index' => array(
+      ),
+    ),
+    'entity_vcard_comment' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'enabled' => '1',
+        ),
+        'update' => array(
           'enabled' => '1',
         ),
       ),
@@ -97,6 +111,9 @@ function vcard_services_endpoint_v1_default_services_endpoint() {
     'user' => array(
       'operations' => array(
         'retrieve' => array(
+          'enabled' => '1',
+        ),
+        'update' => array(
           'enabled' => '1',
         ),
       ),

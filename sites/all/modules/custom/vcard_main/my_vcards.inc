@@ -15,42 +15,17 @@
  */
 function _vcard_attach_page_content(&$page, $user_wrapper) {
   $my_vcards = $user_wrapper->field_my_vcards->value();
-  if (!empty($my_vcards)) {
-    // Sort by "changed", newest first.
-    $sorted = [];
-    foreach ($my_vcards as $key => $vcard) {
-      $sorted[$vcard->changed] = $key;
-    }
-    krsort($sorted);
 
-    foreach ($sorted as $key) {
-      $logo_uri = '';
-      if (!empty($my_vcards[$key]->field_logotype)) {
-        $logo_uri = $my_vcards[$key]->field_logotype[LANGUAGE_NONE][0]['uri'];
-      }
+  $page['entity_list_wrapper']['nano']['entity_list'][] = drupal_get_form('vcard_main_build_list_items_form', $my_vcards);
 
-      try {
-        $page['entity_list_wrapper']['nano']['entity_list'][] = [
-          '#markup' => theme('entity_nano_teaser', [
-            'entity_type' => 'vcard',
-            'entity_id' => $my_vcards[$key]->id,
-            'logo_uri' => $logo_uri,
-            'title' => $my_vcards[$key]->title,
-          ]),
-        ];
-      } catch (Exception $e) {
-        watchdog('theme', 'entity_nano_teaser error: @e', ['@e' => $e]);
-      }
-    }
-  }
   // "Add new VCard" link.
-  $page['entity_view_wrapper']['nano']['content']['add'] = [
+  $page['entity_view_wrapper']['nano']['content']['view']['add'] = [
     '#type' => 'container',
     '#attributes' => [
       'id' => 'add-entity-wrapper',
     ],
   ];
-  $page['entity_view_wrapper']['nano']['content']['add']['link'] = [
+  $page['entity_view_wrapper']['nano']['content']['view']['add']['link'] = [
     '#type' => 'link',
     '#href' => 'my-vcards/add',
     '#title' => 'add',
@@ -74,7 +49,7 @@ function vcard_main_vcard_view_ajax($id = NULL) {
     $vcard_entity = entity_load_single('vcard', $id);
     if ($user->uid && $vcard_entity) {
       return theme('vcard_details_view', [
-        'vcard_entity' => $vcard_entity,
+        'vcard' => $vcard_entity,
       ]);
     }
   }
@@ -315,6 +290,8 @@ function vcard_main_my_vcard_form_validation($form, &$form_state) {
  * "My VCard" page form submit.
  */
 function vcard_main_my_vcard_form_submit($form, &$form_state) {
+  global $user;
+
   $vcard_entity = $form_state['values']['vcard_entity'];
   // Save to variable old entity and check for changes after VCard update.
   $old_vcard = isset($vcard_entity->id) ? entity_load_single('vcard', $vcard_entity->id) : FALSE;
@@ -335,7 +312,6 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
     $title = $form_state['values']['title'];
   }
   else {
-    global $user;
     $user_wrapper = entity_metadata_wrapper('user', $user);
     $title = 'VCard #' . ((int) count($user_wrapper->field_my_vcards->value()) + 1);
   }
@@ -343,6 +319,10 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
   $vcard_wrapper->social_links->set(json_encode(
     $form_state['values']['social'] + $form_state['values']['messengers']
   ));
+  if (empty($vcard_wrapper->uuid->value())) {
+    $vcard_wrapper->uuid->set(generate_uuid());
+  }
+  $vcard_wrapper->token->set($user->last_login_token);
   $vcard_wrapper->save();
 
   // Save relations to user.
@@ -369,7 +349,20 @@ function vcard_main_my_vcard_form_submit($form, &$form_state) {
       }
     }
 
-    $history->save();
+    $history_id = $history->save()->id;
+
+    // Get user ids who has this VCard in contacts.
+    $referenced_user_ids = db_select('field_data_field_my_contacts', 'c')
+      ->fields('c', ['entity_id'])
+      ->condition('entity_type', 'user')
+      ->condition('field_my_contacts_target_id', $vcard_entity->id)
+      ->execute()
+      ->fetchAllKeyed(0, 0);
+
+    // Save to users (who has this VCard) to "field_history" history just created.
+    foreach ($referenced_user_ids as $user_id) {
+      _user_entityreference_field_save('field_history', $history_id, $user_id);
+    }
   }
 
 

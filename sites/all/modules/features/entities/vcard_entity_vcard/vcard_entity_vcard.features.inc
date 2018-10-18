@@ -18,6 +18,8 @@ function vcard_entity_vcard_eck_bundle_info() {
         'managed_properties' => array(
           'title' => 'title',
           'uid' => 'uid',
+          'uuid' => 'uuid',
+          'token' => 'token',
           'created' => 'created',
           'changed' => 'changed',
           'surname' => 'surname',
@@ -56,6 +58,16 @@ function vcard_entity_vcard_eck_entity_type_info() {
           'label' => 'Author',
           'type' => 'integer',
           'behavior' => 'author',
+        ),
+        'uuid' => array(
+          'label' => 'UUID',
+          'type' => 'text',
+          'behavior' => 'textfield',
+        ),
+        'token' => array(
+          'label' => 'Login token',
+          'type' => 'text',
+          'behavior' => 'textfield',
         ),
         'created' => array(
           'label' => 'Created',
